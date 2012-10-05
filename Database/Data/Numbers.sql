@@ -1,5 +1,3 @@
-USE SQLisHard_Sample;
-
 -- http://sqlblog.com/blogs/adam_machanic/archive/2006/07/12/you-require-a-numbers-table.aspx
 CREATE TABLE Numbers
 (

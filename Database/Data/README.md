@@ -1,0 +1,1 @@
+Data sourced from: http://mytechfail.blogspot.com/2010/08/creating-random-names-in-sql-server.html
