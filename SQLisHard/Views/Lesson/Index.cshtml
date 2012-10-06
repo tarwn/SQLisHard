@@ -1,0 +1,55 @@
+﻿@{
+    ViewBag.Title = "Index";
+    string indexURL = @Url.Action("Statement", "api");
+}
+
+<h2>Index</h2>
+Select a single row from the clients table.
+
+<div>
+    <textarea id="QueryEditor" cols="80" rows="8" data-bind="value: userQuery.Content"></textarea>
+    <input type="button" value="Execute" data-bind="click: runQuery" />
+</div>
+
+<span data-bind="text: runStatus"></span>
+
+<div id="QueryResults" data-bind="with: queryResults">
+    <div>
+    <label>LessonId:</label><span data-bind="text: LessonId"></span><br />
+    <label>Success?</label><span data-bind="text: CompletesLesson"></span><br />
+    <label>Query:</label><span data-bind="text: QueryContent"></span>
+     </div>
+</div>
+
+<script type="text/javascript">
+    function Statement() {
+        this.LessonId = ko.observable(1);
+        this.Content = ko.observable("");
+    }
+
+    function StatementResult(data) {
+        this.LessonId = ko.observable(data.LessonId || "");
+        this.CompletesLesson = ko.observable(data.CompletesLesson || false);
+        this.QueryContent = ko.observable(data.Content || "");
+    }
+
+    var viewModel = {
+        queryResults: ko.observable(),
+        userQuery: new Statement(),
+        runStatus: ko.observable(""),
+        runQuery: function () {
+            self = this;
+            self.runStatus("running");
+            $.ajax("@indexURL", {
+                type: "POST", contentType: "application/json", dataType: "json",
+                data: ko.toJSON(this.userQuery),
+                success: function (result) { self.runStatus("ok"); self.queryResults(new StatementResult(result)); },
+                error: function () { self.runStatus("error"); }
+            });
+        }
+    };
+
+    viewModel.userQuery.Content("type a query here");
+
+    ko.applyBindings(viewModel);
+</script>

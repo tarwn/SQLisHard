@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard", "SQLisHard\SQLisHard.csproj", "{E4518228-5FD8-43FA-BA3D-492244414BCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard.Domain", "SQLisHard.Domain\SQLisHard.Domain.csproj", "{A535C1A1-A9D1-4C57-9148-BF75E8BD5DCF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{E4518228-5FD8-43FA-BA3D-492244414BCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4518228-5FD8-43FA-BA3D-492244414BCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4518228-5FD8-43FA-BA3D-492244414BCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A535C1A1-A9D1-4C57-9148-BF75E8BD5DCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A535C1A1-A9D1-4C57-9148-BF75E8BD5DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A535C1A1-A9D1-4C57-9148-BF75E8BD5DCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A535C1A1-A9D1-4C57-9148-BF75E8BD5DCF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
