@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLisHard.Domain
+namespace SQLisHard.Domain.DatabaseExecution
 {
     public interface IQueryEngine
     {

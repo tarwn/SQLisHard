@@ -1,4 +1,6 @@
 ﻿using SQLisHard.Domain;
+using SQLisHard.Domain.DatabaseExecution;
+using SQLisHard.Domain.LessonEvaluator;
 using SQLisHard.Models;
 using System;
 using System.Collections.Generic;
@@ -9,21 +11,22 @@ using System.Web.Http;
 
 namespace SQLisHard.Controllers
 {
-	public class StatementController : ApiController
-	{
-		// POST api/<controller>
-		public StatementResult Post([FromBody]Statement value)
-		{
-			// create command
-			// execute command
+    public class StatementController : ApiController
+    {
+        private ILessonResultEvaluator _lessonEvaluator;
 
-			// return result
-			return new StatementResult() {
-				LessonId = value.LessonId,
-				CompletesLesson = false,
-				Content = value.Content
-			};
-		}
+        public StatementController() : this(new LessonResultEvaluator(new QueryEngine())) { }
+        public StatementController(ILessonResultEvaluator evaluator)
+        {
+            _lessonEvaluator = evaluator;
+        }
 
-	}
+
+        // POST api/<controller>
+        public StatementResult Post([FromBody]Statement value)
+        {
+            return _lessonEvaluator.Evaluate(value);
+        }
+
+    }
 }
