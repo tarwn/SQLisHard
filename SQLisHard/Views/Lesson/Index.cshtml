@@ -7,7 +7,7 @@
 Select a single row from the clients table.
 
 <div>
-    <textarea id="QueryEditor" cols="80" rows="8" data-bind="value: userQuery.Content"></textarea>
+    <textarea id="QueryEditor" cols="80" rows="8" data-bind="value: userQuery.content"></textarea>
     <input type="button" value="Execute" data-bind="click: runQuery" />
 </div>
 
@@ -15,23 +15,59 @@ Select a single row from the clients table.
 
 <div id="QueryResults" data-bind="with: queryResults">
     <div>
-    <label>LessonId:</label><span data-bind="text: LessonId"></span><br />
-    <label>Success?</label><span data-bind="text: CompletesLesson"></span><br />
-    <label>Query:</label><span data-bind="text: QueryContent"></span>
-     </div>
+        <label>LessonId:</label><span data-bind="text: lessonId"></span><br />
+        <label>Success?</label><span data-bind="text: completesLesson"></span><br />
+        <label>Query:</label><span data-bind="text: queryContent"></span>
+        <div data-bind="if: isError">
+            An Error Has Occurred<br />   
+            Error # <span data-bind="text: errorNumber"></span>:
+                    <span data-bind="text: errorMessage"></span>
+        </div>
+        <div data-bind="ifnot: isError">
+            Results: 
+            <table border="1" data-bind="with: data">
+                <tr data-bind="foreach: headers">
+                    <th data-bind="text: ColumnName"></th>
+                </tr>
+                <tbody data-bind="foreach: rows">
+                    <tr data-bind="foreach: Values">
+                        <td data-bind="text: $data"></td>
+                    </tr>                
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script type="text/javascript">
     function Statement() {
-        this.LessonId = ko.observable(1);
-        this.Content = ko.observable("");
+        this.lessonId = ko.observable(1);
+        this.content = ko.observable("");
     }
 
     function StatementResult(data) {
-        this.LessonId = ko.observable(data.LessonId || "");
-        this.CompletesLesson = ko.observable(data.CompletesLesson || false);
-        this.QueryContent = ko.observable(data.Content || "");
+        this.lessonId = ko.observable(data.LessonId || "");
+        this.completesLesson = ko.observable(data.CompletesLesson || false);
+        this.queryContent = ko.observable(data.Content || "");
+        this.data = {
+            headers: ko.observableArray(data.Data.Headers || []),
+            rows:    ko.observableArray(data.Data.Rows || [])
+        };
+        this.errorMessage = ko.observable(data.ErrorMessage || "");
+        this.errorNumber = ko.observable(data.ErrorNumber || 0);
+        this.executionStatus = ko.observable(data.ExecutionStatus || "");
+        this.isError = ko.computed(function () {
+            return this.executionStatus() == ExecutionStatus.ERROR;
+        }, this);
+
+        console.log(this.data.rows());
     }
+
+
+    var ExecutionStatus = {
+        ERROR: 1,
+        SUCCESS: 0
+    };
 
     var viewModel = {
         queryResults: ko.observable(),
@@ -43,13 +79,18 @@ Select a single row from the clients table.
             $.ajax("@indexURL", {
                 type: "POST", contentType: "application/json", dataType: "json",
                 data: ko.toJSON(this.userQuery),
-                success: function (result) { self.runStatus("ok"); self.queryResults(new StatementResult(result)); },
-                error: function () { self.runStatus("error"); }
+                success: function (result) {
+                    self.runStatus("ok");
+                    self.queryResults(new StatementResult(result));
+                },
+                error: function (xhr, status, error) {
+                    self.runStatus("error: " + status + " - " + error);
+                }
             });
         }
     };
 
-    viewModel.userQuery.Content("type a query here");
+    viewModel.userQuery.content("type a query here");
 
     ko.applyBindings(viewModel);
 </script>

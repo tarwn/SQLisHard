@@ -1,9 +1,9 @@
 ﻿using SQLisHard.Domain;
-using SQLisHard.Domain.DatabaseExecution;
 using SQLisHard.Domain.LessonEvaluator;
-using SQLisHard.Models;
+using SQLisHard.Domain.QueryEngine.DatabaseExecution;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -15,7 +15,7 @@ namespace SQLisHard.Controllers
     {
         private ILessonResultEvaluator _lessonEvaluator;
 
-        public StatementController() : this(new LessonResultEvaluator(new QueryEngine())) { }
+        public StatementController() : this(new LessonResultEvaluator(new QueryEngine(ConfigurationManager.ConnectionStrings["SampleDatabase"].ConnectionString))) { }
         public StatementController(ILessonResultEvaluator evaluator)
         {
             _lessonEvaluator = evaluator;

@@ -1,4 +1,4 @@
-﻿using SQLisHard.Domain.DatabaseExecution;
+﻿using SQLisHard.Domain.QueryEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +18,19 @@ namespace SQLisHard.Domain.LessonEvaluator
         public StatementResult Evaluate(Statement statement)
         {
             var queryResult = _queryEngine.ExecuteQuery(statement);
-            return new StatementResult()
+            return new StatementResult(queryResult)
             {
-                Content = queryResult.Content,
-                CompletesLesson = true,
+                CompletesLesson = EvaluateResultSet(statement, queryResult),
                 LessonId = statement.LessonId
             };
+        }
+
+        public bool EvaluateResultSet(Statement statement, QueryResult queryResult)
+        {
+            if (queryResult.ExecutionStatus == QueryExecutionStatus.Error)
+                return false;
+
+            return true;
         }
     }
 }

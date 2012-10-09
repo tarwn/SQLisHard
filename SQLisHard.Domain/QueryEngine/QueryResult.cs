@@ -4,23 +4,52 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SQLisHard.Domain.DatabaseExecution
+namespace SQLisHard.Domain.QueryEngine
 {
     public class QueryResult : Query
     {
+        public QueryExecutionStatus ExecutionStatus { get; set; }
+
         public DataTable Data { get; private set; }
+
+        public string ErrorMessage { get; set; }
+
+        public int ErrorNumber { get; set; }
+
 
         public QueryResult()
         {
             Data = new DataTable();
         }
+
+        public QueryResult(Query originalQuery) : base(originalQuery)
+        {
+            Data = new DataTable();
+        }
+
+        public QueryResult(QueryResult anotherResult)
+            : base(anotherResult)
+        {
+            Content = anotherResult.Content;
+            Data = anotherResult.Data;
+            ExecutionStatus = anotherResult.ExecutionStatus;
+            ErrorMessage = anotherResult.ErrorMessage;
+            ErrorNumber = anotherResult.ErrorNumber;
+        }
+
     }
 
     public class DataTable
     {
-        public Dictionary<int, DataColumnHeader> _headers;
-        public int _maxColId;
-        public List<DataRow> _rows;
+        private Dictionary<int, DataColumnHeader> _headers = new Dictionary<int,DataColumnHeader>();
+
+        public DataColumnHeader[] Headers { get { return _headers.Values.OrderBy(h => h.ColumnId).ToArray(); } }
+        public List<DataRow> Rows { get; protected set;}
+
+        public DataTable()
+        {
+            Rows = new List<DataRow>();
+        } 
 
         public void AddHeader(int columnId, string columnName, string columnType)
         {
@@ -29,7 +58,9 @@ namespace SQLisHard.Domain.DatabaseExecution
 
         public DataRow AddRow()
         {
-            return new DataRow(_maxColId);
+            var row = new DataRow(_headers.Count);
+            Rows.Add(row);
+            return row;
         }
     }
 
@@ -57,7 +88,5 @@ namespace SQLisHard.Domain.DatabaseExecution
         }
 
     }
-
-    public class DataRow { }
 
 }

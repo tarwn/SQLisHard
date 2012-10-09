@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Dapper">
+      <HintPath>..\packages\Dapper.1.8\lib\net40\Dapper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,15 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DatabaseExecution\IQueryEngine.cs" />
+    <Compile Include="QueryEngine\IQueryEngine.cs" />
+    <Compile Include="LessonEvaluator\ILessonResultEvaluator.cs" />
+    <Compile Include="LessonEvaluator\LessonResultEvaluator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DatabaseExecution\Query.cs" />
-    <Compile Include="DatabaseExecution\QueryEngine.cs" />
-    <Compile Include="DatabaseExecution\QueryResult.cs" />
+    <Compile Include="QueryEngine\Query.cs" />
+    <Compile Include="QueryEngine\DatabaseExecution\QueryEngine.cs" />
+    <Compile Include="QueryEngine\QueryExecutionStatus.cs" />
+    <Compile Include="QueryEngine\QueryResult.cs" />
     <Compile Include="LessonEvaluator\Statement.cs" />
     <Compile Include="LessonEvaluator\StatementResult.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
