@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard", "SQLisHard\SQLi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard.Domain", "SQLisHard.Domain\SQLisHard.Domain.csproj", "{A535C1A1-A9D1-4C57-9148-BF75E8BD5DCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard.Domain.Tests", "SQLisHard.Domain.Tests\SQLisHard.Domain.Tests.csproj", "{10219070-B06F-4ADD-8BC7-AFFDD9F9AE77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{A535C1A1-A9D1-4C57-9148-BF75E8BD5DCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A535C1A1-A9D1-4C57-9148-BF75E8BD5DCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A535C1A1-A9D1-4C57-9148-BF75E8BD5DCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{10219070-B06F-4ADD-8BC7-AFFDD9F9AE77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{10219070-B06F-4ADD-8BC7-AFFDD9F9AE77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{10219070-B06F-4ADD-8BC7-AFFDD9F9AE77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{10219070-B06F-4ADD-8BC7-AFFDD9F9AE77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -10,5 +10,5 @@ namespace SQLisHard.Domain.LessonEvaluator
 	public class Statement : Query
 	{
 		public string LessonId { get; set; }
-	}
+    }
 }
