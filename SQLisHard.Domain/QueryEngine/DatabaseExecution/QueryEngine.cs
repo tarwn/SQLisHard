@@ -8,6 +8,8 @@ namespace SQLisHard.Domain.QueryEngine.DatabaseExecution
 {
     public class QueryEngine : IQueryEngine
     {
+        private const int ARTIFICIAL_LIMIT = 100;
+
         private string _connectionString;
 
         public QueryEngine(string connectionString)
@@ -39,11 +41,20 @@ namespace SQLisHard.Domain.QueryEngine.DatabaseExecution
                                 }
                             }
 
-                            var row = result.Data.AddRow();
-                            reader.GetValues(row.Values);
+                            result.TotalRowCount++;
+
+                            if (!query.LimitResults || result.Data.Rows.Count < ARTIFICIAL_LIMIT)
+                            {
+                                var row = result.Data.AddRow();
+                                reader.GetValues(row.Values);
+                            }
                         }
 
                         reader.Close();
+
+                        if (query.LimitResults && result.TotalRowCount > result.Data.Rows.Count)
+                            result.IsSubsetOfRows = true;
+
                         return result;
                     }
                 }

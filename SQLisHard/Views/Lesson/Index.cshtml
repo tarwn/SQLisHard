@@ -19,12 +19,18 @@ Select a single row from the clients table.
         <label>Success?</label><span data-bind="text: completesLesson"></span><br />
         <label>Query:</label><span data-bind="text: queryContent"></span>
         <div data-bind="if: isError">
-            An Error Has Occurred<br />   
+            An Error Has Occurred<br />
             Error # <span data-bind="text: errorNumber"></span>:
                     <span data-bind="text: errorMessage"></span>
         </div>
         <div data-bind="ifnot: isError">
             Results: 
+            <div data-bind="if: isSubsetOfRows">
+                <a href="#" data-bind="click: $root.runQueryFull.bind($root)">Show all <span data-bind="text: totalRowCount"></span> records</a>
+            </div>
+            <div data-bind="ifnot: isSubsetOfRows">
+                Displaying <span data-bind="text: totalRowCount"></span> records
+            </div>
             <table border="1" data-bind="with: data">
                 <tr data-bind="foreach: headers">
                     <th data-bind="text: ColumnName"></th>
@@ -32,7 +38,7 @@ Select a single row from the clients table.
                 <tbody data-bind="foreach: rows">
                     <tr data-bind="foreach: Values">
                         <td data-bind="text: $data"></td>
-                    </tr>                
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -43,6 +49,7 @@ Select a single row from the clients table.
     function Statement() {
         this.lessonId = ko.observable(1);
         this.content = ko.observable("");
+        this.limitResults = true;
     }
 
     function StatementResult(data) {
@@ -51,8 +58,10 @@ Select a single row from the clients table.
         this.queryContent = ko.observable(data.Content || "");
         this.data = {
             headers: ko.observableArray(data.Data.Headers || []),
-            rows:    ko.observableArray(data.Data.Rows || [])
+            rows: ko.observableArray(data.Data.Rows || [])
         };
+        this.isSubsetOfRows = ko.observable(data.IsSubsetOfRows || false);
+        this.totalRowCount = ko.observable(data.TotalRowCount || 0);
         this.errorMessage = ko.observable(data.ErrorMessage || "");
         this.errorNumber = ko.observable(data.ErrorNumber || 0);
         this.executionStatus = ko.observable(data.ExecutionStatus || "");
@@ -75,6 +84,23 @@ Select a single row from the clients table.
         runStatus: ko.observable(""),
         runQuery: function () {
             self = this;
+            self.userQuery.limitResults = true;
+            self.runStatus("running");
+            $.ajax("@indexURL", {
+                type: "POST", contentType: "application/json", dataType: "json",
+                data: ko.toJSON(this.userQuery),
+                success: function (result) {
+                    self.runStatus("ok");
+                    self.queryResults(new StatementResult(result));
+                },
+                error: function (xhr, status, error) {
+                    self.runStatus("error: " + status + " - " + error);
+                }
+            });
+        },
+        runQueryFull: function () {
+            self = this;
+            this.userQuery.limitResults = false;
             self.runStatus("running");
             $.ajax("@indexURL", {
                 type: "POST", contentType: "application/json", dataType: "json",

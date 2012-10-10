@@ -12,6 +12,10 @@ namespace SQLisHard.Domain.QueryEngine
 
         public DataTable Data { get; private set; }
 
+        public int TotalRowCount { get; set; }
+
+        public bool IsSubsetOfRows { get;  set; }
+
         public string ErrorMessage { get; set; }
 
         public int ErrorNumber { get; set; }
@@ -32,6 +36,8 @@ namespace SQLisHard.Domain.QueryEngine
         {
             Content = anotherResult.Content;
             Data = anotherResult.Data;
+            TotalRowCount = anotherResult.TotalRowCount;
+            IsSubsetOfRows = anotherResult.IsSubsetOfRows;
             ExecutionStatus = anotherResult.ExecutionStatus;
             ErrorMessage = anotherResult.ErrorMessage;
             ErrorNumber = anotherResult.ErrorNumber;
