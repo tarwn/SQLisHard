@@ -11,7 +11,6 @@ Scenario: Execute basic successful query
 	Then the query results are displayed
 
 @UI
-@Unreleased
 Scenario: Execute query with syntax error
 	Given I am on the Lesson Page
 	And I have entered a query of "Not a real query"
@@ -19,7 +18,6 @@ Scenario: Execute query with syntax error
 	Then the query reports an error
 
 @UI
-@Unreleased
 Scenario: Execute query with more than 100 results
 	Given I am on the Lesson Page
 	And I have entered a query of "SELECT TOP 101 * FROM dbo.Clients"
@@ -28,8 +26,7 @@ Scenario: Execute query with more than 100 results
 	And 100 result rows are displayed
 
 @UI
-@Unreleased
-	Scenario: Get rest of results when query has more than 100
+Scenario: Get rest of results when query has more than 100
 	Given I am on the Lesson Page
 	And I have entered a query of "SELECT TOP 101 * FROM dbo.Clients"
 	And I Press Execute

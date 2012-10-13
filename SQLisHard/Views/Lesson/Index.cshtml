@@ -18,7 +18,7 @@ Select a single row from the clients table.
         <label>LessonId:</label><span data-bind="text: lessonId"></span><br />
         <label>Success?</label><span data-bind="text: completesLesson"></span><br />
         <label>Query:</label><span data-bind="text: queryContent"></span>
-        <div data-bind="if: isError">
+        <div data-bind="if: isError" id="QueryError">
             An Error Has Occurred<br />
             Error # <span data-bind="text: errorNumber"></span>:
                     <span data-bind="text: errorMessage"></span>
@@ -26,15 +26,17 @@ Select a single row from the clients table.
         <div data-bind="ifnot: isError">
             Results: 
             <div data-bind="if: isSubsetOfRows">
-                <a href="#" data-bind="click: $root.runQueryFull.bind($root)">Show all <span data-bind="text: totalRowCount"></span> records</a>
+                <a href="#" data-bind="click: $root.runQueryFull.bind($root)" id="MoreResultsLink">Show all <span data-bind="text: totalRowCount" id="MoreResultsLinkTotalCount"></span> records</a>
             </div>
             <div data-bind="ifnot: isSubsetOfRows">
                 Displaying <span data-bind="text: totalRowCount"></span> records
             </div>
             <table border="1" data-bind="with: data" id="DataTable">
-                <tr data-bind="foreach: headers">
-                    <th data-bind="text: ColumnName"></th>
-                </tr>
+                <thead>
+                    <tr data-bind="foreach: headers">
+                        <th data-bind="text: ColumnName"></th>
+                    </tr>
+                </thead>
                 <tbody data-bind="foreach: rows">
                     <tr data-bind="foreach: Values">
                         <td data-bind="text: $data"></td>
@@ -68,8 +70,6 @@ Select a single row from the clients table.
         this.isError = ko.computed(function () {
             return this.executionStatus() == ExecutionStatus.ERROR;
         }, this);
-
-        console.log(this.data.rows());
     }
 
 

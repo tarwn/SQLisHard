@@ -20,7 +20,8 @@ namespace SQLisHard.IntegrationTests.Steps
         {
 			CurrentPage.As<LessonPage>().EnterQuery(queryText);
         }
-        
+
+		[Given(@"I Press Execute")]
         [When(@"I Press Execute")]
         public void WhenIPressExecute()
         {
@@ -32,5 +33,33 @@ namespace SQLisHard.IntegrationTests.Steps
         {
 			CurrentPage.As<LessonPage>().WaitUpTo(5000, () => CurrentPage.As<LessonPage>().ResultsAreAvailableAndSuccessful, "Results to be displayed");
         }
+
+		[Then(@"the query reports an error")]
+		public void ThenTheQueryReportsAnError()
+		{
+			CurrentPage.As<LessonPage>().WaitUpTo(5000, () => CurrentPage.As<LessonPage>().QueryErrorIsDisplayed, "Query error to be displayed");
+		}
+
+		[Given(@"(.*) query results are displayed with a link to read more")]
+		[Then(@"(.*) query results are displayed with a link to read more")]
+		public void ThenQueryResultsAreDisplayedWithALinkToReadMore(int expectedResultCount)
+		{
+			CurrentPage.As<LessonPage>().WaitUpTo(5000, () => CurrentPage.As<LessonPage>().MoreResultsLinkIsPresent, "More results link to be displayed");
+			CurrentPage.As<LessonPage>().AssertMoreResultsLinkReportsTotalGreaterThan(expectedResultCount);
+		}
+
+		[Then(@"(.*) result rows are displayed")]
+		public void ThenResultRowsAreDisplayed(int expectedResultCount)
+		{
+			CurrentPage.As<LessonPage>().WaitUpTo(5000, () => CurrentPage.As<LessonPage>().ResultsAreAvailableAndSuccessful, "Result rows to be displayed");
+			CurrentPage.As<LessonPage>().AssertNumberOfResultsRowsIs(expectedResultCount);
+		}
+
+		[When(@"I click the read more link")]
+		public void WhenIClickTheReadMoreLink()
+		{
+			CurrentPage.As<LessonPage>().MoreResultsLink.Click();
+		}
+
     }
 }
