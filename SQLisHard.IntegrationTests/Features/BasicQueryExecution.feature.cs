@@ -84,6 +84,81 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Execute query with syntax error")]
+        [NUnit.Framework.CategoryAttribute("UI")]
+        [NUnit.Framework.CategoryAttribute("Unreleased")]
+        public virtual void ExecuteQueryWithSyntaxError()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute query with syntax error", new string[] {
+                        "UI",
+                        "Unreleased"});
+#line 15
+this.ScenarioSetup(scenarioInfo);
+#line 16
+ testRunner.Given("I am on the Lesson Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 17
+ testRunner.And("I have entered a query of \"Not a real query\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 18
+ testRunner.When("I Press Execute", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 19
+ testRunner.Then("the query reports an error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Execute query with more than 100 results")]
+        [NUnit.Framework.CategoryAttribute("UI")]
+        [NUnit.Framework.CategoryAttribute("Unreleased")]
+        public virtual void ExecuteQueryWithMoreThan100Results()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute query with more than 100 results", new string[] {
+                        "UI",
+                        "Unreleased"});
+#line 23
+this.ScenarioSetup(scenarioInfo);
+#line 24
+ testRunner.Given("I am on the Lesson Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 25
+ testRunner.And("I have entered a query of \"SELECT TOP 101 * FROM dbo.Clients\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+ testRunner.When("I Press Execute", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 27
+ testRunner.Then("100 query results are displayed with a link to read more", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 28
+ testRunner.And("100 result rows are displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Get rest of results when query has more than 100")]
+        [NUnit.Framework.CategoryAttribute("UI")]
+        [NUnit.Framework.CategoryAttribute("Unreleased")]
+        public virtual void GetRestOfResultsWhenQueryHasMoreThan100()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get rest of results when query has more than 100", new string[] {
+                        "UI",
+                        "Unreleased"});
+#line 32
+ this.ScenarioSetup(scenarioInfo);
+#line 33
+ testRunner.Given("I am on the Lesson Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 34
+ testRunner.And("I have entered a query of \"SELECT TOP 101 * FROM dbo.Clients\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 35
+ testRunner.And("I Press Execute", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
+ testRunner.And("100 query results are displayed with a link to read more", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 37
+ testRunner.When("I click the read more link", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 38
+ testRunner.Then("101 result rows are displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore
