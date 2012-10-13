@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Lesson";
     string indexURL = @Url.Action("Statement", "api");
 }
 
@@ -8,7 +8,7 @@ Select a single row from the clients table.
 
 <div>
     <textarea id="QueryEditor" cols="80" rows="8" data-bind="value: userQuery.content"></textarea>
-    <input type="button" value="Execute" data-bind="click: runQuery" />
+    <input id="QueryExecutionButton" type="button" value="Execute" data-bind="click: runQuery" />
 </div>
 
 <span data-bind="text: runStatus"></span>
@@ -31,7 +31,7 @@ Select a single row from the clients table.
             <div data-bind="ifnot: isSubsetOfRows">
                 Displaying <span data-bind="text: totalRowCount"></span> records
             </div>
-            <table border="1" data-bind="with: data">
+            <table border="1" data-bind="with: data" id="DataTable">
                 <tr data-bind="foreach: headers">
                     <th data-bind="text: ColumnName"></th>
                 </tr>
