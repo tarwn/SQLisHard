@@ -12,7 +12,7 @@ CREATE TABLE dbo.Clients (
 
 
 CREATE TABLE #ForeNames (FirstName VARCHAR(50), Gender BIT);
-CREATE TABLE #Name (Name VARCHAR(50));
+CREATE TABLE #Names (Name VARCHAR(50));
 
 -- Girls Names
 DECLARE @GirlsNames XML;
@@ -45,7 +45,7 @@ WITH Names AS (
 			Gender = FN.Gender,
 			Sort = ROW_NUMBER() OVER (PARTITION BY N.Name ORDER BY NewId()),
 			Cap = ABS(CHECKSUM(NewId())) % 7 + 1
-	FROM #Name N
+	FROM #Names N
 		CROSS JOIN #ForeNames FN
 )
 INSERT INTO dbo.Clients(FirstName, LastName, Gender)
@@ -53,6 +53,6 @@ SELECT FirstName, LastName, Gender
 FROM Names
 WHERE Sort <= Cap;
 
-DROP TABLE #Name;
+DROP TABLE #Names;
 DROP TABLE #ForeNames;
 
