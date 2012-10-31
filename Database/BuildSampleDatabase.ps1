@@ -17,11 +17,17 @@ Param(
     [parameter(Mandatory=$true)]
     [alias("ap")]
     $AdminPassword)
-    
-if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null ){
-    Add-PSSnapin SqlServerCmdletSnapin100
-    Add-PSSnapin SqlServerProviderSnapin100
+
+try{    
+    if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null ){
+        Add-PSSnapin SqlServerCmdletSnapin100
+        Add-PSSnapin SqlServerProviderSnapin100
+    }
 }
+catch{
+    Write-Error "Powershell Script error: $_" -EA Stop
+}
+
 
 $path = (Get-Location).Path
 
@@ -32,7 +38,7 @@ try{
     Write-Host "Created."
 }
 catch{
-    Write-Error "Script error: $_" -EA Stop
+    Write-Error "Powershell Script error: $_" -EA Stop
 }
 
 #user
@@ -43,7 +49,7 @@ try{
     Write-Host "Created."
 }
 catch{
-    Write-Error "Script error: $_" -EA Stop
+    Write-Error "Powershell Script error: $_" -EA Stop
 }
 
 #numbers table
@@ -54,7 +60,7 @@ try{
     Write-Host "Created."
 }
 catch{
-    Write-Error "Script error: $_" -EA Stop
+    Write-Error "Powershell Script error: $_" -EA Stop
 }
 
 #clients table
@@ -76,7 +82,7 @@ try{
     Write-Host "Created."
 }
 catch{
-    Write-Error "Script error: $_" -EA Stop
+    Write-Error "Powershell Script error: $_" -EA Stop
 }
 
 
