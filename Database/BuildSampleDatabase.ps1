@@ -34,6 +34,16 @@ $path = (Get-Location).Path
 #database
 try{
     Write-Host "Creating Database: $database"
+
+    try{
+        Invoke-Sqlcmd -Query "DROP DATABASE $database;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+        Write-Host "Deleted existing database."
+    }
+    catch{
+        # Do nothing - we are attempting to delete in a painful way to make Azure happy
+        Write-Host "Attempted to delete existing database, result was: $_"
+    }
+
     Invoke-Sqlcmd -Query "CREATE DATABASE $database; ALTER DATABASE $database SET RECOVERY SIMPLE;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
     Write-Host "Created."
 }
