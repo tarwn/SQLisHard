@@ -60,9 +60,16 @@ catch{
 #clients table
 try{
     Write-Host "Creating Table: dbo.Clients"
-    $old="%PATH%"
-    $new="$path\Data\"
-    (Get-Content "$path\Data\BulkImportNames.sql") | % {$_ -replace $old, $new} | Set-Content -path "$path\Data\BulkImportNamesRunnable.sql"
+    $girlsnames = ("<ns><n>" + [string]::Join("</n><n>",(Get-Content "$path\Data\girlsforenames.txt")) + "</n></ns>").Replace("'","''")
+    $boysnames =  ("<ns><n>" + [string]::Join("</n><n>",(Get-Content "$path\Data\boysforenames.txt")) + "</n></ns>").Replace("'","''")
+    $lastnames =  ("<ns><n>" + [string]::Join("</n><n>",(Get-Content "$path\Data\surnames.txt")) + "</n></ns>").Replace("'","''")
+    
+    (Get-Content "$path\Data\BulkImportNames.AzureFriendly.sql") `
+                    | % {$_ -replace "{{GIRLSNAMES}}", $girlsnames} `
+                    | % {$_ -replace "{{BOYSNAMES}}", $boysnames} `
+                    | % {$_ -replace "{{LASTNAMES}}", $lastnames} `
+                    | Set-Content -path "$path\Data\BulkImportNamesRunnable.sql"
+
     invoke-sqlcmd -inputfile "$path\Data\BulkImportNamesRunnable.sql" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -QueryTimeout 120  -ErrorAction Stop
     Invoke-Sqlcmd -Query "SELECT COUNT(*) FROM dbo.Clients;"  -ServerInstance "$Server" -Username "$NewUserName" -Password "$NewPassword" -Database "$Database" -ErrorAction Stop
     DEL "$path\Data\BulkImportNamesRunnable.sql"
