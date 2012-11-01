@@ -36,6 +36,7 @@ try{
     Write-Host "Creating Database: $database"
 
     try{
+        Invoke-Sqlcmd -Query "ALTER DATABASE $database SET READ_ONLY WITH ROLLBACK IMMEDIATE;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
         Invoke-Sqlcmd -Query "DROP DATABASE $database;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
         Write-Host "Deleted existing database."
     }
