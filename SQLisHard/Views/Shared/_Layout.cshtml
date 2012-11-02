@@ -7,10 +7,13 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>SQL Is Hard - @ViewBag.Title</title>
+    @Html.Raw(Bundle.Css()
+        .Add("~/styles/display.css")
+        .Render("~/styles/combined_#.css"))
     @Html.Raw(Bundle.JavaScript()
         .Add("~/scripts/jquery-1.7.2.js")
         .Add("~/scripts/knockout-2.1.0.js")
-        .Render("~/scripts/combined_#.css")
+        .Render("~/scripts/combined_#.js")
     )
 </head>
 <body>

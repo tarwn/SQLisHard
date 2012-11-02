@@ -1,0 +1,47 @@
+﻿@import url(http://fonts.googleapis.com/css?family=Tienne:400,700,900);
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,600,600italic,700,700italic);
+@import url(http://fonts.googleapis.com/css?family=Ropa+Sans);
+
+body, input, textarea {
+	font-family: 'Ropa Sans', Sans-serif;
+	font-size: 12pt;
+	/*font-family: 'Open Sans Pro', Sans-serif;*/
+}
+
+h1, h2, h2 {
+	font-family: Tienne, 'Times New Roman';
+}
+
+.banner {
+	text-align: center;	
+
+}
+.banner h1 {
+	display: inline-block;
+	margin: 1em auto .2em auto;
+	padding: 0em 2em;
+
+	font-weight: 700;
+	font-size: 48pt;
+	text-shadow:  2px 2px 2px rgba(0, 0, 0, .35);
+
+	border-bottom: 1px solid #990000;
+}
+
+.subtitle {
+	font-size: 16pt;
+	text-shadow:  1px 1px 1px rgba(0, 0, 0, .2);
+}
+
+.footer {
+	position: fixed;
+	bottom: 0px;
+	margin: .5em;
+	font-size: 90%;
+	text-align: center;
+	width: 100%;
+}
+
+a, a:visited {
+	color: #990000;
+}
