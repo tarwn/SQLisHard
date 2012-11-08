@@ -54,6 +54,41 @@ catch{
     Write-Error "Powershell Script error: $_" -EA Stop
 }
 
-#TODO : add execution of changes in change folder
+#updates tracking
+try{
+    Write-Host "Creating Update Tracking Table If Not Exists"
+    Invoke-Sqlcmd -Query "IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'UpdateTracking') CREATE TABLE UpdateTracking (UpdateTrackingKey int IDENTITY(1,1) PRIMARY KEY, Name varchar(255) NOT NULL, Applied DateTime NOT NULL);" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+    Write-Host "Done"
+}
+catch{
+    Write-Error "Powershell Script error: $_" -EA Stop
+}
+
+#database updates
+$sb = New-Object -TypeName "System.Text.StringBuilder"
+$fileUpdates = Get-ChildItem "$path\CoreDatabaseUpdates"
+$datestamp = $(get-date -f "yyyy-MM-dd HH:mm")
+
+$sb.AppendLine("/* SQL Core Updates - Updated $datestamp */")
+$sb.AppendLine("BEGIN TRANSACTION")
+
+foreach($file in $fileUpdates) 
+{ 
+    $name = ($file.Name)
+    $namewe = ([System.IO.Path]::GetFileNameWithoutExtension($name))
+
+    $sb.AppendLine("/* File: $name */")
+    $sb.AppendLine("IF NOT EXISTS (SELECT 1 FROM UpdateTracking WHERE Name = '$namewe')")
+    $sb.AppendLine("BEGIN")
+
+    $sb.AppendLine([String](Get-Content "$path\CoreDatabaseUpdates\$name"))
+
+    $sb.AppendLine("INSERT INTO UpdateTracking(Name, Applied) SELECT '$namewe', GETUTCDATE();")
+    $sb.AppendLine("END")
+}  
+
+$sb.AppendLine("COMMIT TRANSACTION")
+
+Set-Content -path "$path\CoreDatabaseUpdatesBatch.sql" $sb.ToString()
 
 Write-Host "Done."
