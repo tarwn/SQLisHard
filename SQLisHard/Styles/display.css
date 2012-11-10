@@ -1,6 +1,10 @@
 ﻿@import url(http://fonts.googleapis.com/css?family=Tienne:700);
 @import url(http://fonts.googleapis.com/css?family=Ropa+Sans);
 
+body {
+	margin: 0px;
+}
+
 body, input, textarea {
 	font-family: 'Ropa Sans', Sans-serif;
 	font-size: 12pt;
@@ -35,10 +39,19 @@ h1, h2, h2 {
 .footer {
 	position: fixed;
 	bottom: 0px;
-	margin: .5em;
+	padding: .5em 0;
 	font-size: 90%;
 	text-align: center;
 	width: 100%;
+}
+
+.footer .text {
+
+}
+
+.footer .version {
+	float: right;
+	margin-right: 1em;
 }
 
 a, a:visited {
