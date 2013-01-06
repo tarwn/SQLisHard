@@ -33,16 +33,13 @@ $path = (Get-Location).Path
 
 #database
 try{
-    Write-Host "Creating Database: $database"
-
-    try{
+    Write-Host "Checking if database exists...";
+    $result = Invoke-Sqlcmd -Query "SELECT [name] FROM [sys].[databases] WHERE [name] = N'$database'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+    if($result.name){
+        Write-Host "Deleting existing version of database";
         Invoke-Sqlcmd -Query "ALTER DATABASE $database SET READ_ONLY WITH ROLLBACK IMMEDIATE;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
         Invoke-Sqlcmd -Query "DROP DATABASE $database;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
         Write-Host "Deleted existing database."
-    }
-    catch{
-        # Do nothing - we are attempting to delete in a painful way to make Azure happy
-        Write-Host "Attempted to delete existing database, result was: $_"
     }
 
     Invoke-Sqlcmd -Query "CREATE DATABASE $database; ALTER DATABASE $database SET RECOVERY SIMPLE;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop

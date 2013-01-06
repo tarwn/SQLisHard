@@ -32,14 +32,16 @@ catch{
 $path = (Get-Location).Path
 
 #database
-try{
+Write-Host "Checking database exists...";
+$result = Invoke-Sqlcmd -Query "SELECT [name] FROM [sys].[databases] WHERE [name] = N'$database'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+if($result.name){
+    Write-Host "Database already exists";
+}
+else{
     Write-Host "Creating Database: $database"
 
     Invoke-Sqlcmd -Query "CREATE DATABASE $database; ALTER DATABASE $database SET RECOVERY SIMPLE;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
     Write-Host "Created."
-}
-catch{
-    Write-Error "Error while creating database, assuming it already exists: $_"
 }
 
 #user
@@ -81,7 +83,9 @@ foreach($file in $fileUpdates)
     $sb.AppendLine("IF NOT EXISTS (SELECT 1 FROM UpdateTracking WHERE Name = '$namewe')")
     $sb.AppendLine("BEGIN")
 
-    $sb.AppendLine([String](Get-Content "$path\CoreDatabaseUpdates\$name"))
+    $sb.AppendLine("EXEC('")
+    (Get-Content "$path\CoreDatabaseUpdates\$name") | % {$_ -replace "'", "''"} | $sb.AppendLine("$_")
+    $sb.AppendLine("';")
 
     $sb.AppendLine("INSERT INTO UpdateTracking(Name, Applied) SELECT '$namewe', GETUTCDATE();")
     $sb.AppendLine("END")
