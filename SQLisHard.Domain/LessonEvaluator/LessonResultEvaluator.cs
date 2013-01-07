@@ -1,4 +1,5 @@
-﻿using SQLisHard.Domain.QueryEngine;
+﻿using SQLisHard.Core;
+using SQLisHard.Domain.QueryEngine;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,9 @@ namespace SQLisHard.Domain.LessonEvaluator
     public class LessonResultEvaluator : ILessonResultEvaluator
     {
         private IQueryEngine _queryEngine;
+		private IHistoryStore _historyStore;
 
-        public LessonResultEvaluator(IQueryEngine queryEngine)
+        public LessonResultEvaluator(IQueryEngine queryEngine, IHistoryStore historyStore)
         {
             _queryEngine = queryEngine;
         }
@@ -18,11 +20,15 @@ namespace SQLisHard.Domain.LessonEvaluator
         public StatementResult Evaluate(Statement statement)
         {
             var queryResult = _queryEngine.ExecuteQuery(statement);
-            return new StatementResult(queryResult)
+			var evaluationResult = new StatementResult(queryResult)
             {
                 CompletesLesson = EvaluateResultSet(statement, queryResult),
                 LessonId = statement.LessonId
             };
+
+			_historyStore.AddToHistory(statement.RequestorId, statement.Content, (int) evaluationResult.ExecutionStatus, evaluationResult.CompletesLesson);
+
+			return evaluationResult;
         }
 
         public bool EvaluateResultSet(Statement statement, QueryResult queryResult)

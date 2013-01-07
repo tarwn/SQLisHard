@@ -144,7 +144,9 @@
     <Content Include="Scripts\knockout.mapping-latest.js" />
     <Content Include="Scripts\perpetuum.knockout.js" />
     <Content Include="Styles\display.css" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -167,6 +169,10 @@
     <Content Include="Views\Lesson\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SQLisHard.Core\SQLisHard.Core.csproj">
+      <Project>{578efd29-8165-4710-9622-72f931e1b23f}</Project>
+      <Name>SQLisHard.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SQLisHard.Domain\SQLisHard.Domain.csproj">
       <Project>{a535c1a1-a9d1-4c57-9148-bf75e8bd5dcf}</Project>
       <Name>SQLisHard.Domain</Name>

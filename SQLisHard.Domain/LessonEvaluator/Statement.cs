@@ -1,4 +1,5 @@
-﻿using SQLisHard.Domain;
+﻿using SQLisHard.Core;
+using SQLisHard.Domain;
 using SQLisHard.Domain.QueryEngine;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace SQLisHard.Domain.LessonEvaluator
 {
 	public class Statement : Query
 	{
+		public UserId RequestorId { get; set; }
 		public string LessonId { get; set; }
     }
 }

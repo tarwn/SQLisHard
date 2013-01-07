@@ -1,5 +1,6 @@
 ﻿using Moq;
 using NUnit.Framework;
+using SQLisHard.Core;
 using SQLisHard.Domain.LessonEvaluator;
 using SQLisHard.Domain.QueryEngine;
 using System;
@@ -10,51 +11,76 @@ using System.Threading.Tasks;
 
 namespace SQLisHard.Domain.Tests.LessonEvaluator
 {
-    [TestFixture]
-    public class LessonResultEvaluatorTests
-    {
+	[TestFixture]
+	public class LessonResultEvaluatorTests
+	{
 
-        [Test]
-        public void Evaluate_Statement_ReturnsStatementForPassedQuery() 
-        {
-            var engine = new Mock<IQueryEngine>();
-            engine.Setup(e => e.ExecuteQuery(It.IsAny<Query>()))
-                .Returns<Query>((qry) => new StatementResult(new QueryResult(qry)));
-            var lre = new LessonResultEvaluator(engine.Object);
-            var initialStatement = new Statement() { Content = "Fake Query", LimitResults = true, LessonId = "123" };
+		[Test]
+		public void Evaluate_Statement_ReturnsStatementForPassedQuery()
+		{
+			var lre = new LessonResultEvaluatorHarness();
+			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>()))
+							   .Returns<Query>((qry) => new StatementResult(new QueryResult(qry)));
+			var initialStatement = new Statement() { Content = "Fake Query", LimitResults = true, LessonId = "123" };
 
-            var result = lre.Evaluate(initialStatement);
+			var result = lre.InstanceUnderTest.Evaluate(initialStatement);
 
-            Assert.AreEqual(initialStatement.Content, result.Content);
-            Assert.AreEqual(initialStatement.LessonId, result.LessonId);
-            Assert.AreEqual(initialStatement.LimitResults, result.LimitResults);
-        }
+			Assert.AreEqual(initialStatement.Content, result.Content);
+			Assert.AreEqual(initialStatement.LessonId, result.LessonId);
+			Assert.AreEqual(initialStatement.LimitResults, result.LimitResults);
+		}
 
-        [Test]
-        public void EvaluateResultSet_SuccessfulQuery_IsCurrentlyEvaluatedAsGood()
-        {
-            var engine = new Mock<IQueryEngine>();
-            var lre = new LessonResultEvaluator(engine.Object);
-            var statement = new Statement();
-            var queryResult = new QueryResult() { ExecutionStatus = QueryExecutionStatus.Success };
+		[Test]
+		public void EvaluateResultSet_SuccessfulQuery_IsCurrentlyEvaluatedAsGood()
+		{
+			var lre = new LessonResultEvaluatorHarness();
+			var statement = new Statement();
+			var queryResult = new QueryResult() { ExecutionStatus = QueryExecutionStatus.Success };
 
-            var result = lre.EvaluateResultSet(statement, queryResult);
+			var result = lre.InstanceUnderTest.EvaluateResultSet(statement, queryResult);
 
-            Assert.IsTrue(result);
-        }
+			Assert.IsTrue(result);
+		}
 
-        [Test]
-        public void EvaluateResultSet_QueryWithError_IsEvaluatedAsNotGood()
-        {
-            var engine = new Mock<IQueryEngine>();
-            var lre = new LessonResultEvaluator(engine.Object);
-            var statement = new Statement();
-            var queryResult = new QueryResult() { ExecutionStatus = QueryExecutionStatus.Error };
+		[Test]
+		public void EvaluateResultSet_SuccessfulQuery_IsAddedToHistory()
+		{
+			var lre = new LessonResultEvaluatorHarness();
+			var statement = new Statement();
+			var queryResult = new QueryResult() { ExecutionStatus = QueryExecutionStatus.Success };
 
-            var result = lre.EvaluateResultSet(statement, queryResult);
+			var result = lre.InstanceUnderTest.EvaluateResultSet(statement, queryResult);
 
-            Assert.IsFalse(result);
-        }
- 
-    }
+			lre.MockHistoryStore.Verify(hs => hs.AddToHistory(statement.RequestorId, statement.Content, (int)queryResult.ExecutionStatus, true), Times.Once());
+		}
+
+
+		[Test]
+		public void EvaluateResultSet_QueryWithError_IsEvaluatedAsNotGood()
+		{
+			var lre = new LessonResultEvaluatorHarness();
+			var statement = new Statement();
+			var queryResult = new QueryResult() { ExecutionStatus = QueryExecutionStatus.Error };
+
+			var result = lre.InstanceUnderTest.EvaluateResultSet(statement, queryResult);
+
+			Assert.IsFalse(result);
+		}
+
+	}
+
+	public class LessonResultEvaluatorHarness
+	{
+		public Mock<IQueryEngine> MockQueryEngine { get; set; }
+		public Mock<IHistoryStore> MockHistoryStore { get; set; }
+		public LessonResultEvaluator InstanceUnderTest { get; set; }
+
+		public LessonResultEvaluatorHarness()
+		{
+			MockQueryEngine = new Mock<IQueryEngine>();
+			MockHistoryStore = new Mock<IHistoryStore>();
+			InstanceUnderTest = new LessonResultEvaluator(MockQueryEngine.Object, MockHistoryStore.Object);
+		}
+
+	}
 }
