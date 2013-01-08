@@ -31,6 +31,19 @@ namespace SQLisHard.Domain.Tests.LessonEvaluator
 		}
 
 		[Test]
+		public void Evaluate_SuccessfulQuery_IsAddedToHistory()
+		{
+			var lre = new LessonResultEvaluatorHarness();
+			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>()))
+							   .Returns<Query>((qry) => new StatementResult(new QueryResult(qry)));
+			var initialStatement = new Statement() { Content = "Fake Query", LimitResults = true, LessonId = "123", RequestorId = new UserId() };
+
+			var queryResult = lre.InstanceUnderTest.Evaluate(initialStatement);
+
+			lre.MockHistoryStore.Verify(hs => hs.AddToHistory(initialStatement.RequestorId, initialStatement.Content, (int)queryResult.ExecutionStatus, true), Times.Once());
+		}
+
+		[Test]
 		public void EvaluateResultSet_SuccessfulQuery_IsCurrentlyEvaluatedAsGood()
 		{
 			var lre = new LessonResultEvaluatorHarness();
@@ -41,19 +54,6 @@ namespace SQLisHard.Domain.Tests.LessonEvaluator
 
 			Assert.IsTrue(result);
 		}
-
-		[Test]
-		public void EvaluateResultSet_SuccessfulQuery_IsAddedToHistory()
-		{
-			var lre = new LessonResultEvaluatorHarness();
-			var statement = new Statement();
-			var queryResult = new QueryResult() { ExecutionStatus = QueryExecutionStatus.Success };
-
-			var result = lre.InstanceUnderTest.EvaluateResultSet(statement, queryResult);
-
-			lre.MockHistoryStore.Verify(hs => hs.AddToHistory(statement.RequestorId, statement.Content, (int)queryResult.ExecutionStatus, true), Times.Once());
-		}
-
 
 		[Test]
 		public void EvaluateResultSet_QueryWithError_IsEvaluatedAsNotGood()

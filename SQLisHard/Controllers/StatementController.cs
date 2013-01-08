@@ -29,6 +29,7 @@ namespace SQLisHard.Controllers
         // POST api/<controller>
         public StatementResult Post([FromBody]Statement value)
         {
+			value.RequestorId = new UserId();
             return _lessonEvaluator.Evaluate(value);
         }
 

@@ -15,6 +15,7 @@ namespace SQLisHard.Domain.LessonEvaluator
         public LessonResultEvaluator(IQueryEngine queryEngine, IHistoryStore historyStore)
         {
             _queryEngine = queryEngine;
+			_historyStore = historyStore;
         }
 
         public StatementResult Evaluate(Statement statement)
