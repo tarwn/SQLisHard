@@ -1,4 +1,8 @@
-﻿using SQLisHard.Core;
+﻿using SQLisHard.Attributes;
+using SQLisHard.Attributes.WebAPI;
+using SQLisHard.Core;
+using SQLisHard.Core.Data;
+using SQLisHard.Core.Models;
 using SQLisHard.Domain;
 using SQLisHard.Domain.LessonEvaluator;
 using SQLisHard.Domain.QueryEngine.DatabaseExecution;
@@ -8,6 +12,7 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Web;
 using System.Web.Http;
 
 namespace SQLisHard.Controllers
@@ -25,13 +30,12 @@ namespace SQLisHard.Controllers
             _lessonEvaluator = evaluator;
         }
 
-
-        // POST api/<controller>
+		[RequiresUserOrGuest]
         public StatementResult Post([FromBody]Statement value)
         {
-			value.RequestorId = new UserId();
+			var user = (UserPrincipal)HttpContext.Current.User;
+			value.RequestorId = user.UserIdentity.Id;
             return _lessonEvaluator.Evaluate(value);
         }
-
     }
 }

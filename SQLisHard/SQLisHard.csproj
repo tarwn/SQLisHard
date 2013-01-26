@@ -122,6 +122,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\CoreMembership.cs" />
+    <Compile Include="Attributes\WebAPI\RequiresUserOrGuestAttribute.cs" />
+    <Compile Include="Attributes\RequiresUserOrGuestImplementation.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LessonController.cs" />
     <Compile Include="Controllers\StatementController.cs" />
@@ -160,6 +163,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Attributes\MVC\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
@@ -176,6 +180,10 @@
     <ProjectReference Include="..\SQLisHard.Domain\SQLisHard.Domain.csproj">
       <Project>{a535c1a1-a9d1-4c57-9148-bf75e8bd5dcf}</Project>
       <Name>SQLisHard.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SQLisHard.General\SQLisHard.General.csproj">
+      <Project>{08744e6e-a524-49c1-a68b-ac93939d8a39}</Project>
+      <Name>SQLisHard.General</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

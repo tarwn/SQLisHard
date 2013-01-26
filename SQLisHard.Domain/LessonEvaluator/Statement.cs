@@ -1,4 +1,5 @@
 ﻿using SQLisHard.Core;
+using SQLisHard.Core.Models;
 using SQLisHard.Domain;
 using SQLisHard.Domain.QueryEngine;
 using System;

@@ -1,6 +1,8 @@
 ﻿using Moq;
 using NUnit.Framework;
 using SQLisHard.Core;
+using SQLisHard.Core.Data;
+using SQLisHard.Core.Models;
 using SQLisHard.Domain.LessonEvaluator;
 using SQLisHard.Domain.QueryEngine;
 using System;
