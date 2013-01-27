@@ -23,5 +23,10 @@ namespace SQLisHard.Controllers
 
 			return View("Index");
 		}
+
+		public ActionResult Exception()
+		{
+			throw new Exception("MVC Exception Message");
+		}
     }
 }

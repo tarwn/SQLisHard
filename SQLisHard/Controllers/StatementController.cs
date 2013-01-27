@@ -37,5 +37,10 @@ namespace SQLisHard.Controllers
 			value.RequestorId = user.UserIdentity.Id;
             return _lessonEvaluator.Evaluate(value);
         }
+
+		public string GetException()
+		{
+			throw new Exception("WebAPI Exception message");
+		}
     }
 }

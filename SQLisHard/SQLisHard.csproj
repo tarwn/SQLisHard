@@ -122,6 +122,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\MVC\CaptureUnhandledExceptionAttribute.cs" />
+    <Compile Include="Attributes\WebAPI\CaptureUnhandledExceptionAttribute.cs" />
     <Compile Include="Attributes\WebAPI\RequiresUserOrGuestAttribute.cs" />
     <Compile Include="Attributes\RequiresUserOrGuestImplementation.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -139,6 +141,7 @@
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-1.7.2.intellisense.js" />
     <Content Include="googlede303fa74336cf96.html" />
+    <Content Include="parameters.xml" />
     <Content Include="Scripts\jquery-1.7.2.js" />
     <Content Include="Scripts\jquery-1.7.2.min.js" />
     <Content Include="Scripts\knockout-2.1.0.debug.js" />
@@ -162,7 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Attributes\MVC\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

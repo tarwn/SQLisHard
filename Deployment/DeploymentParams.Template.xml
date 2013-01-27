@@ -3,4 +3,11 @@
   <setParameter name="IIS Web Application Name" value="{{IIS APP NAME}}" />
   <setParameter name="SampleDatabase-Web.config Connection String" value="Server={{DB SERVER}};Database={{DB SAMPLE}};User Id={{DB SAMPLE READ USERNAME}};Password={{DB SAMPLE READ PASSWORD}}" />
   <setParameter name="CoreDatabase-Web.config Connection String" value="Server={{DB SERVER}};Database={{DB CORE}};User Id={{DB CORE USERNAME}};Password={{DB CORE PASSWORD}}" />
+	<setParameter name="SMTP.FromAddress" value="{{SMTP.FROM}}" />
+	<setParameter name="SMTP.Host" value="{{SMTP.HOST}}" />
+	<setParameter name="SMTP.Port" value="{{SMTP.PORT}}" />
+	<setParameter name="SMTP.UserName" value="{{SMTP.USERNAME}}" />
+	<setParameter name="SMTP.Password" value="{{SMTP.PASSWORD}}" />
+	<setParameter name="SMTP.EnableSsl" value="{{SMTP.ENABLESSL}}" />
+	<setParameter name="Environment.Name" value="{{ENVIRONMENT.NAME}}" />
 </parameters>

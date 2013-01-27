@@ -16,6 +16,9 @@ namespace SQLisHard
 		{
 			AreaRegistration.RegisterAllAreas();
 
+			GlobalConfiguration.Configuration.Filters.Add(new Attributes.WebAPI.CaptureUnhandledExceptionAttribute());
+			GlobalFilters.Filters.Add(new Attributes.MVC.CaptureUnhandledExceptionAttribute());
+
 			WebApiConfig.Register(GlobalConfiguration.Configuration);
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
