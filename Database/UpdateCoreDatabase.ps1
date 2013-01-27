@@ -67,32 +67,32 @@ catch{
 }
 
 #database updates
-$sb = New-Object -TypeName "System.Text.StringBuilder"
+$stream = [System.IO.StreamWriter] "$path\CoreDatabaseUpdatesBatch.sql"
 $fileUpdates = Get-ChildItem "$path\CoreDatabaseUpdates"
 $datestamp = $(get-date -f "yyyy-MM-dd HH:mm")
 
-$sb.AppendLine("/* SQL Core Updates - Updated $datestamp */")
-$sb.AppendLine("BEGIN TRANSACTION")
+$stream.WriteLine("/* SQL Core Updates - Updated $datestamp */")
+$stream.WriteLine("BEGIN TRANSACTION")
 
 foreach($file in $fileUpdates) 
 { 
     $name = ($file.Name)
     $namewe = ([System.IO.Path]::GetFileNameWithoutExtension($name))
 
-    $sb.AppendLine("/* File: $name */")
-    $sb.AppendLine("IF NOT EXISTS (SELECT 1 FROM UpdateTracking WHERE Name = '$namewe')")
-    $sb.AppendLine("BEGIN")
+    $stream.WriteLine("")
+    $stream.WriteLine("/* File: $name */")
+    $stream.WriteLine("IF NOT EXISTS (SELECT 1 FROM UpdateTracking WHERE Name = '$namewe')")
+    $stream.WriteLine("BEGIN")
 
-    $sb.AppendLine("EXEC('")
-    (Get-Content "$path\CoreDatabaseUpdates\$name") | % {$_ -replace "'", "''"} | $sb.AppendLine("$_")
-    $sb.AppendLine("';")
+    $stream.WriteLine("`tEXEC('")
+    (Get-Content "$path\CoreDatabaseUpdates\$name") | % {$_ -replace "'", "''"} | % {$stream.WriteLine("`t`t$_")}
+    $stream.WriteLine("`t');")
 
-    $sb.AppendLine("INSERT INTO UpdateTracking(Name, Applied) SELECT '$namewe', GETUTCDATE();")
-    $sb.AppendLine("END")
+    $stream.WriteLine("`tINSERT INTO UpdateTracking(Name, Applied) SELECT '$namewe', GETUTCDATE();")
+    $stream.WriteLine("END")
 }  
 
-$sb.AppendLine("COMMIT TRANSACTION")
-
-Set-Content -path "$path\CoreDatabaseUpdatesBatch.sql" $sb.ToString()
+$stream.WriteLine("COMMIT TRANSACTION")
+$stream.Close()
 
 Write-Host "Done."
