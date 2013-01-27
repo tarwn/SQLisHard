@@ -67,6 +67,31 @@ namespace SQLisHard.General.tests.ErrorLogging
 		}
 
 		[Test]
+		public void GetServerVariablesHtml_NoValues_ReturnsEmptyString()
+		{
+			var provider = new EmailLogProvider("", "", "");
+
+			var result = provider.GetServerVariablesHtml(new Dictionary<string, string>());
+
+			Assert.AreEqual("", result);
+		}
+
+		[Test]
+		public void GetServerVariablesHtml_HasValues_ReturnsOneRowPerKey()
+		{
+			var provider = new EmailLogProvider("", "", "");
+
+			var result = provider.GetServerVariablesHtml(new Dictionary<string, string>() { 
+				{"a", "1"},
+				{"b", "1"},
+				{"c", "1"}
+			});
+
+			int rowCount = Regex.Matches(result, "<tr>").Count;
+			Assert.AreEqual(3, rowCount);
+		}
+
+		[Test]
 		public void GetExceptionHtml_SingleException_ReturnsMessageContainingException()
 		{
 			string outerExceptionText = "unittest-exc-1";

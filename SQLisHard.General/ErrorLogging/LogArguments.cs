@@ -12,6 +12,7 @@ namespace SQLisHard.General.ErrorLogging
 
 		public string RequestURI { get; set; }
 		public Dictionary<string, IEnumerable<string>> Headers { get; set; }
+		public Dictionary<string, string> ServerVariables { get; set; }
 		public string Username { get; set; }
 		public int UserId { get; set; }
 
@@ -19,6 +20,7 @@ namespace SQLisHard.General.ErrorLogging
 		public LogArguments()
 		{
 			Headers = new Dictionary<string, IEnumerable<string>>();
+			ServerVariables = new Dictionary<string, string>();
 		}
 
 		// MVC
@@ -30,6 +32,10 @@ namespace SQLisHard.General.ErrorLogging
 			{
 				Headers.Add(key, new string[] { request.Headers[key] });
 			}
+			foreach (var key in request.ServerVariables.AllKeys)
+			{
+				ServerVariables.Add(key, request.ServerVariables[key]);
+			}
 		}
 
 		// WebAPI
@@ -38,6 +44,14 @@ namespace SQLisHard.General.ErrorLogging
 		{
 			RequestURI = requestMessage.RequestUri.AbsoluteUri;
 			Headers = requestMessage.Headers.ToDictionary(kvp => kvp.Key, kvp => kvp.Value, new HeaderKeyComparer());
+
+			if (System.Web.HttpContext.Current != null)	// dirty dirty dirty
+			{
+				foreach (var key in System.Web.HttpContext.Current.Request.ServerVariables.AllKeys)
+				{
+					ServerVariables.Add(key, System.Web.HttpContext.Current.Request.ServerVariables[key]);
+				}
+			}
 		}
 	}
 

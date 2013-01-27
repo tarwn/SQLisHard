@@ -41,6 +41,7 @@ namespace SQLisHard.General.ErrorLogging
 		public string BuildMessage(Exception exception, LogArguments logArguments)
 		{
 			string headers = GetHeaderHtml(logArguments.Headers);
+			string serverVariables = GetServerVariablesHtml(logArguments.ServerVariables);
 
 			string exceptionDetails = GetExceptionHtml(exception);
 
@@ -67,13 +68,20 @@ namespace SQLisHard.General.ErrorLogging
 			<table class='headers' cellpadding='0' cellspacing='0'>
 				<tr><td colspan='2' class='faketh'>HTTP Headers</td></tr>
 				{5}
+			</table>
+			<br />
+
+			<table class='headers' cellpadding='0' cellspacing='0'>
+				<tr><td colspan='2' class='faketh'>ServerVariables</td></tr>
+				{6}
 			</table>",
 					 DateTime.UtcNow,
 					 logArguments.RequestURI,
 					 logArguments.UserId,
 					 logArguments.Username,
 					 exceptionDetails,
-					 headers));
+					 headers,
+					 serverVariables));
 
 			return message;
 		}
@@ -113,6 +121,11 @@ namespace SQLisHard.General.ErrorLogging
 		public string GetHeaderHtml(Dictionary<string, IEnumerable<string>> headers)
 		{
 			return String.Join("\n", headers.Select(kvp => String.Format("<tr><th align='right' valign='top'>{0}:</th><td>{1}</td></tr>", kvp.Key, String.Join("<br/>", kvp.Value.Select(v => HttpUtility.HtmlEncode(v))))));
+		}
+
+		public string GetServerVariablesHtml(Dictionary<string, string> values)
+		{
+			return String.Join("\n", values.Select(v => String.Format("<tr><th align='right' valign='top'>{0}:</th><td>{1}</td></tr>", v.Key, v.Value)));
 		}
 	}
 }
