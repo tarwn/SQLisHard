@@ -10,14 +10,13 @@ namespace SQLisHard.Core.Models
 		public int Id { get; set; }
 		public int UserId { get; set; }
 		public string UserAgent { get; set; }
-		public string HostAddress { get; set; }
+		public string RemoteAddress { get; set; }
 
-		public Session(UserId userId, string userAgent, string hostAddress)
+		public Session(UserId userId, string userAgent, string remoteAddress)
 		{
-			// TODO: Complete member initialization
 			UserId = userId.Value;
 			UserAgent = userAgent;
-			HostAddress = hostAddress;
+			RemoteAddress = remoteAddress;
 		}
 	}
 }

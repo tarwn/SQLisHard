@@ -53,7 +53,7 @@ namespace SQLisHard.Core.Tests
 
 			membership.CaptureSession(new UserId(123), "abc 123", "123.456.789.000");
 
-			sessionStore.Verify(ss => ss.CaptureSession(It.Is<Session>(s => s.UserId == 123 && s.UserAgent == "abc 123" && s.HostAddress == "123.456.789.000")));
+			sessionStore.Verify(ss => ss.CaptureSession(It.Is<Session>(s => s.UserId == 123 && s.UserAgent == "abc 123" && s.RemoteAddress == "123.456.789.000")));
 		}
     }
 }
