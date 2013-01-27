@@ -122,7 +122,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\CoreMembership.cs" />
     <Compile Include="Attributes\WebAPI\RequiresUserOrGuestAttribute.cs" />
     <Compile Include="Attributes\RequiresUserOrGuestImplementation.cs" />
     <Compile Include="Controllers\HomeController.cs" />

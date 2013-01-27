@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{578EFD29-8165-4710-9622-72F931E1B23F}</ProjectGuid>
+    <ProjectGuid>{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SQLisHard.Core</RootNamespace>
-    <AssemblyName>SQLisHard.Core</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <RootNamespace>SQLisHard.Core.Tests</RootNamespace>
+    <AssemblyName>SQLisHard.Core.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,8 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,28 +45,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoreMembership.cs" />
-    <Compile Include="Data\HistoryStore.cs" />
-    <Compile Include="Data\IHistoryStore.cs" />
-    <Compile Include="Data\ISessionStore.cs" />
-    <Compile Include="Data\IUserStore.cs" />
-    <Compile Include="Data\SessionStore.cs" />
-    <Compile Include="Models\PetaPoco.cs" />
-    <Compile Include="Models\Session.cs" />
+    <Compile Include="CoreMembershipTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="Interfaces\IUserIdentity.cs" />
-    <Compile Include="UserNotFoundException.cs" />
-    <Compile Include="Data\UserStore.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Roles\" />
+    <ProjectReference Include="..\SQLisHard.Core\SQLisHard.Core.csproj">
+      <Project>{578efd29-8165-4710-9622-72f931e1b23f}</Project>
+      <Name>SQLisHard.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

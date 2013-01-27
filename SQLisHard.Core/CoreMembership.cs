@@ -9,17 +9,21 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 
-namespace SQLisHard.Attributes
+namespace SQLisHard.Core
 {
 	public class CoreMembership
 	{
 		private IUserStore _userStore;
+		private ISessionStore _sessionStore;
 
-		public CoreMembership() : this(new UserStore(ConfigurationManager.ConnectionStrings["CoreDatabase"].ConnectionString)) { }
+		public CoreMembership(string connectionString) : this(
+			new UserStore(connectionString),
+			new SessionStore(connectionString)) { }
 
-		public CoreMembership(IUserStore userStore)
+		public CoreMembership(IUserStore userStore, ISessionStore sessionStore)
 		{
 			_userStore = userStore;
+			_sessionStore = sessionStore;
 		}
 		
 		public UserPrincipal CreateGuest()
@@ -35,6 +39,11 @@ namespace SQLisHard.Attributes
 			var coreUser = _userStore.GetUser(id);
 			return new UserPrincipal(new GuestUser(coreUser));
 		}
+
+		public void CaptureSession(UserId userId, string userAgent, string hostAddress)
+		{
+			_sessionStore.CaptureSession(new Session(userId, userAgent, hostAddress));
+}
 	}
 
 	public class UserPrincipal : IPrincipal

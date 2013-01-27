@@ -35,5 +35,14 @@ namespace SQLisHard.Core.Models
 		{
 			return Value.ToString();
 		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj is UserId)
+			{
+				return this.Value.Equals(((UserId)obj).Value);
+			}
+			return false;
+		}
 	}
 }

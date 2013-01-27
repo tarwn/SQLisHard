@@ -15,6 +15,7 @@ namespace SQLisHard.Attributes.WebAPI
 		public override void OnAuthorization(System.Web.Http.Controllers.HttpActionContext actionContext)
 		{
 			RequiresUserOrGuestImplementation.EnsureUserIsAuthenticatedOrProvidedWithAGuestAccount();
+			
 		}
 	}
 }

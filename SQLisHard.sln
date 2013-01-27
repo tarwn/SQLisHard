@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard.Core", "SQLisHard
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard.General", "SQLisHard.General\SQLisHard.General.csproj", "{08744E6E-A524-49C1-A68B-AC93939D8A39}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard.Core.Tests", "SQLisHard.Core.Tests\SQLisHard.Core.Tests.csproj", "{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,16 @@ Global
 		{08744E6E-A524-49C1-A68B-AC93939D8A39}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{08744E6E-A524-49C1-A68B-AC93939D8A39}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{08744E6E-A524-49C1-A68B-AC93939D8A39}.Release|x86.ActiveCfg = Release|Any CPU
+		{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3040F0EC-0795-48DA-A6ED-D19DD34EF2AD}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
