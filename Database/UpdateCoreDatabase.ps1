@@ -67,7 +67,8 @@ catch{
 }
 
 #database updates
-$stream = [System.IO.StreamWriter] "$path\CoreDatabaseUpdatesBatch.sql"
+$outputPath = "$path\CoreDatabaseUpdatesBatch.sql"
+$stream = [System.IO.StreamWriter] "$outputPath"
 $fileUpdates = Get-ChildItem "$path\CoreDatabaseUpdates"
 $datestamp = $(get-date -f "yyyy-MM-dd HH:mm")
 
@@ -94,5 +95,10 @@ foreach($file in $fileUpdates)
 
 $stream.WriteLine("COMMIT TRANSACTION")
 $stream.Close()
+Write-Host "Update Script Created."
+
+Write-Host "Running updates..."
+
+Invoke-SqlCmd -InputFile "$outputPath" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
 
 Write-Host "Done."
