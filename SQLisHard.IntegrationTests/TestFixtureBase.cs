@@ -31,8 +31,7 @@ namespace SQLisHard.IntegrationTests {
 		[TearDown]
 		public void Test_Teardown() {
 			try {
-				if (TestContext.CurrentContext.Result.Status == TestStatus.Failed
-						&& CurrentDriver is ITakesScreenshot) {
+				if (CurrentDriver is ITakesScreenshot) {
 					((ITakesScreenshot)CurrentDriver).GetScreenshot().SaveAsFile(TestContext.CurrentContext.Test.FullName + ".jpg", ImageFormat.Jpeg);
 				}
 			}
