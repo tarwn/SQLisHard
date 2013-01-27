@@ -47,7 +47,8 @@ namespace SQLisHard.General.ErrorLogging
 
 			var message = (string.Format(@"
 			<style>
-				th{{ background-color: #dddddd; min-width: 80px; padding: 0px 3px;}}
+				th{{ background-color: #dddddd; min-width: 125px; padding: 0px 3px;}}
+				td{{ padding: 0px 3px; border-bottom: 1px solid #eeeeee; }}
 				.faketh{{ background-color: #dddddd; font-weight: bold; text-align: center; }}
 				.headers td{{ max-width: 600px; }}
 			</style>
