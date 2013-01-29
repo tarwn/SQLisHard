@@ -16,7 +16,9 @@ Param(
     $AdminUserName,
     [parameter(Mandatory=$true)]
     [alias("ap")]
-    $AdminPassword)
+    $AdminPassword,
+    [parameter()]
+    $CreateOptions)
 
 try{    
     if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null ){
@@ -42,7 +44,7 @@ try{
         Write-Host "Deleted existing database."
     }
 
-    Invoke-Sqlcmd -Query "CREATE DATABASE $database; ALTER DATABASE $database SET RECOVERY SIMPLE;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+    Invoke-Sqlcmd -Query "CREATE DATABASE $database $CreateOptions;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
     Write-Host "Created."
 }
 catch{
