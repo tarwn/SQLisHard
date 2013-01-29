@@ -44,6 +44,7 @@ try{
         Write-Host "Deleted existing database."
     }
 
+    Write-Host "Creating database...";
     Invoke-Sqlcmd -Query "CREATE DATABASE $database $CreateOptions;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
     Write-Host "Created."
 }
