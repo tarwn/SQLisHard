@@ -6,14 +6,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SQLisHard.Domain.LessonEvaluator
+namespace SQLisHard.Domain.ExerciseEvaluator
 {
-    public class LessonResultEvaluator : ILessonResultEvaluator
+    public class ExerciseResultEvaluator : IExerciseResultEvaluator
     {
         private IQueryEngine _queryEngine;
 		private IHistoryStore _historyStore;
 
-        public LessonResultEvaluator(IQueryEngine queryEngine, IHistoryStore historyStore)
+        public ExerciseResultEvaluator(IQueryEngine queryEngine, IHistoryStore historyStore)
         {
             _queryEngine = queryEngine;
 			_historyStore = historyStore;
@@ -24,11 +24,11 @@ namespace SQLisHard.Domain.LessonEvaluator
             var queryResult = _queryEngine.ExecuteQuery(statement);
 			var evaluationResult = new StatementResult(queryResult)
             {
-                CompletesLesson = EvaluateResultSet(statement, queryResult),
-                LessonId = statement.LessonId
+                CompletesExercise = EvaluateResultSet(statement, queryResult),
+                ExerciseId = statement.ExerciseId
             };
 
-			_historyStore.AddToHistory(statement.RequestorId, statement.Content, (int) evaluationResult.ExecutionStatus, evaluationResult.CompletesLesson);
+			_historyStore.AddToHistory(statement.RequestorId, statement.Content, (int) evaluationResult.ExecutionStatus, evaluationResult.CompletesExercise);
 
 			return evaluationResult;
         }

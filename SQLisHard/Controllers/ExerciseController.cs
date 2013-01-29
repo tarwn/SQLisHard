@@ -6,10 +6,8 @@ using System.Web.Mvc;
 
 namespace SQLisHard.Controllers
 {
-    public class LessonController : Controller
+    public class ExerciseController : Controller
     {
-        //
-        // GET: /Lesson/
 
         public ActionResult Index()
         {

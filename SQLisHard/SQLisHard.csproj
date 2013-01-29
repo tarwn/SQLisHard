@@ -127,7 +127,7 @@
     <Compile Include="Attributes\WebAPI\RequiresUserOrGuestAttribute.cs" />
     <Compile Include="Attributes\RequiresUserOrGuestImplementation.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LessonController.cs" />
+    <Compile Include="Controllers\ExerciseController.cs" />
     <Compile Include="Controllers\StatementController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -171,7 +171,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Lesson\Index.cshtml" />
+    <Content Include="Views\Exercise\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SQLisHard.Core\SQLisHard.Core.csproj">

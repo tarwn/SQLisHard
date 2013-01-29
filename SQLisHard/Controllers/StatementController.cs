@@ -4,7 +4,7 @@ using SQLisHard.Core;
 using SQLisHard.Core.Data;
 using SQLisHard.Core.Models;
 using SQLisHard.Domain;
-using SQLisHard.Domain.LessonEvaluator;
+using SQLisHard.Domain.ExerciseEvaluator;
 using SQLisHard.Domain.QueryEngine.DatabaseExecution;
 using System;
 using System.Collections.Generic;
@@ -19,15 +19,15 @@ namespace SQLisHard.Controllers
 {
     public class StatementController : ApiController
     {
-        private ILessonResultEvaluator _lessonEvaluator;
+        private IExerciseResultEvaluator _exerciseEvaluator;
 
         public StatementController() : this(
-			new LessonResultEvaluator(
+			new ExerciseResultEvaluator(
 				new QueryEngine(ConfigurationManager.ConnectionStrings["SampleDatabase"].ConnectionString), 
 				new HistoryStore(ConfigurationManager.ConnectionStrings["CoreDatabase"].ConnectionString))) { }
-        public StatementController(ILessonResultEvaluator evaluator)
+        public StatementController(IExerciseResultEvaluator evaluator)
         {
-            _lessonEvaluator = evaluator;
+			_exerciseEvaluator = evaluator;
         }
 
 		[RequiresUserOrGuest]
@@ -35,7 +35,7 @@ namespace SQLisHard.Controllers
         {
 			var user = (UserPrincipal)HttpContext.Current.User;
 			value.RequestorId = user.UserIdentity.Id;
-            return _lessonEvaluator.Evaluate(value);
+			return _exerciseEvaluator.Evaluate(value);
         }
 
 		public string GetException()

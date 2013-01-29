@@ -7,11 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SQLisHard.Domain.LessonEvaluator
+namespace SQLisHard.Domain.ExerciseEvaluator
 {
 	public class Statement : Query
 	{
 		public UserId RequestorId { get; set; }
-		public string LessonId { get; set; }
+		public string ExerciseId { get; set; }
     }
 }

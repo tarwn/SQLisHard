@@ -5,13 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace SQLisHard.Domain.LessonEvaluator
+namespace SQLisHard.Domain.ExerciseEvaluator
 {
 	public class StatementResult : QueryResult
 	{
         public StatementResult(QueryResult queryResult) : base(queryResult) {}
 
-		public string LessonId { get; set; }
-		public bool CompletesLesson { get; set; }
+		public string ExerciseId { get; set; }
+		public bool CompletesExercise { get; set; }
 	}
 }

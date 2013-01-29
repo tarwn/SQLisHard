@@ -44,15 +44,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="QueryEngine\IQueryEngine.cs" />
-    <Compile Include="LessonEvaluator\ILessonResultEvaluator.cs" />
-    <Compile Include="LessonEvaluator\LessonResultEvaluator.cs" />
+    <Compile Include="ExerciseEvaluator\IExerciseResultEvaluator.cs" />
+    <Compile Include="ExerciseEvaluator\ExerciseResultEvaluator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryEngine\Query.cs" />
     <Compile Include="QueryEngine\DatabaseExecution\QueryEngine.cs" />
     <Compile Include="QueryEngine\QueryExecutionStatus.cs" />
     <Compile Include="QueryEngine\QueryResult.cs" />
-    <Compile Include="LessonEvaluator\Statement.cs" />
-    <Compile Include="LessonEvaluator\StatementResult.cs" />
+    <Compile Include="ExerciseEvaluator\Statement.cs" />
+    <Compile Include="ExerciseEvaluator\StatementResult.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

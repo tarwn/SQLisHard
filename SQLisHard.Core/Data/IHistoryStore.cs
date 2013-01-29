@@ -9,6 +9,6 @@ namespace SQLisHard.Core.Data
 {
 	public interface IHistoryStore
 	{
-		void AddToHistory(UserId userId, string sqlStatement, int evaluationResult, bool completesLesson);
+		void AddToHistory(UserId userId, string sqlStatement, int evaluationResult, bool completesExercise);
 	}
 }

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SQLisHard.Domain.LessonEvaluator
+namespace SQLisHard.Domain.ExerciseEvaluator
 {
-    public interface ILessonResultEvaluator
+    public interface IExerciseResultEvaluator
     {
         StatementResult Evaluate(Statement statement);
     }

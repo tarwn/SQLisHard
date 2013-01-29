@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Lesson";
+    ViewBag.Title = "Exercise";
     string indexURL = @Url.Action("Statement", "api");
 }
 
@@ -15,8 +15,8 @@ Select a single row from the clients table.
 
 <div id="QueryResults" data-bind="with: queryResults">
     <div>
-        <label>LessonId:</label><span data-bind="text: lessonId"></span><br />
-        <label>Success?</label><span data-bind="text: completesLesson"></span><br />
+        <label>ExerciseId:</label><span data-bind="text: exerciseId"></span><br />
+        <label>Success?</label><span data-bind="text: completesExercise"></span><br />
         <label>Query:</label><span data-bind="text: queryContent"></span>
         <div data-bind="if: isError" id="QueryError">
             An Error Has Occurred<br />
@@ -49,14 +49,14 @@ Select a single row from the clients table.
 
 <script type="text/javascript">
     function Statement() {
-        this.lessonId = ko.observable(1);
+        this.exerciseId = ko.observable(1);
         this.content = ko.observable("");
         this.limitResults = true;
     }
 
     function StatementResult(data) {
-        this.lessonId = ko.observable(data.LessonId || "");
-        this.completesLesson = ko.observable(data.CompletesLesson || false);
+        this.exerciseId = ko.observable(data.ExerciseId || "");
+        this.completesExercise = ko.observable(data.CompletesExercise || false);
         this.queryContent = ko.observable(data.Content || "");
         this.data = {
             headers: ko.observableArray(data.Data.Headers || []),

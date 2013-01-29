@@ -10,34 +10,46 @@ using OpenQA.Selenium;
 using System.Drawing.Imaging;
 using SQLisHard.IntegrationTests.Configs;
 
-namespace SQLisHard.IntegrationTests {
-	public class TestFixtureBase {
+namespace SQLisHard.IntegrationTests
+{
+	public class TestFixtureBase
+	{
 		protected RemoteWebDriver CurrentDriver { get; set; }
 
 		[SetUp]
-		public void Test_Setup() {
+		public void Test_Setup()
+		{
 			FirefoxBinary fb;
-			if (!String.IsNullOrWhiteSpace(Settings.CurrentSettings.FirefoxBinaryPath)) {
+			if (!String.IsNullOrWhiteSpace(Settings.CurrentSettings.FirefoxBinaryPath))
+			{
 				fb = new FirefoxBinary(Settings.CurrentSettings.FirefoxBinaryPath);
 			}
-			else {
+			else
+			{
 				fb = new FirefoxBinary();
 			}
 			CurrentDriver = new FirefoxDriver(fb, new FirefoxProfile());
 		}
 
-		
+
 
 		[TearDown]
-		public void Test_Teardown() {
-			try {
-				if (CurrentDriver is ITakesScreenshot) {
+		public void Test_Teardown()
+		{
+			try
+			{
+				if (CurrentDriver is ITakesScreenshot && TestContext.CurrentContext.Result.Status == TestStatus.Failed)
+				{
 					((ITakesScreenshot)CurrentDriver).GetScreenshot().SaveAsFile(TestContext.CurrentContext.Test.FullName + ".jpg", ImageFormat.Jpeg);
 				}
 			}
-			catch { }	// null ref exception occurs from accessing TestContext.CurrentContext.Result.Status property
+			catch (Exception exc)
+			{
+				Console.WriteLine("Exception capturing screenshot: " + exc.Message);
+			}	// null ref exception occurs from accessing TestContext.CurrentContext.Result.Status property
 
-			try {
+			try
+			{
 				CurrentDriver.Quit();
 			}
 			catch { }

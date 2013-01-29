@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 {
-	public class LessonPage : PageBase
+	public class ExercisePage : PageBase
 	{
-		public override string DefaultTitle { get { return "SQL Is Hard - Lesson"; } }
+		public override string DefaultTitle { get { return "SQL Is Hard - Exercise"; } }
 
-		public override string PageUrl { get { return "/Lesson"; } }
+		public override string PageUrl { get { return "/Exercise"; } }
 
 		[FindsBy(How = How.Id, Using = "QueryEditor")]
 		public IWebElement QueryEditorInput { get; set; }
