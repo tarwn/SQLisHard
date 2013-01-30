@@ -1,4 +1,4 @@
--- http://sqlblog.com/blogs/adam_machanic/archive/2006/07/12/you-require-a-numbers-table.aspx
+-- http://blogs.msdn.com/b/sqlazure/archive/2010/09/16/10063301.aspx
 CREATE TABLE Numbers
 (
 	Number INT NOT NULL,
@@ -6,21 +6,15 @@ CREATE TABLE Numbers
 		PRIMARY KEY CLUSTERED (Number)
 )
 
-INSERT INTO Numbers
-SELECT
-	(a.Number * 256) + b.Number AS Number
-FROM 
-	(
-		SELECT number
-		FROM master..spt_values
-		WHERE 
-			type = 'P'
-			AND number <= 255
-	) a (Number),
-	(
-		SELECT number
-		FROM master..spt_values
-		WHERE 
-			type = 'P'
-			AND number <= 255
-	) b (Number);
+DECLARE @numbers table(number int);
+WITH numbers(number) as
+(
+ SELECT 1 AS number
+ UNION all
+ SELECT number+1 FROM numbers WHERE number<10000
+)
+INSERT INTO @numbers(number)
+SELECT number FROM numbers OPTION(maxrecursion 10000)
+
+INSERT INTO Numbers(Number)
+SELECT number FROM @numbers
