@@ -38,15 +38,17 @@ try{
     Write-Host "Checking if database exists...";
     $result = Invoke-Sqlcmd -Query "SELECT [name] FROM [sys].[databases] WHERE [name] = N'$database'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
     if($result.name){
-        Write-Host "Deleting existing version of database";
-        Invoke-Sqlcmd -Query "ALTER DATABASE $database SET READ_ONLY" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-        Invoke-Sqlcmd -Query "DROP DATABASE $database" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-        Write-Host "Deleted existing database."
+        #Write-Host "Deleting existing version of database";
+        #Invoke-Sqlcmd -Query "ALTER DATABASE $database SET READ_ONLY WITH ROLLBACK IMMEDIATE" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+        #Invoke-Sqlcmd -Query "DROP DATABASE $database" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+        #Write-Host "Deleted existing database."
+        Write-Host "Database already exists."
     }
-
-    Write-Host "Creating database: 'CREATE DATABASE $database $CreateOptions'";
-    Invoke-Sqlcmd -Query "CREATE DATABASE $database $CreateOptions" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-    Write-Host "Created."
+    else{
+        Write-Host "Creating database: 'CREATE DATABASE $database $CreateOptions'";
+        Invoke-Sqlcmd -Query "CREATE DATABASE $database $CreateOptions" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+        Write-Host "Created."
+    }
 }
 catch{
     Write-Error "Powershell Script error: $_" -EA Stop
@@ -83,6 +85,7 @@ catch{
 #numbers table
 try{
     Write-Host "Creating Table: dbo.Numbers"
+    Invoke-Sqlcmd -Query "IF EXISTS(SELECT 1 FROM sys.tables WHERE name = 'Numbers') DROP TABLE dbo.Numbers" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
     Invoke-Sqlcmd -InputFile "$path\Data\numbers.sql" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
     Invoke-Sqlcmd -Query "SELECT COUNT(*) FROM dbo.Numbers;" -ServerInstance "$Server" -Username "$NewUserName" -Password "$NewPassword" -Database "$Database" -ErrorAction Stop
     Write-Host "Created."
@@ -104,6 +107,7 @@ try{
                     | % {$_ -replace "{{LASTNAMES}}", $lastnames} `
                     | Set-Content -path "$path\Data\BulkImportNamesRunnable.sql"
 
+    Invoke-Sqlcmd -Query "IF EXISTS(SELECT 1 FROM sys.tables WHERE name = 'Clients') DROP TABLE dbo.Clients" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
     invoke-sqlcmd -inputfile "$path\Data\BulkImportNamesRunnable.sql" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -QueryTimeout 120  -ErrorAction Stop
     Invoke-Sqlcmd -Query "SELECT COUNT(*) FROM dbo.Clients;"  -ServerInstance "$Server" -Username "$NewUserName" -Password "$NewPassword" -Database "$Database" -ErrorAction Stop
     DEL "$path\Data\BulkImportNamesRunnable.sql"
