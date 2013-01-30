@@ -39,13 +39,13 @@ try{
     $result = Invoke-Sqlcmd -Query "SELECT [name] FROM [sys].[databases] WHERE [name] = N'$database'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
     if($result.name){
         Write-Host "Deleting existing version of database";
-        Invoke-Sqlcmd -Query "ALTER DATABASE $database SET READ_ONLY WITH ROLLBACK IMMEDIATE;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-        Invoke-Sqlcmd -Query "DROP DATABASE $database;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+        Invoke-Sqlcmd -Query "ALTER DATABASE $database SET READ_ONLY WITH ROLLBACK IMMEDIATE" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+        Invoke-Sqlcmd -Query "DROP DATABASE $database" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
         Write-Host "Deleted existing database."
     }
 
-    Write-Host "Creating database: 'CREATE DATABASE $database $CreateOptions;'";
-    Invoke-Sqlcmd -Query "CREATE DATABASE $database $CreateOptions;" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+    Write-Host "Creating database: 'CREATE DATABASE $database $CreateOptions'";
+    Invoke-Sqlcmd -Query "CREATE DATABASE $database $CreateOptions" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
     Write-Host "Created."
 }
 catch{
@@ -54,10 +54,29 @@ catch{
 
 #user
 try{
-    Write-Host "Creating User: $readuser"
-    Invoke-Sqlcmd -Query "IF NOT EXISTS (SELECT 1 FROM master.dbo.syslogins WHERE name = '$NewUserName') CREATE LOGIN $NewUserName WITH PASSWORD = '$NewPassword';" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-    Invoke-Sqlcmd -Query "EXEC sp_defaultdb @loginame='$NewUserName', @defdb='$Database'; CREATE USER $NewUserName FOR LOGIN $NewUserName WITH DEFAULT_SCHEMA = dbo; EXEC sp_addrolemember 'db_datareader','$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
-    Write-Host "Created."
+    Write-Host "Creating User: $NewUserName"
+    $result = Invoke-Sqlcmd -Query "SELECT [name] FROM master.dbo.syslogins WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+    if($result.name){
+        Write-Host "Login already exists"
+    }
+    else{
+        Write-Host "Creating login..."
+        Invoke-Sqlcmd -Query "CREATE LOGIN $NewUserName WITH PASSWORD = '$NewPassword'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+        Write-Host "Login Created."
+    }
+
+    $result = Invoke-Sqlcmd -Query "SELECT [name] FROM sys.sysusers WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+    if($result.name){
+        Write-Host "User already exists"
+    }
+    else{
+        Write-Host "Creating user..."
+        Invoke-Sqlcmd -Query "CREATE USER $NewUserName FOR LOGIN $NewUserName WITH DEFAULT_SCHEMA = dbo" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+        Invoke-Sqlcmd -Query "EXEC sp_addrolemember 'db_datareader','$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+        Write-Host "User Created."
+    }
+
+    Invoke-Sqlcmd -Query "EXEC sp_defaultdb @loginame='$NewUserName', @defdb='$Database'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
 }
 catch{
     Write-Error "Powershell Script error: $_" -EA Stop
