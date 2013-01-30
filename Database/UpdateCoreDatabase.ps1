@@ -103,6 +103,7 @@ foreach($file in $fileUpdates)
     $stream.WriteLine("IF NOT EXISTS (SELECT 1 FROM UpdateTracking WHERE Name = '$namewe')")
     $stream.WriteLine("BEGIN")
 
+    $stream.WriteLine("`tPrint 'Applying Update: $namewe'")
     $stream.WriteLine("`tEXEC('")
     (Get-Content "$path\CoreDatabaseUpdates\$name") | % {$_ -replace "'", "''"} | % {$stream.WriteLine("`t`t$_")}
     $stream.WriteLine("`t');")
@@ -117,6 +118,6 @@ Write-Host "Update Script Created."
 
 Write-Host "Running updates..."
 
-Invoke-SqlCmd -InputFile "$outputPath" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+Invoke-SqlCmd -InputFile "$outputPath" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -Verbose -ErrorAction Stop
 
 Write-Host "Done."
