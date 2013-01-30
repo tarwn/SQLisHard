@@ -55,7 +55,7 @@ catch{
 #user
 try{
     Write-Host "Creating User: $NewUserName"
-    $result = Invoke-Sqlcmd -Query "SELECT [name] FROM master.dbo.syslogins WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+    $result = Invoke-Sqlcmd -Query "SELECT [name] FROM sys.sql_logins WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
     if($result.name){
         Write-Host "Login already exists"
     }
