@@ -14,7 +14,7 @@ Select a single row from the clients table.
 <span data-bind="text: runStatus"></span>
 
 <div id="QueryResults" data-bind="with: queryResults">
-    <div>
+    <div data-bind="style: { opacity: $root.runStatus() == 'running' ? .25 : 1 }">
         <label>ExerciseId:</label><span data-bind="text: exerciseId"></span><br />
         <label>Success?</label><span data-bind="text: completesExercise"></span><br />
         <label>Query:</label><span data-bind="text: queryContent"></span>
