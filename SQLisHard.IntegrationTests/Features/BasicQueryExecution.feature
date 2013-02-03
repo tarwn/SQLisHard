@@ -18,6 +18,25 @@ Scenario: Execute query with syntax error
 	Then the query reports an error
 
 @UI
+Scenario: Status is set prior to running the query
+	Given I am on the Exercise Page
+	Then the query status displays "Ready"
+
+@UI
+Scenario: Execute basic successful query and see status update
+	Given I am on the Exercise Page
+	And I have entered a query of "SELECT TOP 10 * FROM dbo.Clients"
+	When I Press Execute
+	Then the query status displays "Ready"
+
+@UI
+Scenario: Execute query with syntax error and see status update
+	Given I am on the Exercise Page
+	And I have entered a query of "Not a real query"
+	When I Press Execute
+	Then the query status displays "Completed with error"
+
+@UI
 Scenario: Execute query with more than 100 results
 	Given I am on the Exercise Page
 	And I have entered a query of "SELECT TOP 101 * FROM dbo.Clients"

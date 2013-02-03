@@ -61,5 +61,11 @@ namespace SQLisHard.IntegrationTests.Steps
 			CurrentPage.As<ExercisePage>().MoreResultsLink.Click();
 		}
 
+		[Then(@"the query status displays ""(.*)""")]
+		public void ThenTheQueryStatusDisplays(string expectedStatus)
+		{
+			CurrentPage.As<ExercisePage>().AssertStatusDisplays(expectedStatus);
+		}
+
     }
 }

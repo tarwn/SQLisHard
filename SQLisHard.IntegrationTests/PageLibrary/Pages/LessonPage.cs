@@ -15,34 +15,37 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 
 		public override string PageUrl { get { return "/Exercise"; } }
 
-		[FindsBy(How = How.Id, Using = "QueryEditor")]
-		public IWebElement QueryEditorInput { get; set; }
+		[FindsBy(How = How.Id, Using = "queryInput")]
+		public IWebElement QueryInput { get; set; }
 
-		[FindsBy(How = How.Id, Using = "QueryExecutionButton")]
+		[FindsBy(How = How.Id, Using = "queryExecutionButton")]
 		public IWebElement QueryExecutionButton { get; set; }
 
-		[FindsBy(How = How.Id, Using = "QueryError")]
-		public IWebElement QueryErrorArea { get; set; }
+		[FindsBy(How = How.Id, Using = "queryError")]
+		public IWebElement QueryError { get; set; }
 
-		[FindsBy(How = How.Id, Using = "QueryResults")]
-		public IWebElement QueryResultsArea { get; set; }
+		[FindsBy(How = How.Id, Using = "queryResults")]
+		public IWebElement QueryResults { get; set; }
 
-		[FindsBy(How = How.Id, Using = "DataTable")]
+		[FindsBy(How = How.CssSelector, Using = "#queryStatus")]
+		public IWebElement QueryStatus { get; set; }
+
+		[FindsBy(How = How.Id, Using = "dataTable")]
 		public IWebElement DataTable { get; set; }
 
-		[FindsBy(How = How.Id, Using = "MoreResultsLink")]
+		[FindsBy(How = How.Id, Using = "moreResultsLink")]
 		public IWebElement MoreResultsLink { get; set; }
 
-		[FindsBy(How = How.Id, Using = "MoreResultsLinkTotalCount")]
+		[FindsBy(How = How.Id, Using = "moreResultsLinkTotalCount")]
 		public IWebElement MoreResultsLinkTotalCount { get; set; }
 
-		public By ByResultRows { get { return By.CssSelector("#QueryResults tbody tr"); } }
+		public By ByResultRows { get { return By.CssSelector("#queryResults tbody tr"); } }
 
 		public bool ResultsAreAvailableAndSuccessful
 		{
 			get
 			{
-				return QueryResultsArea.IsPresent() && DataTable.IsPresent();
+				return QueryResults.IsPresent() && DataTable.IsPresent();
 			}
 		}
 
@@ -50,7 +53,7 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 		{
 			get
 			{
-				return QueryErrorArea.IsPresent();
+				return QueryError.IsPresent();
 			}
 		}
 
@@ -64,7 +67,7 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 
 		public void EnterQuery(string queryText)
 		{
-			QueryEditorInput.ClearAndType(queryText);
+			QueryInput.ClearAndType(queryText);
 		}
 		
 		public void AssertMoreResultsLinkReportsTotalOf(int expectedResultCount)
@@ -82,6 +85,11 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 		public void AssertMoreResultsLinkReportsTotalGreaterThan(int expectedResultCount)
 		{
 			Assert(() => int.Parse(MoreResultsLinkTotalCount.Text) > expectedResultCount, "Total count in the More Results link");
+		}
+
+		public void AssertStatusDisplays(string expectedStatus)
+		{
+			Assert(() => QueryStatus.Text.Trim().Equals(expectedStatus, StringComparison.InvariantCultureIgnoreCase), String.Format("Query status did not match expected value. Expected: '{0}', Actual: '{1}'", expectedStatus, QueryStatus.Text.Trim()));
 		}
 	}
 }

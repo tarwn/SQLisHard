@@ -107,23 +107,82 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Execute query with more than 100 results")]
+        [NUnit.Framework.DescriptionAttribute("Status is set prior to running the query")]
         [NUnit.Framework.CategoryAttribute("UI")]
-        public virtual void ExecuteQueryWithMoreThan100Results()
+        public virtual void StatusIsSetPriorToRunningTheQuery()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute query with more than 100 results", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Status is set prior to running the query", new string[] {
                         "UI"});
 #line 21
 this.ScenarioSetup(scenarioInfo);
 #line 22
  testRunner.Given("I am on the Exercise Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 23
- testRunner.And("I have entered a query of \"SELECT TOP 101 * FROM dbo.Clients\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
- testRunner.When("I Press Execute", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 25
- testRunner.Then("100 query results are displayed with a link to read more", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the query status displays \"Ready\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Execute basic successful query and see status update")]
+        [NUnit.Framework.CategoryAttribute("UI")]
+        public virtual void ExecuteBasicSuccessfulQueryAndSeeStatusUpdate()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute basic successful query and see status update", new string[] {
+                        "UI"});
 #line 26
+this.ScenarioSetup(scenarioInfo);
+#line 27
+ testRunner.Given("I am on the Exercise Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 28
+ testRunner.And("I have entered a query of \"SELECT TOP 10 * FROM dbo.Clients\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 29
+ testRunner.When("I Press Execute", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 30
+ testRunner.Then("the query status displays \"Ready\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Execute query with syntax error and see status update")]
+        [NUnit.Framework.CategoryAttribute("UI")]
+        public virtual void ExecuteQueryWithSyntaxErrorAndSeeStatusUpdate()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute query with syntax error and see status update", new string[] {
+                        "UI"});
+#line 33
+this.ScenarioSetup(scenarioInfo);
+#line 34
+ testRunner.Given("I am on the Exercise Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 35
+ testRunner.And("I have entered a query of \"Not a real query\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 36
+ testRunner.When("I Press Execute", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 37
+ testRunner.Then("the query status displays \"Completed with error\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Execute query with more than 100 results")]
+        [NUnit.Framework.CategoryAttribute("UI")]
+        public virtual void ExecuteQueryWithMoreThan100Results()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Execute query with more than 100 results", new string[] {
+                        "UI"});
+#line 40
+this.ScenarioSetup(scenarioInfo);
+#line 41
+ testRunner.Given("I am on the Exercise Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 42
+ testRunner.And("I have entered a query of \"SELECT TOP 101 * FROM dbo.Clients\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 43
+ testRunner.When("I Press Execute", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 44
+ testRunner.Then("100 query results are displayed with a link to read more", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 45
  testRunner.And("100 result rows are displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
@@ -136,19 +195,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Get rest of results when query has more than 100", new string[] {
                         "UI"});
-#line 29
+#line 48
 this.ScenarioSetup(scenarioInfo);
-#line 30
+#line 49
  testRunner.Given("I am on the Exercise Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line 31
+#line 50
  testRunner.And("I have entered a query of \"SELECT TOP 101 * FROM dbo.Clients\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 32
+#line 51
  testRunner.And("I Press Execute", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 33
+#line 52
  testRunner.And("100 query results are displayed with a link to read more", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 34
+#line 53
  testRunner.When("I click the read more link", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 35
+#line 54
  testRunner.Then("101 result rows are displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
