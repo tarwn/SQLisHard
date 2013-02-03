@@ -55,6 +55,13 @@ namespace SQLisHard.IntegrationTests.Steps
 			CurrentPage.As<ExercisePage>().AssertNumberOfResultsRowsIs(expectedResultCount);
 		}
 
+		[Then(@"(.*) result rows are displayed without the read more link")]
+		public void ThenResultRowsAreDisplayedWithoutTheReadMoreLink(int expectedResultCount)
+		{
+			CurrentPage.As<ExercisePage>().WaitUpTo(5000, () => !CurrentPage.As<ExercisePage>().MoreResultsLinkIsPresent, "More results link to disappear");
+			ThenResultRowsAreDisplayed(expectedResultCount);
+		}
+
 		[When(@"I click the read more link")]
 		public void WhenIClickTheReadMoreLink()
 		{

@@ -51,5 +51,5 @@ Scenario: Get rest of results when query has more than 100
 	And I Press Execute
 	And 100 query results are displayed with a link to read more
 	When I click the read more link
-	Then 101 result rows are displayed
+	Then 101 result rows are displayed without the read more link
 

@@ -208,7 +208,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 53
  testRunner.When("I click the read more link", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 54
- testRunner.Then("101 result rows are displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("101 result rows are displayed without the read more link", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
