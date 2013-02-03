@@ -2,25 +2,38 @@
     ViewBag.Title = "Exercise";
     string indexURL = @Url.Action("Statement", "api");
 }
-<h1>SQL is Hard</h1>
-<div id="exerciseList">
-    <ul>
-        <li class="selected">S1.0 - Select</li>
-        <li>S1.1 - Select Columns</li>
-        <li>S1.2 - Column Aliases</li>
-        <li>S2.0 - Where</li>
-        <li>S2.1 - And</li>
-        <li>S2.2 - Or</li>
-        <li>S2.3 - Combining And/Or</li>
-        <li>S3.0 - Order</li>
-        <li>S3.1 - More Order</li>
-        <li>S4.0 - Inner Join</li>
-        <li>S4.1 - Multiple Inner Joins</li>
-        <li>S5.0 - Left Outer Join</li>
-        <li>S6.0 - Cross Join</li>
-        <li>S7.0 - Group By</li>
-        <li>S8.0 - Having</li>
-    </ul>
+<div id="left">
+    <h1>SQL is Hard</h1>
+    
+    <div id="summary">
+    <p>SQL is not as hard as it looks, but learning it can be daunting. There are a ton of great books and recorded presentations, but 
+        sometimes it's easiest to just dive in and get our hands dirty.</p>
+    </div>
+
+    <div id="exerciseList">
+        <h2>SELECT Exercises</h2>
+
+        <p>Whether you're just getting started or trying to brush up on existing skills, this is a great spot to start.</p>
+
+        <ul>
+            <li class="completed">Getting Started</li>
+            <li class="selected">S1.0 - Select</li>
+            <li>S1.1 - Select Columns</li>
+            <li>S1.2 - Column Aliases</li>
+            <li>S2.0 - Where</li>
+            <li>S2.1 - And</li>
+            <li>S2.2 - Or</li>
+            <li>S2.3 - Combining And/Or</li>
+            <li>S3.0 - Order</li>
+            <li>S3.1 - More Order</li>
+            <li>S4.0 - Inner Join</li>
+            <li>S4.1 - Multiple Inner Joins</li>
+            <li>S5.0 - Left Outer Join</li>
+            <li>S6.0 - Cross Join</li>
+            <li>S7.0 - Group By</li>
+            <li>S8.0 - Having</li>
+        </ul>
+    </div>
 </div>
 <div id="main">
     <div id="exerciseDescription">
@@ -34,7 +47,7 @@
     <div id="editor">
         <div id="queryInputArea">
             <div id="commandBar">
-                <input id="queryExecutionButton" type="button" value="Execute" data-bind="click: runQuery" />
+                <input id="queryExecutionButton" type="button" value="Execute" data-bind="click: runQuery, disable: isRunning" />
             </div>
             <textarea id="queryInput" cols="80" rows="8" data-bind="value: userQuery.content"></textarea>
         </div>
@@ -153,6 +166,7 @@
         isRunning: ko.observable(false),
         runQuery: function () {
             self = this;
+            self.queryResults(null);
             self.userQuery.limitResults = true;
             self.isRunning(true);
             $.ajax("@indexURL", {
@@ -174,6 +188,7 @@
         },
         runQueryFull: function () {
             self = this;
+            self.queryResults(null);
             this.userQuery.limitResults = false;
             self.isRunning(true);
             $.ajax("@indexURL", {
@@ -200,13 +215,55 @@
     ko.applyBindings(viewModel);
 </script>
 <style>
-    #exerciseList {
+    #left {
+        width: 400px;
         float: left;
-        width: 300px;
     }
+
+    h1 {
+        margin: .5em 1em 1em 1em;
+        text-align: center;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, .35);
+    }
+
+    #summary {
+        margin: .5em 1em 1em 1em;
+        border-bottom: 1px solid #990000;
+        border-top: 1px solid #990000;
+    }
+
+    #left p {
+        line-height: 125%;
+    }
+
+    #exerciseList {
+        margin: 1em;
+    }
+
+    #exerciseList h2 {
+        text-align: center;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, .35);
+    }
+
+    #exerciseList ul{
+        text-align: left;
+        list-style: circle;
+        list-style-position: inside;
+        padding: 0px;
+    }
+
+    #exerciseList ul li.completed{
+        color: #888888;
+    }
+
+    #exerciseList ul li.selected{
+        background-color: aliceblue;
+    }
+
     #main {
-        margin-left: 300px;
-        max-width: 900px;
+        margin-left: 410px;
+        margin-top: 20px;
+        max-width: 800px;
     }
     #exerciseDescription {
         background-color: #eeeeee;
