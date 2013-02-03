@@ -41,6 +41,14 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 
 		public By ByResultRows { get { return By.CssSelector("#queryResults tbody tr"); } }
 
+		public bool IsNotExecuting
+		{
+			get
+			{
+				return QueryExecutionButton.Enabled;
+			}
+		}
+
 		public bool ResultsAreAvailableAndSuccessful
 		{
 			get
@@ -69,13 +77,13 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 		{
 			QueryInput.ClearAndType(queryText);
 		}
-		
+
 		public void AssertMoreResultsLinkReportsTotalOf(int expectedResultCount)
 		{
 			AssertElementText(MoreResultsLinkTotalCount, expectedResultCount.ToString(), "Total count in the More Results link");
 		}
 
-		
+
 
 		public void AssertNumberOfResultsRowsIs(int expectedResultCount)
 		{

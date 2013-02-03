@@ -71,6 +71,7 @@ namespace SQLisHard.IntegrationTests.Steps
 		[Then(@"the query status displays ""(.*)""")]
 		public void ThenTheQueryStatusDisplays(string expectedStatus)
 		{
+			CurrentPage.As<ExercisePage>().WaitUpTo(5000, () => CurrentPage.As<ExercisePage>().IsNotExecuting, "Page to stop executing");
 			CurrentPage.As<ExercisePage>().AssertStatusDisplays(expectedStatus);
 		}
 

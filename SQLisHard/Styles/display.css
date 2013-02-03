@@ -41,17 +41,16 @@ h1, h2, h2 {
 	bottom: 0px;
 	padding: .5em 0;
 	font-size: 90%;
-	text-align: center;
-	width: 100%;
+	text-align: left;
+	width: 400px;
 }
 
 .footer .text {
-	margin: 0 10em;
+	margin: 0 1em;
 }
 
 .footer .version {
-	float: right;
-	margin-right: 1em;
+	margin: 0 1em;
 }
 
 a, a:visited {
