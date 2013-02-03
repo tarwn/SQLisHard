@@ -25,57 +25,85 @@
 <div id="main">
     <div id="exerciseDescription">
         <h2>S1.0 - Select</h2>
-        <p>Data is stored in tables, which we can think as similar to spreadsheets. The table defines the columns for the data and each row is an individual set of data. 
-            The <em>SELECT</em> statement can be used to retrieve rows of data from tables in the database. 
-        </p>
+        <p>Data is stored in tables, which we can think as similar to spreadsheets. The <em>SELECT</em> statement is used to retrieve rows of data from those tables. </p>
 
-        <p>The syntax for a SELECT statement is:
+            <code>SELECT * FROM <i>table_name</i></code>
 
-            <code>SELECT * FROM <i>table_name</i></code></p>
-
-        <p>There is a table of client information available in the database, try using the <em>SELECT</em> statement to retrieve rows from the <em>Clients</em> table.</p>
+        <p>Try using the <em>SELECT</em> statement to retrieve rows from the <em>Clients</em> table.</p>
     </div>
-    <div id="queryEditorArea">
-        <textarea id="QueryEditor" cols="80" rows="8" data-bind="value: userQuery.content"></textarea>
-        <input id="QueryExecutionButton" type="button" value="Execute" data-bind="click: runQuery" />
-    </div>
-
-    <span data-bind="text: runStatus"></span>
-
-    <div id="QueryResults" data-bind="with: queryResults">
-        <div data-bind="style: { opacity: $root.runStatus() == 'running' ? .25 : 1 }">
-            <label>ExerciseId:</label><span data-bind="text: exerciseId"></span><br />
-            <label>Success?</label><span data-bind="text: completesExercise"></span><br />
-            <label>Query:</label><span data-bind="text: queryContent"></span>
-            <div data-bind="if: isError" id="QueryError">
-                An Error Has Occurred<br />
-                Error # <span data-bind="text: errorNumber"></span>:
-                        <span data-bind="text: errorMessage"></span>
+    <div id="editor">
+        <div id="queryEditorArea">
+            <div id="bar">
+                <input id="queryExecutionButton" type="button" value="Execute" data-bind="click: runQuery" />
             </div>
-            <div data-bind="ifnot: isError">
-                Results: 
-                <div data-bind="if: isSubsetOfRows">
-                    <a href="#" data-bind="click: $root.runQueryFull.bind($root)" id="MoreResultsLink">Show all <span data-bind="text: totalRowCount" id="MoreResultsLinkTotalCount"></span> records</a>
-                </div>
-                <div data-bind="ifnot: isSubsetOfRows">
-                    Displaying <span data-bind="text: totalRowCount"></span> records
-                </div>
-                <table border="1" data-bind="with: data" id="DataTable">
-                    <thead>
-                        <tr data-bind="foreach: headers">
-                            <th data-bind="text: ColumnName"></th>
-                        </tr>
-                    </thead>
-                    <tbody data-bind="foreach: rows">
-                        <tr data-bind="foreach: Values">
-                            <td data-bind="text: $data"></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <textarea id="queryEditor" cols="80" rows="8" data-bind="value: userQuery.content"></textarea>
+        </div>
+        <div id="midBar">
+        <div id="queryResultsArea">
+            <div id="queryResultsTab">Results</div>
+            <div id="queryResults" data-bind="with: queryResults">
+                <div data-bind="template: { name: isError() ? 'results-error' : 'results-rows' }"></div>
             </div>
+        </div>
+        <div id="resultsSummary">
+            <div id="queryStatus" data-bind="template: { name: isRunning() ? 'query-status-indicator-running' : 'query-status-indicator-notrunning'}" ></div>
+            <div id="resultsCount" data-bind="template: { name: 'query-status-record-count', data: queryResults, if: queryResults }"></div>
         </div>
     </div>
 </div>
+
+    <script type="text/html" id="results-error">
+        <div id="queryError">
+            <div data-bind="if: isServerError">
+                Web Server Error: <span data-bind="text: errorMessage"></span><br />
+                The error has been logged and an email dispatched so Eli can look into it.
+            </div>
+            <div data-bind="ifnot: isServerError">
+                Error # <span data-bind="text: errorNumber"></span><br />
+                <span data-bind="text: errorMessage"></span>
+            </div>
+        </div>
+    </script>
+
+    <script type="text/html" id="results-rows">
+        <div>
+            <table border="1" data-bind="with: data" id="dataTable">
+                <thead>
+                    <tr data-bind="foreach: headers">
+                        <th data-bind="text: ColumnName"></th>
+                    </tr>
+                </thead>
+                <tbody data-bind="foreach: rows">
+                    <tr data-bind="foreach: Values">
+                        <td data-bind="text: $data"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </script>
+
+    <script type="text/html" id="query-status-indicator-running">
+        <span data-bind="if: isRunning">Running...</span>              
+    </script>
+    <script type="text/html" id="query-status-indicator-notrunning">
+        <!-- ko with: queryResults -->
+        <span data-bind="ifnot: isError">Ready</span>              
+        <span data-bind="if: isError">Completed with Error</span>             
+        <!-- /ko -->
+    </script>
+    <script type="text/html" id="query-status-record-count">
+        <!-- ko ifnot: isError -->
+        <div data-bind="if: isSubsetOfRows">
+            Displaying first 100 of <span data-bind="text: totalRowCount"></span> rows
+            (<a href="#" data-bind="click: $root.runQueryFull.bind($root)" id="MoreResultsLink">Show All</a>)
+        </div>
+        <div data-bind="ifnot: isSubsetOfRows">
+            <span data-bind="text: totalRowCount"></span> rows returned
+        </div>
+        <!-- /ko -->
+    </script>
+
+
 <script type="text/javascript">
     
     function Statement() {
@@ -98,12 +126,16 @@
         this.errorNumber = ko.observable(data.ErrorNumber || 0);
         this.executionStatus = ko.observable(data.ExecutionStatus || "");
         this.isError = ko.computed(function () {
-            return this.executionStatus() == ExecutionStatus.ERROR;
+            return this.executionStatus() != ExecutionStatus.SUCCESS;
+        }, this);
+        this.isServerError = ko.computed(function () {
+            return this.executionStatus() == ExecutionStatus.SERVER_ERROR;
         }, this);
     }
 
 
     var ExecutionStatus = {
+        SERVER_ERROR: 2,
         ERROR: 1,
         SUCCESS: 0
     };
@@ -112,35 +144,46 @@
         queryResults: ko.observable(),
         userQuery: new Statement(),
         runStatus: ko.observable(""),
+        isRunning: ko.observable(false),
         runQuery: function () {
             self = this;
             self.userQuery.limitResults = true;
-            self.runStatus("running");
+            self.isRunning(true);
             $.ajax("@indexURL", {
                 type: "POST", contentType: "application/json", dataType: "json",
                 data: ko.toJSON(this.userQuery),
                 success: function (result) {
-                    self.runStatus("ok");
+                    self.isRunning(false);
                     self.queryResults(new StatementResult(result));
                 },
                 error: function (xhr, status, error) {
-                    self.runStatus("error: " + status + " - " + error);
+                    self.isRunning(false);
+                    var result = new StatementResult({ Data: {} });
+                    result.exerciseId(self.userQuery.exerciseId);
+                    result.executionStatus(ExecutionStatus.SERVER_ERROR);
+                    result.errorMessage(error);
+                    self.queryResults(result);
                 }
             });
         },
         runQueryFull: function () {
             self = this;
             this.userQuery.limitResults = false;
-            self.runStatus("running");
+            self.isRunning(true);
             $.ajax("@indexURL", {
                 type: "POST", contentType: "application/json", dataType: "json",
                 data: ko.toJSON(this.userQuery),
                 success: function (result) {
-                    self.runStatus("ok");
+                    self.isRunning(false);
                     self.queryResults(new StatementResult(result));
                 },
                 error: function (xhr, status, error) {
-                    self.runStatus("error: " + status + " - " + error);
+                    self.isRunning(false);
+                    var result = new StatementResult({ Data: {}});
+                    result.exerciseId(self.userQuery.exerciseId);
+                    result.executionStatus(ExecutionStatus.SERVER_ERROR);
+                    result.errorMessage(error);
+                    self.queryResults(result);
                 }
             });
         }
@@ -177,5 +220,70 @@
         margin: 1em;
     }
 
+    #editor {
+        box-shadow: 0 0 5px 1px;
+        margin-top: 1em;
+    }
+    #queryEditor {
+        display: block;
+        border-width: 0px;
+        width: 100%;
+    }
+    #queryEditorArea {
+        border-bottom: 1px solid #aaaaaa;
+        overflow: hidden;
+    }
+    #bar {
+        background-color: #eeeeee;
+    }
+    #queryResults {
+        background-color: white;
+        height: 300px;
+        overflow: auto;
+        border-top: 1px solid #aaaaaa;
+        position: relative;
+        top: -1px;
+        z-index:10;
+    }
 
+    #resultsSummary {
+        background-color: #eeeeee;
+        height: 20px;
+        padding: 2px 4px 0px 4px;
+        font-size: 90%;
+    }
+    
+    #queryResultsArea {
+        background-color: #eeeeee;
+        padding-top: 2px;
+    }
+    #queryResultsTab {
+        background-color: white;
+        margin-left: .25em;
+        display: inline;
+        border-top-left-radius: .25em;
+        border-top-right-radius: .25em;
+        padding: 0 1em;
+        position:relative;
+        z-index:20;
+        border:1px solid #aaaaaa;
+        border-width: 1px 1px 0px 1px;
+        font-size: 90%;
+    }
+    #queryError {
+        padding: .5em;
+        font-size: 90%;
+        color: red;
+    }
+
+    #queryStatus {
+        width: 15em;
+        border-right: 1px solid #cccccc;
+        display: inline-block;
+        padding-left: .5em;
+    }
+    #resultsCount {
+        display: inline-block;
+        padding-left: .5em;
+    }
 </style>
