@@ -2,52 +2,82 @@
     ViewBag.Title = "Exercise";
     string indexURL = @Url.Action("Statement", "api");
 }
-
-<h2>Index</h2>
-Select a single row from the clients table.
-
-<div>
-    <textarea id="QueryEditor" cols="80" rows="8" data-bind="value: userQuery.content"></textarea>
-    <input id="QueryExecutionButton" type="button" value="Execute" data-bind="click: runQuery" />
+<h1>SQL is Hard</h1>
+<div id="exerciseList">
+    <ul>
+        <li class="selected">S1.0 - Select</li>
+        <li>S1.1 - Select Columns</li>
+        <li>S1.2 - Column Aliases</li>
+        <li>S2.0 - Where</li>
+        <li>S2.1 - And</li>
+        <li>S2.2 - Or</li>
+        <li>S2.3 - Combining And/Or</li>
+        <li>S3.0 - Order</li>
+        <li>S3.1 - More Order</li>
+        <li>S4.0 - Inner Join</li>
+        <li>S4.1 - Multiple Inner Joins</li>
+        <li>S5 - Left Outer Join</li>
+        <li>S6 - Cross Join</li>
+        <li>S7 - Group By</li>
+        <li>S7 - Having</li>
+    </ul>
 </div>
+<div id="main">
+    <div id="exerciseDescription">
+        <h2>S1.0 - Select</h2>
+        <p>Data is stored in tables, which we can think as similar to spreadsheets. The table defines the columns for the data and each row is an individual set of data. 
+            The <em>SELECT</em> statement can be used to retrieve rows of data from tables in the database. 
+        </p>
 
-<span data-bind="text: runStatus"></span>
+        <p>The syntax for a SELECT statement is:
 
-<div id="QueryResults" data-bind="with: queryResults">
-    <div data-bind="style: { opacity: $root.runStatus() == 'running' ? .25 : 1 }">
-        <label>ExerciseId:</label><span data-bind="text: exerciseId"></span><br />
-        <label>Success?</label><span data-bind="text: completesExercise"></span><br />
-        <label>Query:</label><span data-bind="text: queryContent"></span>
-        <div data-bind="if: isError" id="QueryError">
-            An Error Has Occurred<br />
-            Error # <span data-bind="text: errorNumber"></span>:
-                    <span data-bind="text: errorMessage"></span>
-        </div>
-        <div data-bind="ifnot: isError">
-            Results: 
-            <div data-bind="if: isSubsetOfRows">
-                <a href="#" data-bind="click: $root.runQueryFull.bind($root)" id="MoreResultsLink">Show all <span data-bind="text: totalRowCount" id="MoreResultsLinkTotalCount"></span> records</a>
+            <code>SELECT * FROM <i>table_name</i></code></p>
+
+        <p>There is a table of client information available in the database, try using the <em>SELECT</em> statement to retrieve rows from the <em>Clients</em> table.</p>
+    </div>
+    <div id="queryEditorArea">
+        <textarea id="QueryEditor" cols="80" rows="8" data-bind="value: userQuery.content"></textarea>
+        <input id="QueryExecutionButton" type="button" value="Execute" data-bind="click: runQuery" />
+    </div>
+
+    <span data-bind="text: runStatus"></span>
+
+    <div id="QueryResults" data-bind="with: queryResults">
+        <div data-bind="style: { opacity: $root.runStatus() == 'running' ? .25 : 1 }">
+            <label>ExerciseId:</label><span data-bind="text: exerciseId"></span><br />
+            <label>Success?</label><span data-bind="text: completesExercise"></span><br />
+            <label>Query:</label><span data-bind="text: queryContent"></span>
+            <div data-bind="if: isError" id="QueryError">
+                An Error Has Occurred<br />
+                Error # <span data-bind="text: errorNumber"></span>:
+                        <span data-bind="text: errorMessage"></span>
             </div>
-            <div data-bind="ifnot: isSubsetOfRows">
-                Displaying <span data-bind="text: totalRowCount"></span> records
+            <div data-bind="ifnot: isError">
+                Results: 
+                <div data-bind="if: isSubsetOfRows">
+                    <a href="#" data-bind="click: $root.runQueryFull.bind($root)" id="MoreResultsLink">Show all <span data-bind="text: totalRowCount" id="MoreResultsLinkTotalCount"></span> records</a>
+                </div>
+                <div data-bind="ifnot: isSubsetOfRows">
+                    Displaying <span data-bind="text: totalRowCount"></span> records
+                </div>
+                <table border="1" data-bind="with: data" id="DataTable">
+                    <thead>
+                        <tr data-bind="foreach: headers">
+                            <th data-bind="text: ColumnName"></th>
+                        </tr>
+                    </thead>
+                    <tbody data-bind="foreach: rows">
+                        <tr data-bind="foreach: Values">
+                            <td data-bind="text: $data"></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <table border="1" data-bind="with: data" id="DataTable">
-                <thead>
-                    <tr data-bind="foreach: headers">
-                        <th data-bind="text: ColumnName"></th>
-                    </tr>
-                </thead>
-                <tbody data-bind="foreach: rows">
-                    <tr data-bind="foreach: Values">
-                        <td data-bind="text: $data"></td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
+    
     function Statement() {
         this.exerciseId = ko.observable(1);
         this.content = ko.observable("");
@@ -120,3 +150,32 @@ Select a single row from the clients table.
 
     ko.applyBindings(viewModel);
 </script>
+<style>
+    #exerciseList {
+        float: left;
+        width: 300px;
+    }
+    #main {
+        margin-left: 300px;
+        max-width: 900px;
+    }
+    #exerciseDescription {
+        background-color: #eeeeee;
+        padding: .5em;
+    }
+    #exerciseDescription h2 {
+        display: inline;
+        margin: 0 .25em .25em 0;
+        padding: 0 .25em .25em 0;
+        font-size: 14pt;
+    }
+    #exerciseDescription p {
+        line-height: 120%;
+    }
+    #exerciseDescription code {
+        display: block;
+        margin: 1em;
+    }
+
+
+</style>
