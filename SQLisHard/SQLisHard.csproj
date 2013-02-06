@@ -154,7 +154,9 @@
     <Content Include="Scripts\knockout-2.2.1.debug.js" />
     <Content Include="Scripts\knockout-2.2.1.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
+    <Content Include="Scripts\modernizr-2.6.2.min.js" />
     <Content Include="Scripts\perpetuum.knockout.js" />
+    <Content Include="Scripts\plugins.js" />
     <Content Include="Styles\display.css" />
     <Content Include="Styles\main.css" />
     <Content Include="Styles\normalize.css" />
