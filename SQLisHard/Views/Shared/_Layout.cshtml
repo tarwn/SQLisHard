@@ -2,17 +2,26 @@
 @using SquishIt.Mvc
 
 <!DOCTYPE html>
-
-<html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="description" content="">
     <meta name="viewport" content="width=device-width" />
     <title>SQL Is Hard - @ViewBag.Title</title>
     @Html.Raw(Bundle.Css()
         .Add("~/styles/display.css")
+        .Add("~/styles/normalize.css")
+        .Add("~/styles/main.css")
         .Render("~/styles/combined_#.css"))
     @Html.Raw(Bundle.JavaScript()
-        .Add("~/scripts/jquery-1.7.2.js")
-        .Add("~/scripts/knockout-2.1.0.js")
+        .Add("~/scripts/jquery-1.9.1.js")
+        .Add("~/scripts/knockout-2.2.1.js")
+        .Add("~/scripts/modernizr-2.6.2.min.js")
+        .Add("~/scripts/plugins.js")
         .Render("~/scripts/combined_#.js")
     )
 </head>

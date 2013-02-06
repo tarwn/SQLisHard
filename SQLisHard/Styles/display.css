@@ -5,7 +5,11 @@ body {
 	margin: 0px;
 }
 
-body, input, textarea {
+html,
+button,
+input,
+select,
+textarea {
 	font-family: 'Ropa Sans', Sans-serif;
 	font-size: 12pt;
 	/*font-family: 'Open Sans Pro', Sans-serif;*/
