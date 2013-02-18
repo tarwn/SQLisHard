@@ -1,5 +1,6 @@
 ﻿using SQLisHard.Core;
 using SQLisHard.Core.Data;
+using SQLisHard.Domain.Exercises;
 using SQLisHard.Domain.QueryEngine;
 using System;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ namespace SQLisHard.Domain.ExerciseEvaluator
     {
         private IQueryEngine _queryEngine;
 		private IHistoryStore _historyStore;
+		private IExerciseStore _exerciseStore;
 
-        public ExerciseResultEvaluator(IQueryEngine queryEngine, IHistoryStore historyStore)
+        public ExerciseResultEvaluator(IQueryEngine queryEngine, IExerciseStore exerciseStore, IHistoryStore historyStore)
         {
             _queryEngine = queryEngine;
+			_exerciseStore = exerciseStore;
 			_historyStore = historyStore;
         }
 
@@ -35,10 +38,12 @@ namespace SQLisHard.Domain.ExerciseEvaluator
 
         public bool EvaluateResultSet(Statement statement, QueryResult queryResult)
         {
-            if (queryResult.ExecutionStatus == QueryExecutionStatus.Error)
-                return false;
+			if (queryResult.ExecutionStatus == QueryExecutionStatus.Error)
+				return false;
 
-            return true;
+			var expectedResult = _exerciseStore.GetExerciseResultForComparison(statement.ExerciseId);
+
+			return expectedResult.Equals(queryResult);
         }
     }
 }

@@ -4,6 +4,7 @@ using SQLisHard.Core;
 using SQLisHard.Core.Data;
 using SQLisHard.Core.Models;
 using SQLisHard.Domain.ExerciseEvaluator;
+using SQLisHard.Domain.Exercises;
 using SQLisHard.Domain.QueryEngine;
 using System;
 using System.Collections.Generic;
@@ -74,15 +75,33 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 	public class ExerciseResultEvaluatorHarness
 	{
 		public Mock<IQueryEngine> MockQueryEngine { get; set; }
+		public Mock<IExerciseStore> MockExerciseStore { get; set; }
 		public Mock<IHistoryStore> MockHistoryStore { get; set; }
 		public ExerciseResultEvaluator InstanceUnderTest { get; set; }
 
 		public ExerciseResultEvaluatorHarness()
 		{
 			MockQueryEngine = new Mock<IQueryEngine>();
+			MockExerciseStore = new Mock<IExerciseStore>();
+			MockExerciseStore.Setup(me => me.GetExerciseResultForComparison(It.IsAny<string>())).Returns(new DefinedExerciseResultFake(true));
 			MockHistoryStore = new Mock<IHistoryStore>();
-			InstanceUnderTest = new ExerciseResultEvaluator(MockQueryEngine.Object, MockHistoryStore.Object);
+			InstanceUnderTest = new ExerciseResultEvaluator(MockQueryEngine.Object, MockExerciseStore.Object, MockHistoryStore.Object);
 		}
 
+	}
+
+	public class DefinedExerciseResultFake : DefinedExerciseResult
+	{
+		bool _expectedEqualsValue;
+
+		public DefinedExerciseResultFake(bool expectedEqualsValue) 
+		{
+			_expectedEqualsValue = expectedEqualsValue;
+		}
+
+		public override bool Equals(object obj)
+		{
+			return _expectedEqualsValue;
+		}
 	}
 }

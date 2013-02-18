@@ -133,13 +133,19 @@
     <Compile Include="Attributes\WebAPI\CaptureUnhandledExceptionAttribute.cs" />
     <Compile Include="Attributes\WebAPI\RequiresUserOrGuestAttribute.cs" />
     <Compile Include="Attributes\RequiresUserOrGuestImplementation.cs" />
+    <Compile Include="Controllers\ExercisesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ExerciseController.cs" />
     <Compile Include="Controllers\StatementController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Exercise.cs" />
+    <Compile Include="Models\ExerciseSet.cs" />
+    <Compile Include="Models\Finale.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Scripts\lib\exercises.js" />
+    <Content Include="Scripts\lib\main.js" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
@@ -194,7 +200,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

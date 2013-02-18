@@ -1,30 +1,4 @@
 ﻿
-var SqlIsHardApp = SqlIsHardApp || {};
-
-SqlIsHardApp.Routes = SqlIsHardApp.Routes || {};
-
-SqlIsHardApp.init = function (baseUrl, statementPostUrl) {
-    // Routes
-    SqlIsHardApp.Routes.baseUrl = baseUrl;
-    SqlIsHardApp.Routes.statementPostUrl = statementPostUrl;
-
-    // infuser defaults for templates
-    infuser.defaults.templatePrefix = "_";
-    infuser.defaults.templateSuffix = ".tmpl.html";
-    infuser.defaults.templateUrl = baseUrl + "templates";
-}
-
-/* Constants */
-var Constants = Constants || {};
-Constants.ExecutionStatus = {
-    SERVER_ERROR: 2,
-    ERROR: 1,
-    SUCCESS: 0
-};
-Constants.ExercisePlaceHolder = {
-    FINALE: -100
-}
-
 /* Objects */
 SqlIsHardApp.StatementResult = function (responseData) {
     // map incoming data
@@ -64,43 +38,10 @@ SqlIsHardApp.StatementResult = function (responseData) {
     };
 }
 
-SqlIsHardApp.ExerciseSet = function (data) {
-    // private variables
-    var title = ko.observable(data.Title || "Exercises"),
-        summary = ko.observable(data.Summary || ""),
-        currentExerciseIndex = ko.observable(0),
-        exercises = ko.observableArray(data.Exercises || []),
-        finale = ko.observable(data.Finale);
-
-    // computed variables
-    var currentExercise = ko.computed(function () {
-        if (currentExerciseIndex() == Constants.ExercisePlaceHolder.FINALE)
-                return finale();
-            else
-                return exercises()[currentExerciseIndex()];
-        }, this);
-
-    // methods
-    var advanceExercise = function () {
-        if (currentExerciseIndex() != Constants.ExercisePlaceHolder.FINALE && currentExerciseIndex() + 1 < exercises().length)
-            currentExerciseIndex(currentExerciseIndex() + 1);
-        else
-            currentExerciseIndex(Constants.ExercisePlaceHolder.FINALE);
-    };
-
-    return {
-        title: title,
-        summary: summary,
-        exercises: exercises,
-        currentExercise: currentExercise,
-        advanceExercise: advanceExercise
-    };
-}
-
 /* Viewmodel */
 SqlIsHardApp.ViewModel = (function (ko, $, api, isDebug) {
     // Private variables
-    var exercises = ko.observable(),
+    var exercises = ko.observable(SqlIsHardApp.ExerciseSet(Constants.InitialExerciseData)),
         user = ko.observable(),
         currentQuery = {
             queryText: ko.observable(""),
@@ -142,6 +83,21 @@ SqlIsHardApp.ViewModel = (function (ko, $, api, isDebug) {
         exercises(SqlIsHardApp.ExerciseSet(exerciseSetData));
     };
 
+    var updateExercises = function ()
+    {
+        $.ajax(api.exercisesUrl, {
+            type: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (result) {
+                exercises(SqlIsHardApp.ExerciseSet(result));
+            },
+            error: function (xhr, status, error){
+                alert("TODO: tell Eli he didn't handle the error for /exercises/list");
+            }
+        });
+    }
+
 
     return {
         // properties
@@ -151,6 +107,7 @@ SqlIsHardApp.ViewModel = (function (ko, $, api, isDebug) {
         isDebug: isDebug,
         // methods
         executeQuery: executeQuery,
-        setExercises: setExercises
+        setExercises: setExercises,
+        updateExercises: updateExercises
     };
 })(ko, jQuery, SqlIsHardApp.Routes, false);

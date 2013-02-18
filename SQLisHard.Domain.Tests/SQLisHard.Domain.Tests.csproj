@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exercises\DefinedExerciseResultTests.cs" />
     <Compile Include="LessonEvaluator\LessonResultEvaluatorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryEngine\DatabaseExecution\QueryEngineTests.cs" />
