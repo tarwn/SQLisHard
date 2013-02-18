@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "Exercise";
     string indexURL = @Url.Action("Statement", "api");
+    string baseUrl = @Url.Content("~");
 }
 <div id="left">
     <h1>SQL is Hard</h1>
@@ -47,7 +48,7 @@
 <script type="text/javascript">
     $(function () {
         // init so we can pass in API URL
-        SqlIsHardApp.init('@indexURL');
+        SqlIsHardApp.init('@baseUrl', '@indexURL');
 
         // define exercises - will be a server request
         var exerciseData = {

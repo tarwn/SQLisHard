@@ -3,14 +3,15 @@ var SqlIsHardApp = SqlIsHardApp || {};
 
 SqlIsHardApp.Routes = SqlIsHardApp.Routes || {};
 
-SqlIsHardApp.init = function (statementPostUrl) {
+SqlIsHardApp.init = function (baseUrl, statementPostUrl) {
     // Routes
+    SqlIsHardApp.Routes.baseUrl = baseUrl;
     SqlIsHardApp.Routes.statementPostUrl = statementPostUrl;
 
     // infuser defaults for templates
     infuser.defaults.templatePrefix = "_";
     infuser.defaults.templateSuffix = ".tmpl.html";
-    infuser.defaults.templateUrl = "/templates";
+    infuser.defaults.templateUrl = baseUrl + "templates";
 }
 
 /* Constants */
