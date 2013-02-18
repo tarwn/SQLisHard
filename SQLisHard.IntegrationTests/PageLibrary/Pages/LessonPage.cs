@@ -41,6 +41,8 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 
 		public By ByResultRows { get { return By.CssSelector("#queryResults tbody tr"); } }
 
+		public By ByExerciseListItems { get { return By.CssSelector("#exerciseList ul li"); } }
+
 		public bool IsNotExecuting
 		{
 			get
@@ -82,9 +84,7 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 		{
 			AssertElementText(MoreResultsLinkTotalCount, expectedResultCount.ToString(), "Total count in the More Results link");
 		}
-
-
-
+		
 		public void AssertNumberOfResultsRowsIs(int expectedResultCount)
 		{
 			AssertIsEqual(expectedResultCount, Driver.FindElements(ByResultRows).Count, "Expected rows count doesn't match actual count");
@@ -98,6 +98,22 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 		public void AssertStatusDisplays(string expectedStatus)
 		{
 			Assert(() => QueryStatus.Text.Trim().Equals(expectedStatus, StringComparison.InvariantCultureIgnoreCase), String.Format("Query status did not match expected value. Expected: '{0}', Actual: '{1}'", expectedStatus, QueryStatus.Text.Trim()));
+		}
+
+		internal void AssertNthExerciseIsSelected(int indexOfSelectedEntry)
+		{
+			var i = indexOfSelectedEntry - 1;
+			var exerciseList = Driver.FindElements(ByExerciseListItems);
+			Assert(() => exerciseList.Count > i, String.Format("List is too short ({1} items) to contain the #{0}", indexOfSelectedEntry, exerciseList.Count));
+			Assert(() => exerciseList[i].GetAttribute("class") == "selected",
+				String.Format("The indexed item ({0}) is not selected (class: {1})", exerciseList[i].Text, exerciseList[i].GetAttribute("class")));
+		}
+
+		internal void ExecuteQueryAndWaitForResults(string queryText)
+		{
+			EnterQuery(queryText);
+			QueryExecutionButton.Click();
+			WaitUpTo(5000, () => ResultsAreAvailableAndSuccessful, "Results to be displayed");
 		}
 	}
 }

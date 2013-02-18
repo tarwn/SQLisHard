@@ -4,7 +4,7 @@ SqlIsHardApp.ExerciseSet = function (data) {
     var title = ko.observable(data.Title || "Exercises"),
         summary = ko.observable(data.Summary || ""),
         currentExerciseIndex = ko.observable(0),
-        finale = ko.observable(data.Finale);
+        finale = ko.observable(SqlIsHardApp.Exercise(data.Finale));
 
     var rawExercises = [];
     for (var ex in data.Exercises)

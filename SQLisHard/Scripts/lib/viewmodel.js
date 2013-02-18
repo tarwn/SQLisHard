@@ -67,6 +67,8 @@ SqlIsHardApp.ViewModel = (function (ko, $, api, isDebug) {
             success: function (result) {
                 currentQuery.isRunning(false);
                 currentQuery.queryResult(SqlIsHardApp.StatementResult(result));
+                if (currentQuery.queryResult().completesExercise())
+                    exercises().advanceExercise();
             },
             error: function (xhr, status, error) {
                 currentQuery.isRunning(false);
