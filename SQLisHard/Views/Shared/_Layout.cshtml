@@ -20,8 +20,10 @@
     @Html.Raw(Bundle.JavaScript()
         .Add("~/scripts/jquery-1.9.1.js")
         .Add("~/scripts/knockout-2.2.1.js")
+        .Add("~/scripts/koExternalTemplateEngine_all.js")
         .Add("~/scripts/modernizr-2.6.2.min.js")
         .Add("~/scripts/plugins.js")
+        .Add("~/scripts/lib/viewmodel.js")
         .Render("~/scripts/combined_#.js")
     )
 </head>
@@ -29,10 +31,10 @@
     <div>
         @RenderBody()
     </div>
-    <div class="footer">
+    <footer>
         <span class="version">Version: @RenderPage("_Version.cshtml")</span>
         <div class="text">A random sideproject by <a href="http://tiernok.com" title="Eli's website">Eli Weinstock-Herman</a> (<a href="http://twitter.com/tarwn" title="Tarwn on twitter">@@tarwn</a>)</div>
-    </div>
+    </footer>
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-36014093-1']);

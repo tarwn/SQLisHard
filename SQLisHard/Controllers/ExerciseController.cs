@@ -14,5 +14,10 @@ namespace SQLisHard.Controllers
             return View();
         }
 
+		public ActionResult Old()
+		{
+			return View();
+		}
+
     }
 }

@@ -1,0 +1,9 @@
+﻿<!-- ko ifnot: isError -->
+<div data-bind="if: isSubsetOfRows">
+    Displaying first 100 of <span data-bind="text: totalRowCount" id="moreResultsLinkTotalCount"></span> rows
+    (<a href="#" data-bind="click: $root.executeQuery.bind($root, false)" id="moreResultsLink">Show All</a>)
+</div>
+<div data-bind="ifnot: isSubsetOfRows">
+    <span data-bind="text: totalRowCount"></span> rows returned
+</div>
+<!-- /ko -->

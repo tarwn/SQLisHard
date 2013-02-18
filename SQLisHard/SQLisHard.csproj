@@ -149,17 +149,33 @@
     <Content Include="googlede303fa74336cf96.html" />
     <Content Include="parameters.xml" />
     <None Include="Scripts\jquery-1.9.1.intellisense.js" />
+    <Content Include="Scripts\infuser.js" />
+    <Content Include="Scripts\infuser.min.gz.js" />
+    <Content Include="Scripts\infuser.min.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\knockout-2.2.1.debug.js" />
     <Content Include="Scripts\knockout-2.2.1.js" />
     <Content Include="Scripts\knockout.mapping-latest.js" />
+    <Content Include="Scripts\koExternalTemplateEngine.js" />
+    <Content Include="Scripts\koExternalTemplateEngine.min.js" />
+    <Content Include="Scripts\koExternalTemplateEngine_all.js" />
+    <Content Include="Scripts\koExternalTemplateEngine_all.min.js" />
+    <Content Include="Scripts\lib\viewmodel.js" />
     <Content Include="Scripts\modernizr-2.6.2.min.js" />
     <Content Include="Scripts\perpetuum.knockout.js" />
     <Content Include="Scripts\plugins.js" />
+    <Content Include="Scripts\TrafficCop.js" />
+    <Content Include="Scripts\TrafficCop.min.gz.js" />
+    <Content Include="Scripts\TrafficCop.min.js" />
     <Content Include="Styles\display.css" />
     <Content Include="Styles\main.css" />
     <Content Include="Styles\normalize.css" />
+    <Content Include="templates\_query-status-indicator-notrunning.tmpl.html" />
+    <Content Include="templates\_query-status-indicator-running.tmpl.html" />
+    <Content Include="templates\_query-status-record-count.tmpl.html" />
+    <Content Include="templates\_result-error.tmpl.html" />
+    <Content Include="templates\_result-rows.tmpl.html" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -174,6 +190,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Version.cshtml" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
+    <Content Include="Views\Exercise\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -183,7 +200,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Exercise\Index.cshtml" />
+    <Content Include="Views\Exercise\Old.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SQLisHard.Core\SQLisHard.Core.csproj">

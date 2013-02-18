@@ -19,6 +19,10 @@ h1, h2, h2 {
 	font-family: Tienne, 'Times New Roman';
 }
 
+a, a:visited {
+	color: #990000;
+}
+
 .banner {
 	text-align: center;	
 
@@ -40,7 +44,7 @@ h1, h2, h2 {
 	text-shadow:  1px 1px 1px rgba(0, 0, 0, .2);
 }
 
-.footer {
+footer {
 	position: fixed;
 	bottom: 0px;
 	padding: .5em 0;
@@ -49,14 +53,193 @@ h1, h2, h2 {
 	width: 400px;
 }
 
-.footer .text {
+footer .text {
 	margin: 0 1em;
 }
 
-.footer .version {
+footer .version {
 	margin: 0 1em;
 }
 
-a, a:visited {
-	color: #990000;
-}
+/* Exercise Page */
+ #left {
+        width: 400px;
+        float: left;
+    }
+
+    h1 {
+        margin: .5em 1em 1em 1em;
+        text-align: center;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, .35);
+    }
+
+    #summary {
+        margin: .5em 1em 1em 1em;
+        border-bottom: 1px solid #990000;
+        border-top: 1px solid #990000;
+    }
+
+    #left p {
+        line-height: 125%;
+    }
+
+    #exerciseList {
+        margin: 1em;
+    }
+
+    #exerciseList h2 {
+        text-align: center;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, .35);
+    }
+
+    #exerciseList ul{
+        text-align: left;
+        list-style: circle;
+        list-style-position: inside;
+        padding: 0px;
+    }
+
+    #exerciseList ul li.completed{
+        color: #888888;
+    }
+
+    #exerciseList ul li.selected{
+        background-color: aliceblue;
+    }
+
+    #main {
+        margin-left: 410px;
+        margin-top: 20px;
+        max-width: 800px;
+    }
+    #exerciseDescription {
+        background-color: #eeeeee;
+        padding: .5em;
+    }
+    #exerciseDescription h2 {
+        display: inline;
+        margin: 0 .25em .25em 0;
+        padding: 0 .25em .25em 0;
+        font-size: 14pt;
+    }
+    #exerciseDescription p {
+        line-height: 120%;
+    }
+    #exerciseDescription code {
+        display: block;
+        margin: 1em;
+    }
+
+    /* Editor */
+    #editor {
+        box-shadow: 0 0 5px 1px;
+        margin-top: 1em;
+    }
+
+    /* Editor.QueryInputArea */
+    #queryInputArea {
+        border-bottom: 1px solid #aaaaaa;
+        overflow: hidden;
+    }
+
+    /* Editor.QueryInputArea.CommandBar */
+    #commandBar {
+        background-color: #eeeeee;
+        border-bottom: 1px solid #aaaaaa;
+    }
+    
+    /* Editor.QueryInputArea.QueryInput */
+    #queryInput {
+        display: block;
+        border-width: 0px;
+        width: 100%;
+    }
+
+    /* Editor.QueryResultsArea */
+    #queryResultsArea {
+        background-color: #eeeeee;
+        padding-top: 2px;
+    }
+
+    /* Editor.QueryResultsArea.QueryResultsTab */
+    #queryResultsTab {
+        background-color: white;
+        margin-left: .25em;
+        display: inline;
+        border-top-left-radius: .25em;
+        border-top-right-radius: .25em;
+        padding: 1px 1em 3px 1em;
+        position:relative;
+        z-index:20;
+        border:1px solid #aaaaaa;
+        border-width: 1px 1px 0px 1px;
+        font-size: 90%;
+    }
+
+    /* Editor.QueryResultsArea.QueryResults */
+    #queryResults {
+        background-color: white;
+        height: 300px;
+        overflow: auto;
+        border-top: 1px solid #aaaaaa;
+        border-bottom: 1px solid #aaaaaa;
+        position: relative;
+        top: -2px;
+        z-index:10;
+    }
+
+    /* Editor.QueryResultsArea.QueryResults.QueryError*/
+    #queryError {
+        padding: .5em;
+        font-size: 90%;
+        color: red;
+    }
+
+    /* Editor.QueryResultsArea.QueryResults.DataTable*/
+    #dataTable {
+        border-spacing: 0;
+        border-collapse: collapse;
+        font-size: 90%;
+        margin: .1em;
+        border: 1px solid #cccccc;
+    }
+    #dataTable th {
+        border: 1px solid #cccccc;
+        background-color: #eeeeee;
+        font-weight: normal;
+        text-align: left;
+        padding: .2em 1em .2em .4em;
+    }
+    #dataTable .index {
+        border: 1px solid #cccccc;
+        background-color: #eeeeee;
+        text-align: left;
+        padding: .1em .2em;
+    }
+    #dataTable td {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: .1em 1em .1em .4em;
+    }
+
+    /* Editor.QueryExecutionStatusBar*/
+    #queryExecutionStatusBar {
+        background-color: #eeeeee;
+        height: 20px;
+        padding: 2px 4px 0px 4px;
+        font-size: 90%;
+    }
+    
+    /* Editor.QueryExecutionStatusBar.QueryStatus */
+    #queryStatus {
+        width: 15em;
+        border-right: 1px solid #cccccc;
+        display: inline-block;
+        padding-left: .5em;
+    }
+
+    /* Editor.QueryExecutionStatusBar.ResultsCount */
+    #resultsCount {
+        display: inline-block;
+        padding-left: .5em;
+    }

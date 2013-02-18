@@ -1,0 +1,10 @@
+﻿<div id="queryError">
+    <div data-bind="if: isServerError">
+        Web Server Error: <span data-bind="text: errorMessage"></span><br />
+        The error has been logged and an email dispatched so Eli can look into it.
+    </div>
+    <div data-bind="ifnot: isServerError">
+        Error # <span data-bind="text: errorNumber"></span><br />
+        <span data-bind="text: errorMessage"></span>
+    </div>
+</div>

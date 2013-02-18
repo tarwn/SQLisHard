@@ -1,0 +1,5 @@
+﻿<span data-bind="ifnot: queryResult">Ready</span>              
+<!-- ko with: queryResult -->
+<span data-bind="ifnot: isError">Ready</span>              
+<span data-bind="if: isError">Completed with Error</span>             
+<!-- /ko -->
