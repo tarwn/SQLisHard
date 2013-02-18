@@ -171,11 +171,21 @@
     <Content Include="Styles\display.css" />
     <Content Include="Styles\main.css" />
     <Content Include="Styles\normalize.css" />
-    <Content Include="templates\_query-status-indicator-notrunning.tmpl.html" />
-    <Content Include="templates\_query-status-indicator-running.tmpl.html" />
-    <Content Include="templates\_query-status-record-count.tmpl.html" />
-    <Content Include="templates\_result-error.tmpl.html" />
-    <Content Include="templates\_result-rows.tmpl.html" />
+    <Content Include="templates\_query-status-indicator-notrunning.tmpl.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="templates\_query-status-indicator-running.tmpl.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="templates\_query-status-record-count.tmpl.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="templates\_result-error.tmpl.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="templates\_result-rows.tmpl.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
