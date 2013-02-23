@@ -144,7 +144,8 @@
     <Compile Include="Models\ExerciseSet.cs" />
     <Compile Include="Models\Finale.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="Scripts\lib\exercises.js" />
+    <Content Include="Scripts\lib\constants.js" />
+    <Content Include="Scripts\lib\model\exercises.js" />
     <Content Include="Scripts\lib\main.js" />
   </ItemGroup>
   <ItemGroup>
@@ -167,6 +168,9 @@
     <Content Include="Scripts\koExternalTemplateEngine.min.js" />
     <Content Include="Scripts\koExternalTemplateEngine_all.js" />
     <Content Include="Scripts\koExternalTemplateEngine_all.min.js" />
+    <Content Include="Scripts\lib\services\routes.js" />
+    <Content Include="Scripts\lib\services\services.js" />
+    <Content Include="Scripts\lib\model\user.js" />
     <Content Include="Scripts\lib\viewmodel.js" />
     <Content Include="Scripts\modernizr-2.6.2.min.js" />
     <Content Include="Scripts\perpetuum.knockout.js" />
@@ -201,6 +205,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Scripts\test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

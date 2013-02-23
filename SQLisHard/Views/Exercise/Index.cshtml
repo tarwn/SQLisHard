@@ -49,19 +49,7 @@
 <script type="text/javascript">
     $(function () {
         // init so we can pass in API URL
-        SqlIsHardApp.init('@baseUrl', '@statementApiUrl', '@exercisesApiUrl');
-
-        // define exercises - will be a server request
-        //var exerciseData = {
-        //    Title: "SELECT Exercises",
-        //    Summary: "<p>Whether you're just getting started or trying to brush up on existing skills, this is a great spot to start.</p>",
-        //    Exercises: [
-        //        { id: "S1.0", title: "S1.0 - SELECT", details: "<p>Databases store data in tables, which we can think of like spreadsheets. Each table holds rows of data that share a common set of columns. The <em>SELECT</em> statement is used to retrieve rows of data from those tables. </p> <code>SELECT * FROM <i>table_name</i></code><p>Try using the <em>SELECT</em> statement to retrieve rows from the <em>Clients</em> table.</p>" },
-        //        { id: "S1.1", title: "S1.1 - SELECT Columns", details: "<p>The * means \"return all of the columms\". If we want only a couple columns, we can ask for a list of just those columns.</p><code> SELECT <i>column_name, <column_name></i> FROM <i>table_name</i><p>try using the <em>SELECT</em> to retrieve just the <em>Id</em> and <em>FirstName</em> columns from the <em>Clients</em> table." },
-        //        { id: "S1.2", title: "S1.1 - SELECT Columns", details: "<p>Excellent. Asking for specific columns not only reduces the amount of data to download, it also means the database doesn't have to do the extra work of looking up what columns are available from the table ahead of time, like it does with the *.</p><p>Specifying the columns also puts you in control of the order they are received, now try to retrieve the <em>Id</em> and <FirstName</em> columns in reverse order.</p>" }
-        //    ],
-        //    Finale: { title: "Finale", details: "All Done!" }
-        //};
+        SqlIsHardApp.init(ko, jQuery, infuser, '@baseUrl', '@statementApiUrl', '@exercisesApiUrl');
 
         SqlIsHardApp.ViewModel.updateExercises();
         SqlIsHardApp.ViewModel.currentQuery.queryText("type a query here");

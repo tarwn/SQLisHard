@@ -1,33 +1,20 @@
-﻿
+﻿/// <reference path="services/routes.js" />
+/// <reference path="viewmodel.js" />
+
 var SqlIsHardApp = SqlIsHardApp || {};
 
-SqlIsHardApp.Routes = SqlIsHardApp.Routes || {};
-
-SqlIsHardApp.init = function (baseUrl, statementPostUrl, exercisesUrl) {
-	// Routes
-	SqlIsHardApp.Routes.baseUrl = baseUrl;
-	SqlIsHardApp.Routes.statementPostUrl = statementPostUrl;
-	SqlIsHardApp.Routes.exercisesUrl = exercisesUrl;
-
+SqlIsHardApp.init = function (ko, jQuery, infuser, baseUrl, statementPostUrl, exercisesUrl, services) {
 	// infuser defaults for templates
 	infuser.defaults.templatePrefix = "_";
 	infuser.defaults.templateSuffix = ".tmpl.html";
 	infuser.defaults.templateUrl = baseUrl + "templates";
-}
 
-/* Constants */
-var Constants = Constants || {};
-Constants.ExecutionStatus = {
-	SERVER_ERROR: 2,
-	ERROR: 1,
-	SUCCESS: 0
-};
-Constants.ExercisePlaceHolder = {
-	FINALE: -100
+    // Service Routes
+	SqlIsHardApp.Services.Routes.baseUrl = baseUrl;
+	SqlIsHardApp.Services.Routes.statementPostUrl = statementPostUrl;
+	SqlIsHardApp.Services.Routes.exercisesUrl = exercisesUrl;
+
+    // Services
+	services = services || SqlIsHardApp.Services.CreateDefaultDataServices(ko, jQuery, SqlIsHardApp.Services.Routes);
+	SqlIsHardApp.ViewModel.init(services);
 }
-Constants.InitialExerciseData = {
-	Title: "Exercises",
-	Summary: "Loading exercises...",
-	Exercises: [{ Id: "", Title: "loading...", Details: "loading..." }],
-	Finale: ""
-};
