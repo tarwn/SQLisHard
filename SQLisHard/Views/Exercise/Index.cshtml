@@ -50,10 +50,6 @@
     $(function () {
         // init so we can pass in API URL
         SqlIsHardApp.init(ko, jQuery, infuser, '@baseUrl', '@statementApiUrl', '@exercisesApiUrl');
-
-        SqlIsHardApp.ViewModel.updateExercises();
-        SqlIsHardApp.ViewModel.currentQuery.queryText("type a query here");
-
         SqlIsHardApp.ViewModel.isDebug(false);
 
         // apply bindings

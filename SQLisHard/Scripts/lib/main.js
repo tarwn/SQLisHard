@@ -1,5 +1,6 @@
 ﻿/// <reference path="services/routes.js" />
 /// <reference path="viewmodel.js" />
+/// <reference path="constants.js" />
 
 var SqlIsHardApp = SqlIsHardApp || {};
 
@@ -14,7 +15,7 @@ SqlIsHardApp.init = function (ko, jQuery, infuser, baseUrl, statementPostUrl, ex
 	SqlIsHardApp.Services.Routes.statementPostUrl = statementPostUrl;
 	SqlIsHardApp.Services.Routes.exercisesUrl = exercisesUrl;
 
-    // Services
+    // Initialize viewmodel
 	services = services || SqlIsHardApp.Services.CreateDefaultDataServices(ko, jQuery, SqlIsHardApp.Services.Routes);
-	SqlIsHardApp.ViewModel.init(services);
+	SqlIsHardApp.ViewModel.init(services, Constants.Text);
 }

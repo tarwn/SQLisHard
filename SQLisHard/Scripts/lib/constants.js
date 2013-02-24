@@ -14,3 +14,7 @@ Constants.InitialExerciseData = {
     Exercises: [{ Id: "", Title: "loading...", Details: "loading..." }],
     Finale: ""
 };
+
+Constants.Text = {
+    "QUERY_INITIAL_TEXT": "type a query here"
+}

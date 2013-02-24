@@ -1,11 +1,13 @@
 ﻿
 var SqlIsHardApp = SqlIsHardApp || {};
 
-SqlIsHardApp.ViewModel = (function (ko, $, isDebug) {
-    // Service Dependencies
+SqlIsHardApp.ViewModel = (function (ko, isDebug) {
+    // Initialization
     var dataService = null,
-        initializeDependencies = function (actualDataService) {
-            dataService = actualDataService
+        initialize = function (actualDataService, textResource) {
+            dataService = actualDataService;
+            currentQuery.queryText(textResource['QUERY_INITIAL_TEXT']);
+            updateExercises();
         };
 
     // Private variables
@@ -65,7 +67,7 @@ SqlIsHardApp.ViewModel = (function (ko, $, isDebug) {
 
     return {
         // init
-        init: initializeDependencies,
+        init: initialize,
         // properties
         exercises: exercises,
         user: user,
@@ -75,4 +77,4 @@ SqlIsHardApp.ViewModel = (function (ko, $, isDebug) {
         executeQuery: executeQuery,
         updateExercises: updateExercises
     };
-})(ko, jQuery, false);
+})(ko, false);

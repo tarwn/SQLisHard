@@ -5,7 +5,7 @@ SqlIsHardApp.Services = SqlIsHardApp.Services || {};
 SqlIsHardApp.Services.CreateDefaultDataServices = function (ko, jQuery, routes) {
     return{
         exercises: SqlIsHardApp.Services.ExerciseService(ko, jQuery, routes),
-        users: SqlIsHardApp.Services.UserService(ko, jQuery.routes)
+        users: SqlIsHardApp.Services.UserService(ko, jQuery, routes)
     }
 };
 
