@@ -55,14 +55,20 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
                     exercises(exerciseSet);
                 },
                 function (error, rawData) {
-                    alert("TODO: tell Eli he didn't handle the error for /exercises/list");
+                    alert("TODO: tell Eli he didn't handle the error for exercises.getExerciseList");
                 });
         };
 
     // User methods
     var
         loadUser = function () {
-            user(SqlIsHardApp.Model.User({ username: "TestUser", isGuest: true }));
+            dataService.users.getLoggedInUser(
+                function (userModel) {
+                    user(userModel);
+                },
+                function (error, rawData) {
+                    alert("TODO: tell Eli he didn't handle the error for users.getLoggedInUser");
+                });
         };
 
     return {

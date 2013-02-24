@@ -3,7 +3,13 @@
     string baseUrl = @Url.Content("~");
     string statementApiUrl = @Url.Content("~/api/Statement");
     string exercisesApiUrl = @Url.Content("~/api/Exercises/List");
+    string userApiUrl = @Url.Content("~/api/User/GetLoggedInUser");
 }
+<div id="topBar" class="clearfix">
+    <h1>SQL is Hard</h1>
+    <span data-bind="ifnot: user">Register / Login</span>
+    <span data-bind="if: user">Welcome <a href="javascript: void(0);" data-bind="text: user().displayName"></a></span>
+</div>
 <div id="left">
     <h1>SQL is Hard</h1>
     
@@ -49,7 +55,7 @@
 <script type="text/javascript">
     $(function () {
         // init so we can pass in API URL
-        SqlIsHardApp.init(ko, jQuery, infuser, '@baseUrl', '@statementApiUrl', '@exercisesApiUrl');
+        SqlIsHardApp.init(ko, jQuery, infuser, '@baseUrl', '@statementApiUrl', '@exercisesApiUrl', '@userApiUrl');
         SqlIsHardApp.ViewModel.isDebug(false);
 
         // apply bindings

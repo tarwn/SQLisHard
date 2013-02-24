@@ -137,12 +137,14 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ExerciseController.cs" />
     <Compile Include="Controllers\StatementController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Exercise.cs" />
     <Compile Include="Models\ExerciseSet.cs" />
     <Compile Include="Models\Finale.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Scripts\lib\constants.js" />
     <Content Include="Scripts\lib\model\exercises.js" />

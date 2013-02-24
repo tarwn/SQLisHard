@@ -4,7 +4,7 @@
 
 var SqlIsHardApp = SqlIsHardApp || {};
 
-SqlIsHardApp.init = function (ko, jQuery, infuser, baseUrl, statementPostUrl, exercisesUrl, services) {
+SqlIsHardApp.init = function (ko, jQuery, infuser, baseUrl, statementPostUrl, exercisesUrl, userUrl, services) {
 	// infuser defaults for templates
 	infuser.defaults.templatePrefix = "_";
 	infuser.defaults.templateSuffix = ".tmpl.html";
@@ -14,6 +14,7 @@ SqlIsHardApp.init = function (ko, jQuery, infuser, baseUrl, statementPostUrl, ex
 	SqlIsHardApp.Services.Routes.baseUrl = baseUrl;
 	SqlIsHardApp.Services.Routes.statementPostUrl = statementPostUrl;
 	SqlIsHardApp.Services.Routes.exercisesUrl = exercisesUrl;
+	SqlIsHardApp.Services.Routes.userUrl = userUrl;
 
     // Initialize viewmodel
 	services = services || SqlIsHardApp.Services.CreateDefaultDataServices(ko, jQuery, SqlIsHardApp.Services.Routes);

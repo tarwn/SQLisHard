@@ -1,4 +1,6 @@
-﻿
+﻿/// <reference path="../model/exercises.js" />
+/// <reference path="../model/user.js" />
+
 var SqlIsHardApp = SqlIsHardApp || {};
 SqlIsHardApp.Services = SqlIsHardApp.Services || {};
 
@@ -48,4 +50,23 @@ SqlIsHardApp.Services.ExerciseService = function (ko, $, routes) {
     };
 };
 
-SqlIsHardApp.Services.UserService = function (ko, $, routes) { };
+SqlIsHardApp.Services.UserService = function (ko, $, routes) {
+
+    var getLoggedInUser = function (successCallback, errorCallback) {
+        $.ajax(routes.userUrl, {
+            type: "GET",
+            contentType: "application/json",
+            dataType: "json",
+            success: function (result) {
+                successCallback(SqlIsHardApp.Model.User(result));
+            },
+            error: function (xhr, status, error) {
+                errorCallback(error, {});
+            }
+        });
+    };
+
+    return {
+        getLoggedInUser: getLoggedInUser
+    };
+};
