@@ -222,9 +222,6 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Exercise\Old.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\SQLisHard.Core\SQLisHard.Core.csproj">
       <Project>{578efd29-8165-4710-9622-72f931e1b23f}</Project>
       <Name>SQLisHard.Core</Name>

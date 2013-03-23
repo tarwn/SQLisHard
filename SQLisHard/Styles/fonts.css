@@ -1,0 +1,12 @@
+﻿@import url(http://fonts.googleapis.com/css?family=Tienne:700);
+@import url(http://fonts.googleapis.com/css?family=Ropa+Sans);
+
+@font-face {
+  font-family: 'FontAwesome';
+  src: url('fontawesome/font/fontawesome-webfont.eot?v=3.0.1');
+  src: url('fontawesome/font/fontawesome-webfont.eot?#iefix&v=3.0.1') format('embedded-opentype'),
+    url('fontawesome/font/fontawesome-webfont.woff?v=3.0.1') format('woff'),
+    url('fontawesome/font/fontawesome-webfont.ttf?v=3.0.1') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

@@ -13,9 +13,11 @@
     <meta name="viewport" content="width=device-width" />
     <title>SQL Is Hard - @ViewBag.Title</title>
     @Html.Raw(Bundle.Css()
-        .Add("~/styles/display.css")
+        .Add("~/styles/fonts.css")
         .Add("~/styles/normalize.css")
         .Add("~/styles/main.css")
+        .Add("~/styles/display.css")
+        .Add("~/styles/fontawesome/css/font-awesome.css")
         .Add("~/styles/responsive.css")
         .Render("~/styles/combined_#.css"))
     @Html.Raw(Bundle.JavaScript()

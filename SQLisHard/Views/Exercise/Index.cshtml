@@ -22,7 +22,15 @@
         <h2 data-bind="text: title">Exercises</h2>
         <div data-bind="html: summary"></div>
         <ul data-bind="foreach: exercises">
-            <li data-bind="text: title, css: { selected: id == $root.exercises().currentExercise().id }"></li>
+            <li data-bind="click: $parent.goToExercise.bind($data, id), css: { selected: id == $root.exercises().currentExercise().id }">
+                <!-- ko if: ($root.user() != null && $root.user().hasCompleted(id)) -->
+                    <i class="icon-check"></i>
+                <!-- /ko -->
+                <!-- ko ifnot: ($root.user() != null && $root.user().hasCompleted(id)) -->
+                    <i class="icon-check-empty"></i>
+                <!-- /ko -->
+                <span data-bind="text: title"></span>
+            </li>
         </ul>
     </div>
     <a href="javascript: void(0)" class="DEBUG" data-bind="visible: isDebug, click: exercises().advanceExercise">Next Exercise</a>
@@ -31,6 +39,9 @@
     <div id="exerciseDescription" data-bind="with: exercises().currentExercise">
         <h2 data-bind="text: title">Exercise Title</h2>
         <div data-bind="html: details"></div>
+        <div class="continueArea" data-bind="visible: ($root.user() != null && $root.user().hasCompleted(id))">
+            Excellent! Lets <a class="button" data-bind="click: $root.exercises().advanceExercise">Continue<i class="icon-play"></i></a>
+        </div>
     </div>
     <div id="editor">
         <div id="queryInputArea">

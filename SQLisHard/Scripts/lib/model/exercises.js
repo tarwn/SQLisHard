@@ -25,9 +25,23 @@ SqlIsHardApp.Model.ExerciseSet = function (data) {
     // methods
     var advanceExercise = function () {
         if (currentExerciseIndex() != Constants.ExercisePlaceHolder.FINALE && currentExerciseIndex() + 1 < exercises().length)
-            currentExerciseIndex(currentExerciseIndex() + 1);
+            currentExerciseIndex(parseInt(currentExerciseIndex()) + 1);
         else
             currentExerciseIndex(Constants.ExercisePlaceHolder.FINALE);
+    };
+    var previousExercise = function () {
+        if (currentExerciseIndex() > 0)
+            currentExerciseIndex(currentExerciseIndex() - 1);
+        else
+            currentExerciseIndex(0);
+    };
+    var goToExercise = function (id) {
+        var rawExercises = exercises();
+        for (var ex in rawExercises) {
+            if (rawExercises[ex].id == id)
+                currentExerciseIndex(ex);
+        }
+        // error or eat it?
     };
 
     return {
@@ -35,7 +49,9 @@ SqlIsHardApp.Model.ExerciseSet = function (data) {
         summary: summary,
         exercises: exercises,
         currentExercise: currentExercise,
-        advanceExercise: advanceExercise
+        advanceExercise: advanceExercise,
+        previousExercise: previousExercise,
+        goToExercise: goToExercise
     };
 }
 

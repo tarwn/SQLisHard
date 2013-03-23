@@ -1,6 +1,4 @@
-﻿@import url(http://fonts.googleapis.com/css?family=Tienne:700);
-@import url(http://fonts.googleapis.com/css?family=Ropa+Sans);
-
+﻿
 body {
 	margin: 0px;
 }
@@ -115,17 +113,30 @@ footer .version {
 
     #exerciseList ul{
         text-align: left;
-        list-style: circle;
+        list-style: none;
         list-style-position: inside;
         padding: 0px;
+    }
+
+	#exerciseList ul li {
+		padding: 0px 0px 0px 1em;
+	}
+
+	#exerciseList ul li span:before{
+        content: "- ";
     }
 
     #exerciseList ul li.completed{
         color: #888888;
     }
 
+	#exerciseList ul li.completed span:before{
+        content: "\2713 ";
+    }
+
     #exerciseList ul li.selected{
-        background-color: aliceblue;
+        background-color: #b3e8e6;
+		border-radius: 2px;	
     }
 
     #main {
@@ -155,6 +166,27 @@ footer .version {
         display: block;
         margin: 1em;
     }
+	#exerciseDescription .continueArea {
+		text-align: right;
+		margin-right: 2em;
+		line-height: 26px;
+	}
+	#exerciseDescription .continueArea .button{
+		background-color: #76d86b;
+		background-image: linear-gradient(to bottom, #76d86b, #56A84b);
+		border: 1px solid #409020;
+		border-radius: 4px;
+		margin: 0 .5em;
+		padding: 4px 2em;
+		color: black;
+		cursor: pointer;
+	}
+
+	#exerciseDescription .continueArea .button i{
+		padding-left: .5em;
+		color: #333333;
+	}
+
 
     /* Editor */
     #editor {

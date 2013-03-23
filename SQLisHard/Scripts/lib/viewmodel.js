@@ -32,21 +32,29 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
         executeQuery = function (limitResults) {
             currentQuery.queryResult(null);
             currentQuery.isRunning(true);
+            var exerciseId = exercises().currentExercise().id;
 
             dataService.exercises.executeQuery(currentQuery.toStatementDTO(limitResults), function (data) {
                 currentQuery.isRunning(false);
                 currentQuery.queryResult(SqlIsHardApp.Model.StatementResult(data));
 
-                if (currentQuery.queryResult().completesExercise()) {
-                    exercises().advanceExercise();
-                }
+                var exerciseCompleted = currentQuery.queryResult().completesExercise();
+
+                //if (exerciseCompleted) {
+                //    exercises().advanceExercise();
+                //}
 
                 if (user() == null) {
-                    loadUser();
+                    loadUser(function () {
+                        if (exerciseCompleted) {
+                            user().markExerciseAsCompleted(exerciseId);
+                        }
+                    });
                 }
-                else if (currentQuery.queryResult().completesExercise()) {
-                    user().markExerciseAsCompleted(currentQuery().exerciseId);
+                else if (exerciseCompleted) {
+                    user().markExerciseAsCompleted(exerciseId);
                 }
+
             });
         },
         updateExercises = function () {
@@ -61,10 +69,11 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
 
     // User methods
     var
-        loadUser = function () {
+        loadUser = function (postLoad) {
             dataService.users.getLoggedInUser(
                 function (userModel) {
                     user(userModel);
+                    postLoad();
                 },
                 function (error, rawData) {
                     alert("TODO: tell Eli he didn't handle the error for users.getLoggedInUser");
