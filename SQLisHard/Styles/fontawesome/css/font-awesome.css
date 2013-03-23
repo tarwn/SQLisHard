@@ -49,6 +49,7 @@
   background-position: 0% 0%;
   background-repeat: repeat;
   margin-top: 0;
+  font-size: 14px;	/* they are built to look good at this size and chrome rendering sucks on windows */
 }
 /* more sprites.less reset */
 .icon-white,

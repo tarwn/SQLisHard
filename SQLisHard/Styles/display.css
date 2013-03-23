@@ -121,17 +121,9 @@ footer .version {
 	#exerciseList ul li {
 		padding: 0px 0px 0px 1em;
 	}
-
-	#exerciseList ul li span:before{
-        content: "- ";
-    }
-
+	
     #exerciseList ul li.completed{
         color: #888888;
-    }
-
-	#exerciseList ul li.completed span:before{
-        content: "\2713 ";
     }
 
     #exerciseList ul li.selected{
