@@ -15,7 +15,10 @@ namespace SQLisHard.IntegrationTests.Steps
 		[Then(@"the (\d+)(?:st|nd|rd|th) entry on the Exercise list is selected")]
 		public void ThenTheStEntryOnTheExerciseListIsSelected(int indexOfSelectedEntry)
 		{
-			CurrentPage.As<ExercisePage>().AssertNthExerciseIsSelected(indexOfSelectedEntry);
+			CurrentPage.As<ExercisePage>().WaitUpTo(1000,
+				() => CurrentPage.As<ExercisePage>().IsNthExerciseIsSelected(indexOfSelectedEntry),
+				"Expected exercise to be selected");
+
 		}
 
 		[When(@"I complete the first exercise")]
@@ -23,5 +26,18 @@ namespace SQLisHard.IntegrationTests.Steps
 		{
 			CurrentPage.As<ExercisePage>().ExecuteQueryAndWaitForResults(Settings.CurrentSettings.FirstExerciseQuery);
 		}
+
+		[Then(@"the complete button is displayed")]
+		public void ThenTheCompleteButtonIsDisplayed()
+		{
+			CurrentPage.As<ExercisePage>().AssertCompleteButtonViaible();
+		}
+
+		[When(@"I press the Complete Button")]
+		public void WhenIPressTheCompleteButton()
+		{
+			CurrentPage.As<ExercisePage>().ContinueButton.Click();
+		}
+
 	}
 }

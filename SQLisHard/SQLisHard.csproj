@@ -188,6 +188,9 @@
     <Content Include="Scripts\TrafficCop.min.gz.js" />
     <Content Include="Scripts\TrafficCop.min.js" />
     <Content Include="Styles\display.css" />
+    <Content Include="Styles\fontawesome\css\font-awesome.css" />
+    <Content Include="Styles\fontawesome\font\fontawesome-webfont.svg" />
+    <Content Include="Styles\fonts.css" />
     <Content Include="Styles\main.css" />
     <Content Include="Styles\normalize.css" />
     <Content Include="Styles\responsive.css" />
@@ -213,6 +216,10 @@
     <Content Include="Views\Exercise\Index.cshtml" />
     <Content Include="Scripts\test\lib\jasmine-1.3.1\MIT.LICENSE" />
     <Content Include="Scripts\test\chutzpah.json" />
+    <Content Include="Styles\fontawesome\font\fontawesome-webfont.eot" />
+    <Content Include="Styles\fontawesome\font\fontawesome-webfont.ttf" />
+    <Content Include="Styles\fontawesome\font\fontawesome-webfont.woff" />
+    <Content Include="Styles\fontawesome\font\FontAwesome.otf" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -15,6 +15,9 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 
 		public override string PageUrl { get { return "/Exercise"; } }
 
+		[FindsBy(How = How.Id, Using = "continueButton")]
+		public IWebElement ContinueButton { get; set; }
+
 		[FindsBy(How = How.Id, Using = "queryInput")]
 		public IWebElement QueryInput { get; set; }
 
@@ -114,6 +117,19 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 			EnterQuery(queryText);
 			QueryExecutionButton.Click();
 			WaitUpTo(5000, () => ResultsAreAvailableAndSuccessful, "Results to be displayed");
+		}
+
+		internal void AssertCompleteButtonViaible()
+		{
+			AssertElementPresent(ContinueButton, "ContinueButton");
+		}
+
+
+		internal bool IsNthExerciseIsSelected(int indexOfSelectedEntry)
+		{
+			var i = indexOfSelectedEntry - 1;
+			var exerciseList = Driver.FindElements(ByExerciseListItems);
+			return exerciseList.Count > i &&  exerciseList[i].GetAttribute("class") == "selected";
 		}
 	}
 }

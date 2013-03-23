@@ -83,11 +83,11 @@ this.ScenarioSetup(scenarioInfo);
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Exercise selection advances when exercise completed")]
+        [NUnit.Framework.DescriptionAttribute("Exercise selection displays continue button when complete")]
         [NUnit.Framework.CategoryAttribute("UI")]
-        public virtual void ExerciseSelectionAdvancesWhenExerciseCompleted()
+        public virtual void ExerciseSelectionDisplaysContinueButtonWhenComplete()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Exercise selection advances when exercise completed", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Exercise selection displays continue button when complete", new string[] {
                         "UI"});
 #line 12
 this.ScenarioSetup(scenarioInfo);
@@ -96,6 +96,27 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
  testRunner.When("I complete the first exercise", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 15
+ testRunner.Then("the complete button is displayed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
+        
+        [NUnit.Framework.TestAttribute()]
+        [NUnit.Framework.DescriptionAttribute("Continue button moves to next exercise")]
+        [NUnit.Framework.CategoryAttribute("UI")]
+        public virtual void ContinueButtonMovesToNextExercise()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Continue button moves to next exercise", new string[] {
+                        "UI"});
+#line 18
+this.ScenarioSetup(scenarioInfo);
+#line 19
+ testRunner.Given("I am on the Exercise Page", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 20
+ testRunner.When("I complete the first exercise", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 21
+ testRunner.And("I press the Complete Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 22
  testRunner.Then("the 2nd entry on the Exercise list is selected", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
