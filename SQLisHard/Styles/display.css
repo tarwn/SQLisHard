@@ -132,9 +132,12 @@ footer .version {
         margin-left: 410px;
         margin-top: 20px;
         max-width: 800px;
+		border: 1px solid #dddddd;
+		background-color: #f6f6f6;
+		border-radius: 4px;
+		padding: .5em;
     }
     #exerciseDescription {
-        background-color: #eeeeee;
         padding: .5em;
 		height: 200px;
 		overflow-y: auto;
@@ -155,7 +158,7 @@ footer .version {
 
     /* Editor */
     #editor {
-        box-shadow: 0 0 5px 1px;
+        box-shadow: 0 0 2px 1px;
         margin-top: 1em;
     }
 
