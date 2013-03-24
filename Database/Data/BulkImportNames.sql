@@ -1,9 +1,9 @@
 
-IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES T WHERE T.TABLE_NAME = 'Clients' AND T.TABLE_SCHEMA = 'dbo')
-DROP TABLE dbo.Clients;
+IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES T WHERE T.TABLE_NAME = 'Customers' AND T.TABLE_SCHEMA = 'dbo')
+DROP TABLE dbo.Customers;
 
--- 'Clients' sample table
-CREATE TABLE dbo.Clients (
+-- 'Customers' sample table
+CREATE TABLE dbo.Customers (
 	Id		int IDENTITY(1,1) PRIMARY KEY,
 	FirstName	varchar(50),
 	LastName	varchar(50),
@@ -34,7 +34,7 @@ WITH Names AS (
 	FROM #Name N
 		CROSS JOIN #ForeNames FN
 )
-INSERT INTO dbo.Clients(FirstName, LastName, Gender)
+INSERT INTO dbo.Customers(FirstName, LastName, Gender)
 SELECT FirstName, LastName, Gender
 FROM Names
 WHERE Sort <= Cap;

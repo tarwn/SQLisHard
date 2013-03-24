@@ -95,8 +95,11 @@ catch{
 }
 
 #clients table
+Invoke-Sqlcmd -Query "IF EXISTS(SELECT 1 FROM sys.tables WHERE name = 'Clients') DROP TABLE dbo.Clients" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+
+#customers table
 try{
-    Write-Host "Creating Table: dbo.Clients"
+    Write-Host "Creating Table: dbo.Customers"
     $girlsnames = ("<ns><n>" + [string]::Join("</n><n>",(Get-Content "$path\Data\girlsforenames.txt")) + "</n></ns>").Replace("'","''")
     $boysnames =  ("<ns><n>" + [string]::Join("</n><n>",(Get-Content "$path\Data\boysforenames.txt")) + "</n></ns>").Replace("'","''")
     $lastnames =  ("<ns><n>" + [string]::Join("</n><n>",(Get-Content "$path\Data\surnames.txt")) + "</n></ns>").Replace("'","''")
@@ -107,9 +110,9 @@ try{
                     | % {$_ -replace "{{LASTNAMES}}", $lastnames} `
                     | Set-Content -path "$path\Data\BulkImportNamesRunnable.sql"
 
-    Invoke-Sqlcmd -Query "IF EXISTS(SELECT 1 FROM sys.tables WHERE name = 'Clients') DROP TABLE dbo.Clients" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+    #Invoke-Sqlcmd -Query "IF EXISTS(SELECT 1 FROM sys.tables WHERE name = 'Customers') DROP TABLE dbo.Customers" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
     invoke-sqlcmd -inputfile "$path\Data\BulkImportNamesRunnable.sql" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -QueryTimeout 120  -ErrorAction Stop
-    Invoke-Sqlcmd -Query "SELECT COUNT(*) FROM dbo.Clients;"  -ServerInstance "$Server" -Username "$NewUserName" -Password "$NewPassword" -Database "$Database" -ErrorAction Stop
+    Invoke-Sqlcmd -Query "SELECT COUNT(*) FROM dbo.Customers;"  -ServerInstance "$Server" -Username "$NewUserName" -Password "$NewPassword" -Database "$Database" -ErrorAction Stop
     DEL "$path\Data\BulkImportNamesRunnable.sql"
     Write-Host "Created."
 }
