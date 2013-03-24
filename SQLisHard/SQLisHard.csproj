@@ -130,7 +130,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\MVC\CaptureUnhandledExceptionAttribute.cs" />
+    <Compile Include="Attributes\MVC\LogUserInteractionAttribute.cs" />
     <Compile Include="Attributes\WebAPI\CaptureUnhandledExceptionAttribute.cs" />
+    <Compile Include="Attributes\WebAPI\LogUserInteractionAttribute.cs" />
     <Compile Include="Attributes\WebAPI\RequiresUserOrGuestAttribute.cs" />
     <Compile Include="Attributes\RequiresUserOrGuestImplementation.cs" />
     <Compile Include="Controllers\ExercisesController.cs" />

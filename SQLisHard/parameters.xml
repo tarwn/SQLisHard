@@ -1,6 +1,12 @@
 <parameters>
 	<parameter name="Environment.Name" description="Descriptive name for environment" defaultvalue="false">
-		<parameterEntry kind="XmlFile" scope="Web.config" match="/configuration/appSettings/add[@key='']/@value" />
+		<parameterEntry kind="XmlFile" scope="Web.config" match="/configuration/appSettings/add[@key='Environment.Name']/@value" />
+	</parameter>
+	<parameter name="Storm.AccessToken" description="Splunk Storm API Access Token" defaultvalue="false">
+		<parameterEntry kind="XmlFile" scope="Web.config" match="/configuration/appSettings/add[@key='Storm.AccessToken']/@value" />
+	</parameter>
+	<parameter name="Storm.ProjectId" description="Splunk Storm project id" defaultvalue="false">
+		<parameterEntry kind="XmlFile" scope="Web.config" match="/configuration/appSettings/add[@key='Storm.ProjectId']/@value" />
 	</parameter>
 	<parameter name="SMTP.FromAddress" description="from address for outgoing mail" defaultvalue="">
 		<parameterEntry kind="XmlFile" scope="Web.config" match="/configuration/system.net/mailSettings/smtp/@host" />

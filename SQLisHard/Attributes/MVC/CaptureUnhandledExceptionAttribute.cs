@@ -35,7 +35,7 @@ namespace SQLisHard.Attributes.MVC
 			};
 			if (context.HttpContext.User.Identity.IsAuthenticated)
 			{
-				var user = context.HttpContext.User.Identity as UserPrincipal;
+				var user = context.HttpContext.User as UserPrincipal;
 				if (user != null)
 				{
 					args.UserId = user.UserIdentity.Id.Value;

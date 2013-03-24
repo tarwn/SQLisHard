@@ -1,5 +1,7 @@
-﻿using System;
+﻿using SQLisHard.General.ExperienceLogging.Log;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -17,11 +19,30 @@ namespace SQLisHard
 			AreaRegistration.RegisterAllAreas();
 
 			GlobalConfiguration.Configuration.Filters.Add(new Attributes.WebAPI.CaptureUnhandledExceptionAttribute());
+			GlobalConfiguration.Configuration.Filters.Add(new Attributes.WebAPI.LogUserInteractionAttribute());
 			GlobalFilters.Filters.Add(new Attributes.MVC.CaptureUnhandledExceptionAttribute());
+			GlobalFilters.Filters.Add(new Attributes.MVC.LogUserInteractionAttribute());
 
 			WebApiConfig.Register(GlobalConfiguration.Configuration);
 			FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+			SetDefaultLogProvider();
+		}
+
+		private void SetDefaultLogProvider()
+		{
+			// only uses storm on text and live servers so I don't have to commit the acces token or provider
+			//	will figure out a local solution later
+			var stormBaseUrl = ConfigurationManager.AppSettings["Storm.BaseUrl"];
+			var stormAccessToken = ConfigurationManager.AppSettings["Storm.AccessToken"];
+			var stormProjectId = ConfigurationManager.AppSettings["Storm.ProjectId"];
+			ILogProvider provider;
+			if (string.IsNullOrWhiteSpace(stormAccessToken))
+				provider = new NullLogProvider();
+			else
+				provider = new StormProvider(stormBaseUrl, stormAccessToken, stormProjectId, true);
+			Logger.SetDefaultLogger(provider);
 		}
 	}
 }

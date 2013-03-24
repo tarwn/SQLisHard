@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ServiceStack.Text">
+      <HintPath>..\packages\ServiceStack.Text.3.9.42\lib\net35\ServiceStack.Text.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
@@ -46,8 +49,19 @@
     <Compile Include="ErrorLogging\EmailLogProvider.cs" />
     <Compile Include="ErrorLogging\ILogProvider.cs" />
     <Compile Include="ErrorLogging\LogArguments.cs" />
+    <Compile Include="ExperienceLogging\Communications\ErrorResult.cs" />
+    <Compile Include="ExperienceLogging\Communications\HttpJsonPost.cs" />
+    <Compile Include="ExperienceLogging\Communications\RequestState.cs" />
+    <Compile Include="ExperienceLogging\Communications\Result.cs" />
+    <Compile Include="ExperienceLogging\Log\ILogProvider.cs" />
+    <Compile Include="ExperienceLogging\Log\Logger.cs" />
+    <Compile Include="ExperienceLogging\Log\NullLogProvider.cs" />
+    <Compile Include="ExperienceLogging\Log\StormProvider.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

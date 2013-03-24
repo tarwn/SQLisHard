@@ -14,6 +14,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 
 namespace SQLisHard.Controllers
 {
@@ -37,7 +38,16 @@ namespace SQLisHard.Controllers
         {
 			var user = (UserPrincipal)HttpContext.Current.User;
 			value.RequestorId = user.UserIdentity.Id;
-			return _exerciseEvaluator.Evaluate(value);
+			var result = _exerciseEvaluator.Evaluate(value);
+			
+			// hacky: fix later
+			this.Request.Properties["AdditionalInteractionValues"] = new Dictionary<string, string>() { 
+				{"ExerciseId", value.ExerciseId},
+				{"ResultStatus", result.ExecutionStatus.ToString() },
+				{"CompletesExercise", result.CompletesExercise.ToString() }
+			};
+
+			return result;
         }
 
 		public string GetException()

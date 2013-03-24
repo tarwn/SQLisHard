@@ -38,7 +38,7 @@ namespace SQLisHard.Attributes.WebAPI
 			};
 			if(HttpContext.Current != null && HttpContext.Current.User.Identity.IsAuthenticated)
 			{
-				var user = HttpContext.Current.User.Identity as UserPrincipal;
+				var user = HttpContext.Current.User as UserPrincipal;
 				if (user != null)
 				{
 					args.UserId = user.UserIdentity.Id.Value;
