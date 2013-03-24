@@ -10,4 +10,6 @@
 	<setParameter name="SMTP.Password" value="{{SMTP.PASSWORD}}" />
 	<setParameter name="SMTP.EnableSsl" value="{{SMTP.ENABLESSL}}" />
 	<setParameter name="Environment.Name" value="{{ENVIRONMENT.NAME}}" />
+	<setParameter name="Storm.AccessToken" value="{{STORM.ACCESSTOKEN}}" />
+	<setParameter name="Storm.ProjectId" value="{{STORM.PROJECTID}}" />
 </parameters>
