@@ -38,7 +38,7 @@ namespace SQLisHard
 			var stormAccessToken = ConfigurationManager.AppSettings["Storm.AccessToken"];
 			var stormProjectId = ConfigurationManager.AppSettings["Storm.ProjectId"];
 			ILogProvider provider;
-			if (string.IsNullOrWhiteSpace(stormAccessToken))
+			if (string.IsNullOrWhiteSpace(stormAccessToken) || stormAccessToken == "off")	//special hardcoded value becaue ms deploy params can't be empty
 				provider = new NullLogProvider();
 			else
 				provider = new StormProvider(stormBaseUrl, stormAccessToken, stormProjectId, true);
