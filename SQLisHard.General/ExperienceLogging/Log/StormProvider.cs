@@ -27,14 +27,15 @@ namespace SQLisHard.General.ExperienceLogging.Log
 		{
 			get
 			{
-				return string.Format("{0}?index={1}&sourcetype=json", _baseUrl, _projectId);
+				return string.Format("{0}?index={1}&sourcetype=json_predefined_timestamp", _baseUrl, _projectId);
 			}
 		}
 
 		public void Log(Dictionary<string, string> message, Action<Communications.Result> callback)
 		{
+			message["timestamp"] = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
 			var credentials = new NetworkCredential("x", _accessToken, "");
-			var request = new HttpJsonPost(message, credentials, false);
+			var request = new HttpJsonPost(message, credentials, true);
 			if (_sendAsync)
 				request.SendAsync(FullUrl, "POST", callback);
 			else

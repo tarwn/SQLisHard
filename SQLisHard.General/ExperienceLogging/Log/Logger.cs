@@ -62,7 +62,7 @@ namespace SQLisHard.General.ExperienceLogging.Log
 		public LoggerWithElapsedTime(Logger logger, Dictionary<string, string> initialMessage, Action<Result> callback)
 		{
 			_message = initialMessage;
-			_message.Add("StartTime", DateTime.UtcNow.ToString());
+			_message.Add("StartTime", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
 			_callback = callback;
 			_logger = logger;
 			_timer = new Stopwatch();
