@@ -36,7 +36,7 @@ namespace SQLisHard.Domain.Exercises
 
 				var userHeaders = String.Join("**", userQuery.Data.Headers.Select(h => h.ColumnId + ":" + h.ColumnName + ":" + h.ColumnType));
 				var rawHeaders = String.Join("**", _rawQueryResult.Data.Headers.Select(h => h.ColumnId + ":" + h.ColumnName + ":" + h.ColumnType));
-				if (userHeaders != rawHeaders)
+				if (!userHeaders.Equals(rawHeaders, StringComparison.CurrentCultureIgnoreCase))
 					return false;
 
 				var rowsToCompare = Math.Min(userQuery.Data.Rows.Count, _rawQueryResult.Data.Rows.Count);

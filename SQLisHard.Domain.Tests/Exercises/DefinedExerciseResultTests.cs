@@ -124,6 +124,22 @@ namespace SQLisHard.Domain.Tests.Exercises
 			Assert.IsTrue(result);
 		}
 
+		[Test]
+		public void Equals_QueryResultWithMatchingResultsMatchingTotalCountMismatchedHeaderCase_ReturnsTrue()
+		{
+			var queryResult = new QueryResult() { TotalRowCount = 123 };
+			FillDataTable(queryResult.Data, 5, 123);
+			queryResult.Data.Headers[0].ColumnName = queryResult.Data.Headers[0].ColumnName.ToUpper();
+			var rawQueryResult = new QueryResult() { TotalRowCount = 123 };
+			FillDataTable(rawQueryResult.Data, 5, 10);
+			rawQueryResult.Data.Headers[0].ColumnName = rawQueryResult.Data.Headers[0].ColumnName.ToLower();
+			var definedResult = new DefinedExerciseResult(rawQueryResult);
+
+			var result = definedResult.Equals(queryResult);
+
+			Assert.IsTrue(result);
+		}
+
 		private void FillDataTable(DataTable data, int expColumnCount, int expRowCount, string colPrefix = "", string rowPrefix = "")
 		{
 			for(int colCount = 0; colCount < expColumnCount; colCount++)
