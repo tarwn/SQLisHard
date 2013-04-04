@@ -37,11 +37,14 @@ namespace SQLisHard
 			var stormBaseUrl = ConfigurationManager.AppSettings["Storm.BaseUrl"];
 			var stormAccessToken = ConfigurationManager.AppSettings["Storm.AccessToken"];
 			var stormProjectId = ConfigurationManager.AppSettings["Storm.ProjectId"];
+			var environmentName = ConfigurationManager.AppSettings["Environment.Name"];
+			var version = ConfigurationManager.AppSettings["Application.Version"];
+
 			ILogProvider provider;
 			if (string.IsNullOrWhiteSpace(stormAccessToken) || stormAccessToken == "off")	//special hardcoded value becaue ms deploy params can't be empty
 				provider = new NullLogProvider();
 			else
-				provider = new StormProvider(stormBaseUrl, stormAccessToken, stormProjectId, true);
+				provider = new StormProvider(stormBaseUrl, stormAccessToken, stormProjectId, environmentName, version, true);
 			Logger.SetDefaultLogger(provider);
 		}
 	}

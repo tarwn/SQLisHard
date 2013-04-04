@@ -1,4 +1,7 @@
 <parameters>
+	<parameter name="Application.Version" description="Build Version for the Application" defaultvalue="false">
+		<parameterEntry kind="XmlFile" scope="Web.config" match="/configuration/appSettings/add[@key='Application.Version']/@value" />
+	</parameter>
 	<parameter name="Environment.Name" description="Descriptive name for environment" defaultvalue="false">
 		<parameterEntry kind="XmlFile" scope="Web.config" match="/configuration/appSettings/add[@key='Environment.Name']/@value" />
 	</parameter>
