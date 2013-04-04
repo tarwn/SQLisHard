@@ -43,7 +43,7 @@ namespace SQLisHard.Domain.ExerciseEvaluator
 
 			var expectedResult = _exerciseStore.GetExerciseResultForComparison(statement.ExerciseId);
 
-			return expectedResult.Equals(queryResult);
+			return expectedResult != null && expectedResult.Equals(queryResult);
         }
     }
 }

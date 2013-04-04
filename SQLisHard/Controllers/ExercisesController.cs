@@ -53,6 +53,9 @@ namespace SQLisHard.Controllers
 		public DefinedExerciseResult GetExerciseResultForComparison(string exerciseId)
 		{
 			var exercise = _hardcodedExercises.Exercises.Where(e => e.Id == exerciseId).FirstOrDefault();
+			if (exercise == null)
+				return null;
+
 			var query = new Query() { 
 				Content = exercise.Query,
 				LimitResults = true
