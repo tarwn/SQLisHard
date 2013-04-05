@@ -37,7 +37,7 @@ namespace SQLisHard
 			var stormBaseUrl = ConfigurationManager.AppSettings["Storm.BaseUrl"];
 			var stormAccessToken = ConfigurationManager.AppSettings["Storm.AccessToken"];
 			var stormProjectId = ConfigurationManager.AppSettings["Storm.ProjectId"];
-			var environmentName = ConfigurationManager.AppSettings["Environment.Name"];
+			var environmentName = ConfigurationManager.AppSettings["Environment.Name"] + ".sqlishard.com";
 			var version = ConfigurationManager.AppSettings["Application.Version"];
 
 			ILogProvider provider;
