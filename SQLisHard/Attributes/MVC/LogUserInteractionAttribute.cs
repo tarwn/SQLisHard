@@ -22,7 +22,7 @@ namespace SQLisHard.Attributes.MVC
 				/* todo: add in action parameters when I start using them */
 				{"Environment", ConfigurationManager.AppSettings["Environment.Name"]}
 			};
-			filterContext.HttpContext.Items[INTERACTION_LOGGER_KEY] = Logger.CaptureElapsedTime(data, (r) => { throw new Exception(String.Format("Result: {0}", r.RawContent)); });
+			filterContext.HttpContext.Items[INTERACTION_LOGGER_KEY] = Logger.CaptureElapsedTime(data, null);
 		}
 
 		public override void OnResultExecuted(ResultExecutedContext filterContext)

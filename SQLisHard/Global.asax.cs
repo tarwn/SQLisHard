@@ -44,7 +44,7 @@ namespace SQLisHard
 			if (string.IsNullOrWhiteSpace(stormAccessToken) || stormAccessToken == "off")	//special hardcoded value becaue ms deploy params can't be empty
 				provider = new NullLogProvider();
 			else
-				provider = new StormProvider(stormBaseUrl, stormAccessToken, stormProjectId, environmentName, version, true);
+				provider = new StormProvider(stormBaseUrl, stormAccessToken, stormProjectId, environmentName, version, false);
 			Logger.SetDefaultLogger(provider);
 		}
 	}
