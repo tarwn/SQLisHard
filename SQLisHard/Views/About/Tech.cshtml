@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "Learning SQL - The Tech";
+
+}
+<div class="about">
+    <div class="banner">
+        <h1>SQL is Hard</h1>
+        <ul>
+            <li>@Html.ActionLink("The Goal","","About")</li>
+            <li>@Html.ActionLink("The Exercises","Exercises","About")</li>
+            <li class="selected">@Html.ActionLink("The Tech","Tech","About")</li>
+        </ul>
+    </div>
+    <h2>Welcome to the Cloud</h2>
+    <p>
+    The SQLisHard application runs in <a href="http://www.windowsazure.com/en-us/" title="Windows Azure">Windows Azure</a> 
+    and executes queries against sample data that resides in an
+    <a href="http://msdn.microsoft.com/en-us/library/windowsazure/ee336279.aspx" title="Azure SQL Database">Azure SQL Database</a>. 
+    The site runs as a shared website in <a href="http://www.windowsazure.com/en-us/home/scenarios/web-sites/" title="Azure Web Sites">Windows Azure Web Sites</a>.
+    </p>
+    <h2>The App</h2>
+    <p>
+    The application is an <a href="http://www.asp.net/" title="ASP.Net">ASP.Net</a> application, using both 
+    <a href="http://www.asp.net/mvc" title="ASP.Net MVC">MVC</a> and <a href="http://www.asp.net/web-api" title="ASP.Net Web API">Web API</a>
+    on the server-side with the <a href="http://www.codethinked.com/squishit-the-friendly-aspnet-javascript-and-css-squisher" title="SquishIt library">SquishIt</a>
+    library to manage CSS and JavaScript resources. The client-side uses <a href="http://html5boilerplate.com/">HTML5 Boilerplate</a> and javascript libraries like 
+    <a href="http://jquery.com/" title="jQuery library">jQuery</a>, <a href="http://knockoutjs.com/" title="kncokout.js library">knockout.js</a> 
+    with <a href="https://github.com/ifandelse/Knockout.js-External-Template-Engine/blob/master/README.md" title="koExternalTemplateEngine on github">koExternalTemplateEngine</a>, 
+    and <a href="http://modernizr.com/" title="modernizr library">modernizr</a>. Behind the scenes, diagnostics and logging is
+    sent to <a href="http://www.splunkstorm.com/" title="SplunkStorm logging">SplunkStorm</a> and every error is carefully logged and emailed directly to me.
+    </p>
+    <h2>On Demand Deployment</h2>
+    <p>
+    The build and deployment process is automated; a custom build setup in 
+    <a href="http://www.jetbrains.com/teamcity/" title="Check out TeamCity">TeamCity</a> watches for code changes, 
+    running unit and integration tests (<a href="http://www.nunit.org/" title="Nunit">Nunit</a>, 
+    <a href="http://docs.seleniumhq.org/" title="Selenium WebDriver">Selenium</a>, 
+    <a href="http://www.specflow.org/specflownew/" title="SpecFlow BDD">SpecFlow</a>,
+    <a href="http://pivotal.github.io/jasmine/" title="Jasmine">Jasmine</a>),
+    and deploying both local test environments 
+    and the production environment.
+    </p>
+    <p>
+    This reduces the friction. I can tweak the interface or add a feature and not have to slow down and copy files somewhere.
+    </p>
+    <h2>More Detail to Come</h2>
+    <p>
+    This wasn't intended to read like a tech demo, but I enjoy working with each of these technologies and thought 
+    I should call them out. I intended to blog more on them when I have time over on <a href="http://lessthandot.com">LessThanDot</a>.
+    </p>
+    
+</div>

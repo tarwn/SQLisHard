@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "Learning SQL - The Exercises";
+
+}
+<div class="about">
+    <div class="banner">
+        <h1>SQL is Hard</h1>
+        <ul>
+            <li>@Html.ActionLink("The Goal","","About")</li>
+            <li class="selected">@Html.ActionLink("The Exercises","Exercises","About")</li>
+            <li>@Html.ActionLink("The Tech","Tech","About")</li>
+        </ul>
+    </div>
+    <h2>Current Exercises</h2>
+    <p>
+    The first set of exercises is designed around SELECTing data from the database, starting from nothing
+    and progressing through sorting, multiple table JOINs, and data aggregation with methods such as SUM 
+    and AVG.
+    </p>
+    <p>
+    At the moment, I have only added the first few exercises in this set, enough to help me build out the 
+    interface and infrastructure before finishing out this first Exercise Set.
+    </p>
+    <h2>Future Exercise Sets</h2>
+    <p>
+    Once the first exercise set is stable, I'm going to move on to defining new sets of exercises. Ideas 
+    I've been playing with include:
+    <ul>
+        <li>Windowing functions</li>
+        <li>Common Table Expressions</li>
+        <li>Performance Tuning (Capturing plans and STATISTICS IO output, if possible)</li>
+        <li>Using INFORMATION_SCHEMA and System Tables</li>
+        <li>INSERT/UPDATE/DELETE statements</li>
+        <li>Programming Challenges</li>
+    </ul>
+    </p>
+    <p>
+    Mixed in will be additional features, depending on the number of peopel using the site, levels of
+    experience, and so on. Performance improvements ay prove necessary, additional functionality to
+    support some of the new exercise sets above will probably be required, and some ability to save
+    and review past progress are all items on the backlog.
+    </p>
+
+</div>

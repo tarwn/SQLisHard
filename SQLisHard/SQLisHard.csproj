@@ -135,6 +135,7 @@
     <Compile Include="Attributes\WebAPI\LogUserInteractionAttribute.cs" />
     <Compile Include="Attributes\WebAPI\RequiresUserOrGuestAttribute.cs" />
     <Compile Include="Attributes\RequiresUserOrGuestImplementation.cs" />
+    <Compile Include="Controllers\AboutController.cs" />
     <Compile Include="Controllers\ExercisesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ExerciseController.cs" />
@@ -222,6 +223,9 @@
     <Content Include="Styles\fontawesome\font\fontawesome-webfont.ttf" />
     <Content Include="Styles\fontawesome\font\fontawesome-webfont.woff" />
     <Content Include="Styles\fontawesome\font\FontAwesome.otf" />
+    <Content Include="Views\About\Index.cshtml" />
+    <Content Include="Views\About\Exercises.cshtml" />
+    <Content Include="Views\About\Tech.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

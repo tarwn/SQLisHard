@@ -5,11 +5,11 @@
     string exercisesApiUrl = @Url.Content("~/api/Exercises/List");
     string userApiUrl = @Url.Content("~/api/User/GetLoggedInUser");
 }
-<div id="topBar" class="clearfix">
-    <h1>SQL is Hard</h1>
-    <span data-bind="ifnot: user">Register / Login</span>
+@section ExtraNavLinks {
+    <span data-bind="ifnot: user"></span>
     <span data-bind="if: user">Welcome <a href="javascript: void(0);" data-bind="text: user().displayName"></a></span>
-</div>
+}
+
 <div id="left">
     <h1>SQL is Hard</h1>
     

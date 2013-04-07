@@ -37,7 +37,14 @@
     )
 </head>
 <body>
-    <div>
+    <div id="topBar" class="clearfix">
+        <h1>@Html.ActionLink("SQL is Hard","","Home")</h1>
+        @if (IsSectionDefined("ExtraNavLinks")){
+            @RenderSection("ExtraNavLinks")
+        }
+        <span>@Html.ActionLink("About","","About")</span>
+    </div>
+    <div style="margin-bottom: 30px;">
         @RenderBody()
     </div>
     <footer>
