@@ -7,11 +7,19 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="description" content="">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    @if (!string.IsNullOrWhiteSpace(ViewBag.PageDescription)){
+        <meta name="description" content="@ViewBag.PageDescription" />
+    }
+    else
+    { 
+        <meta name="description" content="Learning SQL can be tough. SQLisHard.com is an interactive set of exercises that provide a hands-on set of exercises to help learn SQL." />
+    }
+        
     <meta name="viewport" content="width=device-width" />
     <title>SQL Is Hard - @ViewBag.Title</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
     @Html.Raw(Bundle.Css()
         .Add("~/styles/fonts.css")
         .Add("~/styles/normalize.css")
@@ -38,13 +46,14 @@
 </head>
 <body>
     <div id="topBar" class="clearfix">
-        <h1>@Html.ActionLink("SQL is Hard","","Home")</h1>
-        @if (IsSectionDefined("ExtraNavLinks")){
+        <h1>@Html.ActionLink("SQL is Hard", "", "Home")</h1>
+        @if (IsSectionDefined("ExtraNavLinks"))
+        {
             @RenderSection("ExtraNavLinks")
         }
-        <span>@Html.ActionLink("About","","About")</span>
+        <span>@Html.ActionLink("About", "", "About")</span>
     </div>
-    <div style="margin-bottom: 30px;">
+    <div style="margin-bottom: 38px;">
         @RenderBody()
     </div>
     <footer>

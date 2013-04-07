@@ -24,5 +24,10 @@ namespace SQLisHard.Controllers
 			return View();
 		}
 
+		public ActionResult Updates()
+		{
+			return View();
+		}
+
     }
 }
