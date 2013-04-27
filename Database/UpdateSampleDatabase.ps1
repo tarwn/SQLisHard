@@ -34,7 +34,16 @@ Param(
 $path = (Get-Location).Path
 $UpdatesFolder = [string]"$path\SampleDatabaseUpdates"
 
-Import-Module “sqlps” -DisableNameChecking
+# For 2010 - load the modules
+try{    
+    if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null -and (Get-PSSnapin -Registered -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -ne $null){
+        Add-PSSnapin SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue
+        Add-PSSnapin SqlServerProviderSnapin100 -ErrorAction SilentlyContinue
+    }
+}
+catch{
+    Write-Error "Powershell Script error: $_" -EA Stop
+}
 
 # include the generic update function
 . .\ApplyDatabaseUpdates.ps1
@@ -123,7 +132,8 @@ Import-Module “sqlps” -DisableNameChecking
     # Clean up generated content - mostly for local usage so we don't commit the files
     if($DeleteGeneratedContentAfter -eq $true){
         Write-Host "Cleaning up generated content to make commits safe"
-        $GeneratedContentReplacement = "RAISERROR (N'Content for database update has not been generated',1,1);"
+        $GeneratedContentReplacement = "RAISERROR (N'Content for database update has not been generated',1,1)
+"
 
         $GeneratedContentReplacement > $CustomersContentPath
 
