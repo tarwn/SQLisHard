@@ -27,15 +27,7 @@ Param(
 $path = (Get-Location).Path
 $UpdatesFolder = [string]"$path\CoreDatabaseUpdates"
 
-#try{    
-#    if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null ){
-#        Add-PSSnapin SqlServerCmdletSnapin100
-#        Add-PSSnapin SqlServerProviderSnapin100
-#    }
-#}
-#catch{
-#    Write-Error "Powershell Script error: $_" -EA Stop
-#}
+Import-Module “sqlps” -DisableNameChecking
 
 # include the generic update function
 . .\ApplyDatabaseUpdates.ps1
