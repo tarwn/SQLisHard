@@ -62,3 +62,6 @@ _ReSharper*/
 
 #Test files
 *.testsettings
+
+# local settings files
+RunLocally.ps1

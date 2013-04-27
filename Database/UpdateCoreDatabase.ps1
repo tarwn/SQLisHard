@@ -1,123 +1,96 @@
 Param(
     [parameter(Mandatory=$true)]
     [alias("s")]
+    [string]
     $Server,
     [parameter(Mandatory=$true)]
     [alias("d")]
+    [string]
     $Database,
     [parameter(Mandatory=$true)]
     [alias("nu")]
+    [string]
     $NewUserName,
     [parameter(Mandatory=$true)]
     [alias("np")]
+    [string]
     $NewPassword,
     [parameter(Mandatory=$true)]
     [alias("au")]
+    [string]
     $AdminUserName,
     [parameter(Mandatory=$true)]
     [alias("ap")]
+    [string]
     $AdminPassword)
 
-try{    
-    if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null ){
-        Add-PSSnapin SqlServerCmdletSnapin100
-        Add-PSSnapin SqlServerProviderSnapin100
-    }
-}
-catch{
-    Write-Error "Powershell Script error: $_" -EA Stop
-}
-
-
 $path = (Get-Location).Path
+$UpdatesFolder = [string]"$path\CoreDatabaseUpdates"
 
-#database
-Write-Host "Checking database exists...";
-$result = Invoke-Sqlcmd -Query "SELECT [name] FROM [sys].[databases] WHERE [name] = N'$database'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-if($result.name){
-    Write-Host "Database already exists";
-}
-else{
-    Write-Host "Creating Database: $database"
+#try{    
+#    if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null ){
+#        Add-PSSnapin SqlServerCmdletSnapin100
+#        Add-PSSnapin SqlServerProviderSnapin100
+#    }
+#}
+#catch{
+#    Write-Error "Powershell Script error: $_" -EA Stop
+#}
 
-    Invoke-Sqlcmd -Query "CREATE DATABASE $database" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-    Invoke-Sqlcmd -Query "ALTER DATABASE $database SET RECOVERY SIMPLE" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-    Write-Host "Created."
-}
+# include the generic update function
+. .\ApplyDatabaseUpdates.ps1
 
-#user
-try{
-    Write-Host "Creating User: $NewUserName"
-    $result = Invoke-Sqlcmd -Query "SELECT [name] FROM sys.sql_logins WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-    if($result.name){
-        Write-Host "Login already exists"
+
+# ---------------------------------- Environment ---------------------------------------------
+# Ensure database, security, etc are setup
+
+    #database
+        Write-Host "Checking database exists...";
+        $result = Invoke-Sqlcmd -Query "SELECT [name] FROM [sys].[databases] WHERE [name] = N'$database'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+        if($result.name){
+            Write-Host "Database already exists";
+        }
+        else{
+            Write-Host "Creating Database: $database"
+
+            Invoke-Sqlcmd -Query "CREATE DATABASE $database" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+            Invoke-Sqlcmd -Query "ALTER DATABASE $database SET RECOVERY SIMPLE" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+            Write-Host "Created."
+        }
+
+    #user
+    try{
+        Write-Host "Creating User: $NewUserName"
+        $result = Invoke-Sqlcmd -Query "SELECT [name] FROM sys.sql_logins WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+        if($result.name){
+            Write-Host "Login already exists"
+        }
+        else{
+            Write-Host "Creating login..."
+            Invoke-Sqlcmd -Query "CREATE LOGIN $NewUserName WITH PASSWORD = '$NewPassword'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+            Write-Host "Login Created."
+        }
+
+        $result = Invoke-Sqlcmd -Query "SELECT [name] FROM sys.sysusers WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+        if($result.name){
+            Write-Host "User already exists"
+        }
+        else{
+            Write-Host "Creating user..."
+            Invoke-Sqlcmd -Query "CREATE USER $NewUserName FOR LOGIN $NewUserName WITH DEFAULT_SCHEMA = dbo" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+            Invoke-Sqlcmd -Query "EXEC sp_addrolemember 'db_datareader','$NewUserName'; EXEC sp_addrolemember 'db_datawriter','$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+            Write-Host "User Created."
+        }
     }
-    else{
-        Write-Host "Creating login..."
-        Invoke-Sqlcmd -Query "CREATE LOGIN $NewUserName WITH PASSWORD = '$NewPassword'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-        Write-Host "Login Created."
+    catch{
+        Write-Error "Powershell Script error: $_" -EA Stop
     }
 
-    $result = Invoke-Sqlcmd -Query "SELECT [name] FROM sys.sysusers WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
-    if($result.name){
-        Write-Host "User already exists"
-    }
-    else{
-        Write-Host "Creating user..."
-        Invoke-Sqlcmd -Query "CREATE USER $NewUserName FOR LOGIN $NewUserName WITH DEFAULT_SCHEMA = dbo" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
-        Invoke-Sqlcmd -Query "EXEC sp_addrolemember 'db_datareader','$NewUserName'; EXEC sp_addrolemember 'db_datawriter','$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
-        Write-Host "User Created."
-    }
-}
-catch{
-    Write-Error "Powershell Script error: $_" -EA Stop
-}
+# ---------------------------------- Apply Updates ---------------------------------------------
 
+    Write-Host "Applying changes from $UpdatesFolder"
 
-#updates tracking
-try{
-    Write-Host "Creating Update Tracking Table If Not Exists"
-    Invoke-Sqlcmd -Query "IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'UpdateTracking') CREATE TABLE UpdateTracking (UpdateTrackingKey int IDENTITY(1,1) PRIMARY KEY, Name varchar(255) NOT NULL, Applied DateTime NOT NULL);" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
-    Write-Host "Done"
-}
-catch{
-    Write-Error "Powershell Script error: $_" -EA Stop
-}
-
-#database updates
-$outputPath = "$path\CoreDatabaseUpdatesBatch.sql"
-$stream = [System.IO.StreamWriter] "$outputPath"
-$fileUpdates = Get-ChildItem "$path\CoreDatabaseUpdates"
-$datestamp = $(get-date -f "yyyy-MM-dd HH:mm")
-
-$stream.WriteLine("/* SQL Core Updates - Updated $datestamp */")
-$stream.WriteLine("BEGIN TRANSACTION")
-
-foreach($file in $fileUpdates) 
-{ 
-    $name = ($file.Name)
-    $namewe = ([System.IO.Path]::GetFileNameWithoutExtension($name))
-
-    $stream.WriteLine("")
-    $stream.WriteLine("/* File: $name */")
-    $stream.WriteLine("IF NOT EXISTS (SELECT 1 FROM UpdateTracking WHERE Name = '$namewe')")
-    $stream.WriteLine("BEGIN")
-
-    $stream.WriteLine("`tPrint 'Applying Update: $namewe'")
-    $stream.WriteLine("`tEXEC('")
-    (Get-Content "$path\CoreDatabaseUpdates\$name") | % {$_ -replace "'", "''"} | % {$stream.WriteLine("`t`t$_")}
-    $stream.WriteLine("`t');")
-
-    $stream.WriteLine("`tINSERT INTO UpdateTracking(Name, Applied) SELECT '$namewe', GETUTCDATE();")
-    $stream.WriteLine("END")
-}  
-
-$stream.WriteLine("COMMIT TRANSACTION")
-$stream.Close()
-Write-Host "Update Script Created."
-
-Write-Host "Running updates..."
-
-Invoke-SqlCmd -InputFile "$outputPath" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -Verbose -ErrorAction Stop
+    #Apply the updates
+    ApplyDatabaseUpdates $UpdatesFolder $Server $Database $AdminUserName $AdminPassword
 
 Write-Host "Done."
