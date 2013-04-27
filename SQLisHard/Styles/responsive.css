@@ -3,3 +3,33 @@
 		height: 300px
 	}
 }
+
+
+
+/*@media only screen and (min-width: 400px) {
+	#left {
+		width: 250px;
+	}
+
+	h1, #summary {
+		display: none;
+	}
+
+	#main {
+		margin-left: 260px;
+	}
+}
+
+@media only screen and (min-width: 801px) {
+	#left {
+		width: 400px;
+	}
+
+	h1, #summary {
+		display: auto;
+	}
+
+	#main {
+		margin-left: 410px;
+	}
+}*/

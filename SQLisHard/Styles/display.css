@@ -139,15 +139,17 @@ footer .version {
     }
 
     #main {
+		position: relative;
         margin-left: 410px;
-        margin-top: 20px;
+        margin-top: 10px;
         max-width: 800px;
 		border: 1px solid #dddddd;
 		background-color: #f6f6f6;
 		border-radius: 4px;
-		padding: .5em;
+		padding: 8px;
     }
     #exerciseDescription {
+		position: relative;
         padding: .5em;
 		height: 200px;
 		overflow-y: auto;
@@ -165,12 +167,18 @@ footer .version {
         display: block;
         margin: 1em;
     }
-	#exerciseDescription .continueArea {
+	.continueArea {
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		background-color: #e5e5e5;
 		text-align: right;
-		margin-right: 2em;
-		line-height: 26px;
+		line-height: 20px;
+		padding: 8px 8px 8px 16px;
+		border-bottom-left-radius: 8px;
 	}
-	#exerciseDescription .continueArea .button{
+	.continueArea .button{
+		display: inline-block;
 		background-color: #76d86b;
 		background-image: linear-gradient(to bottom, #76d86b, #56A84b);
 		border: 1px solid #409020;
@@ -181,7 +189,7 @@ footer .version {
 		cursor: pointer;
 	}
 
-	#exerciseDescription .continueArea .button i{
+	.continueArea .button i{
 		padding-left: .5em;
 		color: #333333;
 	}

@@ -39,9 +39,8 @@
     <div id="exerciseDescription" data-bind="with: exercises().currentExercise">
         <h2 data-bind="text: title">Exercise Title</h2>
         <div data-bind="html: details"></div>
-        <div class="continueArea" data-bind="visible: ($root.user() != null && $root.user().hasCompleted(id))">
-            Excellent! Lets <a class="button" id="continueButton" data-bind="click: $root.exercises().advanceExercise">Continue<i class="icon-play"></i></a>
-        </div>
+    </div>
+    <div class="continueArea" data-bind="visible: true /* ($root.user() != null && $root.user().hasCompleted(id))*/">Excellent! Lets <a class="button" id="continueButton" data-bind="click: $root.exercises().advanceExercise">Continue<i class="icon-play"></i></a>
     </div>
     <div id="editor">
         <div id="queryInputArea">
