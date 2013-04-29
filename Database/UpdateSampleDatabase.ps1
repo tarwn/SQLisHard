@@ -34,7 +34,7 @@ Param(
 $path = (Get-Location).Path
 $UpdatesFolder = [string]"$path\SampleDatabaseUpdates"
 
-# For 2010 - load the modules
+# For SQL 2008 - load the modules
 try{    
     if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null -and (Get-PSSnapin -Registered -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -ne $null){
         Add-PSSnapin SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue
