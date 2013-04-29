@@ -40,8 +40,10 @@
         <h2 data-bind="text: title">Exercise Title</h2>
         <div data-bind="html: details"></div>
     </div>
-    <div class="continueArea" data-bind="visible: true /* ($root.user() != null && $root.user().hasCompleted(id))*/">Excellent! Lets <a class="button" id="continueButton" data-bind="click: $root.exercises().advanceExercise">Continue<i class="icon-play"></i></a>
+    <!-- ko with: exercises().currentExercise -->
+    <div class="continueArea" data-bind="visible: ($root.user() != null && $root.user().hasCompleted(id))">Excellent! Lets <a class="button" id="continueButton" data-bind="click: $root.exercises().advanceExercise">Continue<i class="icon-play"></i></a>
     </div>
+    <!-- /ko -->
     <div id="editor">
         <div id="queryInputArea">
             <div id="commandBar">
