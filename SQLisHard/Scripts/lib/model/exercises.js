@@ -24,12 +24,10 @@ SqlIsHardApp.Model.ExerciseSet = function (data) {
 
     // methods
     var advanceExercise = function () {
-        console.log("Before: " + currentExerciseIndex());
         if (currentExerciseIndex() != Constants.ExercisePlaceHolder.FINALE && parseInt(currentExerciseIndex()) + 1 < exercises().length)
             currentExerciseIndex(parseInt(currentExerciseIndex()) + 1);
         else
             currentExerciseIndex(Constants.ExercisePlaceHolder.FINALE);
-        console.log("After: " + currentExerciseIndex());
     };
     var previousExercise = function () {
         if (currentExerciseIndex() > 0)
@@ -43,7 +41,6 @@ SqlIsHardApp.Model.ExerciseSet = function (data) {
             if (rawExercises[ex].id == id)
                 currentExerciseIndex(ex);
         }
-        console.log("After: " + currentExerciseIndex());
         // error or eat it?
     };
 
