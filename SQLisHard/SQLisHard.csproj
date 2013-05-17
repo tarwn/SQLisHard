@@ -149,6 +149,7 @@
     <Compile Include="Models\Finale.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Content Include="Content\ScreenShot.png" />
     <Content Include="Scripts\lib\constants.js" />
     <Content Include="Scripts\lib\model\exercises.js" />
     <Content Include="Scripts\lib\main.js" />
