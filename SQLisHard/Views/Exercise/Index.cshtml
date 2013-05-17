@@ -6,33 +6,31 @@
     string userApiUrl = @Url.Content("~/api/User/GetLoggedInUser");
 }
 @section ExtraNavLinks {
-    <span data-bind="ifnot: user"></span>
-    <span data-bind="if: user">Welcome <a href="javascript: void(0);" data-bind="text: user().displayName"></a></span>
+    @*<span data-bind="ifnot: user"></span>*@
+    @*<span data-bind="if: user">Welcome <a href="javascript: void(0);" data-bind="text: user().displayName"></a></span>*@
 }
 
 <div id="left">
     <h1>SQL is Hard</h1>
     
     <div id="summary">
-    <p>SQL is not as hard as it looks, but learning it can be daunting. There are a ton of great books and recorded presentations, but 
-        sometimes it's easiest to just dive in and get our hands dirty.</p>
+        <div id="exerciseList" data-bind="with: exercises">
+            <h2 data-bind="text: title">Exercises</h2>
+            <div data-bind="html: summary"></div>
+            <ul data-bind="foreach: exercises">
+                <li data-bind="click: $parent.goToExercise.bind($data, id), css: { selected: id == $root.exercises().currentExercise().id }">
+                    <!-- ko if: ($root.user() != null && $root.user().hasCompleted(id)) -->
+                        <i class="icon-check"></i>
+                    <!-- /ko -->
+                    <!-- ko ifnot: ($root.user() != null && $root.user().hasCompleted(id)) -->
+                        <i class="icon-check-empty"></i>
+                    <!-- /ko -->
+                    <span data-bind="text: title"></span>
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <div id="exerciseList" data-bind="with: exercises">
-        <h2 data-bind="text: title">Exercises</h2>
-        <div data-bind="html: summary"></div>
-        <ul data-bind="foreach: exercises">
-            <li data-bind="click: $parent.goToExercise.bind($data, id), css: { selected: id == $root.exercises().currentExercise().id }">
-                <!-- ko if: ($root.user() != null && $root.user().hasCompleted(id)) -->
-                    <i class="icon-check"></i>
-                <!-- /ko -->
-                <!-- ko ifnot: ($root.user() != null && $root.user().hasCompleted(id)) -->
-                    <i class="icon-check-empty"></i>
-                <!-- /ko -->
-                <span data-bind="text: title"></span>
-            </li>
-        </ul>
-    </div>
     <a href="javascript: void(0)" class="DEBUG" data-bind="visible: isDebug, click: exercises().advanceExercise">Next Exercise</a>
 </div>
 <div id="main">
@@ -49,7 +47,7 @@
             <div id="commandBar">
                 <input id="queryExecutionButton" type="button" value="Execute" data-bind="click: executeQuery.bind(this, true), disable: currentQuery.isRunning" />
             </div>
-            <textarea id="queryInput" cols="80" rows="8" data-bind="value: currentQuery.queryText"></textarea>
+            <textarea id="queryInput" cols="80" rows="5" data-bind="value: currentQuery.queryText"></textarea>
         </div>
         <div id="queryResultsArea">
             <div id="queryResultsTab">Results</div>

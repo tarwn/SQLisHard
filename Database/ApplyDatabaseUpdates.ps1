@@ -22,6 +22,17 @@ function ApplyDatabaseUpdates
 
     $path = (Get-Location).Path
 
+    # For SQL 2008 - load the modules
+    try{    
+        if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null -and (Get-PSSnapin -Registered -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -ne $null){
+            Add-PSSnapin SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue
+            Add-PSSnapin SqlServerProviderSnapin100 -ErrorAction SilentlyContinue
+        }
+    }
+    catch{
+        Write-Error "Powershell Script error: $_" -EA Stop
+    }
+
     #updates tracking
     try{
         Write-Host "Creating Update Tracking Table If Not Exists"

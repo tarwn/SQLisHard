@@ -151,7 +151,7 @@ footer .version {
     #exerciseDescription {
 		position: relative;
         padding: .5em;
-		height: 200px;
+		height: 250px;
 		overflow-y: auto;
     }
     #exerciseDescription h2 {
