@@ -162,10 +162,15 @@ footer .version {
     }
     #exerciseDescription p {
         line-height: 120%;
+		margin: .75em 0;
     }
     #exerciseDescription code {
         display: block;
         margin: 1em;
+    }
+    #exerciseDescription p code {
+        display: block;
+        margin: .25em 1em .25em 1em;
     }
 	.continueArea {
 		position: absolute;
