@@ -29,18 +29,14 @@ namespace SQLisHard.Domain.QueryEngine.DatabaseExecution
 				{
 					using (var reader = command.ExecuteReader())
 					{
-						QueryResult result = null;
+						QueryResult result = new QueryResult(query);
+						for (int col = 0; col < reader.FieldCount; col++)
+						{
+							result.Data.AddHeader(col, reader.GetName(col), reader.GetDataTypeName(col));
+						}
+
 						while (reader.Read())
 						{
-							if (result == null)
-							{
-								result = new QueryResult(query);
-								for (int col = 0; col < reader.FieldCount; col++)
-								{
-									result.Data.AddHeader(col, reader.GetName(col), reader.GetDataTypeName(col));
-								}
-							}
-
 							result.TotalRowCount++;
 
 							if (!query.LimitResults || result.Data.Rows.Count < ARTIFICIAL_LIMIT)
