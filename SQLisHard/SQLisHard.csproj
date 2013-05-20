@@ -152,6 +152,7 @@
     <Content Include="Content\ScreenShot.png" />
     <Content Include="favicon.png" />
     <Content Include="largeicon.png" />
+    <Content Include="robots.txt" />
     <Content Include="Scripts\lib\constants.js" />
     <Content Include="Scripts\lib\model\exercises.js" />
     <Content Include="Scripts\lib\main.js" />
