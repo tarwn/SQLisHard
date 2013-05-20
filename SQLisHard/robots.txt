@@ -1,0 +1,4 @@
+﻿User-agent: *
+Disallow: /api/
+
+Sitemap: http://www.sqlishard.com/sitemap.xml
