@@ -37,6 +37,10 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
             dataService.exercises.executeQuery(currentQuery.toStatementDTO(limitResults), function (data) {
                 currentQuery.isRunning(false);
                 currentQuery.queryResult(SqlIsHardApp.Model.StatementResult(data));
+                
+                var queryContent = currentQuery.queryResult().queryContent();
+                if(queryContent != "")
+                    currentQuery.queryText(queryContent);
 
                 var exerciseCompleted = currentQuery.queryResult().completesExercise();
 

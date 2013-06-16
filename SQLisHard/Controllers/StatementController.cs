@@ -22,6 +22,8 @@ namespace SQLisHard.Controllers
     {
         private IExerciseResultEvaluator _exerciseEvaluator;
 
+		public const string ERROR_EMPTY_STATEMENT = "Error, you have not entered a query to execute. Please type one in before using the Execute button to run it.";
+
         public StatementController() : this(
 			new ExerciseResultEvaluator(
 				new QueryEngine(ConfigurationManager.ConnectionStrings["SampleDatabase"].ConnectionString), 
@@ -38,7 +40,10 @@ namespace SQLisHard.Controllers
         {
 			var user = (UserPrincipal)HttpContext.Current.User;
 			value.RequestorId = user.UserIdentity.Id;
-			var result = _exerciseEvaluator.Evaluate(value);
+
+			var result = ValidateAndExecute(value, (v) => {
+				return _exerciseEvaluator.Evaluate(v);
+			});
 			
 			// hacky: fix later
 			this.Request.Properties["AdditionalInteractionValues"] = new Dictionary<string, string>() { 
@@ -53,6 +58,32 @@ namespace SQLisHard.Controllers
 		public string GetException()
 		{
 			throw new Exception("WebAPI Exception message");
+		}
+
+		private StatementResult ValidateAndExecute(Statement statement, Func<Statement, StatementResult> evaluateStatement)
+		{
+			if (String.IsNullOrWhiteSpace(statement.Content))
+				return new StatementResult(statement, ERROR_EMPTY_STATEMENT);
+
+			statement = FilterForReplacements(statement);
+
+			return evaluateStatement(statement);
+		}
+
+		private Statement FilterForReplacements(Statement originalStatement) 
+		{
+			if (originalStatement.Content.StartsWith("show tables", StringComparison.CurrentCultureIgnoreCase))
+				originalStatement.Content = ReplacementQueries.ShowTables;
+			else if (originalStatement.Content.StartsWith("help", StringComparison.CurrentCultureIgnoreCase))
+				originalStatement.Content = ReplacementQueries.Help;
+
+			return originalStatement;
+		}
+
+		public static class ReplacementQueries 
+		{
+			public const string ShowTables = "/* MySQL commands not supported, try the ANSI-standard INFORMATION_SCHEMA instead: http://en.wikipedia.org/wiki/Information_schema */\n\nSELECT * FROM INFORMATION_SCHEMA.TABLES";
+			public const string Help = "SELECT 'Sorry, there is no command-line help command.' as [help]";
 		}
     }
 }

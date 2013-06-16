@@ -57,7 +57,9 @@ namespace SQLisHard.Domain.QueryEngine.DatabaseExecution
 				catch (SqlException sqlException)
 				{
 					var errors = sqlException.Errors.Cast<SqlError>();
-					if (errors.Any(e => Convert.ToInt32(e.State) > 16))	// anything not user correctable
+					if (errors.Any(e => Convert.ToInt32(e.State) > 16		// anything not user correctable
+										&& Convert.ToInt32(e.State) != 20	// no permissions to drop table
+										&& Convert.ToInt32(e.State) != 62))	// bad stored proc name error
 						throw;
 					else
 						return new QueryResult(query) {
