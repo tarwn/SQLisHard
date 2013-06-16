@@ -4,7 +4,8 @@ SqlIsHardApp.Model = SqlIsHardApp.Model || {};
 
 SqlIsHardApp.Model.ExerciseSet = function (data) {
     // private variables
-    var title = ko.observable(data.Title || "Exercises"),
+    var id = ko.observable(data.Id || ""),
+        title = ko.observable(data.Title || "Exercises"),
         summary = ko.observable(data.Summary || ""),
         currentExerciseIndex = ko.observable(0),
         finale = ko.observable(SqlIsHardApp.Model.Exercise(data.Finale));
@@ -45,6 +46,7 @@ SqlIsHardApp.Model.ExerciseSet = function (data) {
     };
 
     return {
+        id: id,
         title: title,
         summary: summary,
         exercises: exercises,

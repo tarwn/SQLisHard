@@ -9,6 +9,7 @@ Constants.ExercisePlaceHolder = {
     FINALE: -100
 }
 Constants.InitialExerciseData = {
+    Id: "SELECT",
     Title: "Exercises",
     Summary: "Loading exercises...",
     Exercises: [{ Id: "", Title: "loading...", Details: "loading..." }],

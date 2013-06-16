@@ -27,7 +27,7 @@ namespace SQLisHard.Controllers
         public StatementController() : this(
 			new ExerciseResultEvaluator(
 				new QueryEngine(ConfigurationManager.ConnectionStrings["SampleDatabase"].ConnectionString), 
-				new TemporaryExerciseStore(),
+				MvcApplication.ExerciseStore,
 				new HistoryStore(ConfigurationManager.ConnectionStrings["CoreDatabase"].ConnectionString))) { }
 
         public StatementController(IExerciseResultEvaluator evaluator)

@@ -19,6 +19,7 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
             queryResult: ko.observable(null),
             toStatementDTO: function (limitResults) {
                 return {
+                    exerciseSetId: exercises().id(),
                     exerciseId: exercises().currentExercise().id,
                     content: currentQuery.queryText,
                     limitResults: limitResults
@@ -33,7 +34,7 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
             currentQuery.queryResult(null);
             currentQuery.isRunning(true);
             var exerciseId = exercises().currentExercise().id;
-
+            
             dataService.exercises.executeQuery(currentQuery.toStatementDTO(limitResults), function (data) {
                 currentQuery.isRunning(false);
                 currentQuery.queryResult(SqlIsHardApp.Model.StatementResult(data));

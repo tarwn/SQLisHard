@@ -8,6 +8,7 @@ namespace SQLisHard.Models
 {
 	public class ExerciseSet
 	{
+		public string Id { get;set;}
 		public string Title { get; set; }
 		public string Summary { get; set; }
 		public Finale Finale { get; set; }
@@ -20,6 +21,7 @@ namespace SQLisHard.Models
 		public ExerciseSet(DefinedExerciseSet set)
 			: this()
 		{
+			Id = set.Id;
 			Title = set.Title;
 			Summary = set.Summary;
 			Finale = new Finale(set.Finale);
