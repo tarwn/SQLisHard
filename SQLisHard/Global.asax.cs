@@ -1,7 +1,11 @@
-﻿using SQLisHard.General.ExperienceLogging.Log;
+﻿using SQLisHard.Domain.Exercises;
+using SQLisHard.Domain.Exercises.ExerciseStore;
+using SQLisHard.Domain.QueryEngine.DatabaseExecution;
+using SQLisHard.General.ExperienceLogging.Log;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
@@ -14,6 +18,8 @@ namespace SQLisHard
 	// visit http://go.microsoft.com/?LinkId=9394801
 	public class MvcApplication : System.Web.HttpApplication
 	{
+		public static IExerciseStore ExerciseStore { get; private set; }
+
 		protected void Application_Start()
 		{
 			AreaRegistration.RegisterAllAreas();
@@ -28,6 +34,11 @@ namespace SQLisHard
 			RouteConfig.RegisterRoutes(RouteTable.Routes);
 
 			SetDefaultLogProvider();
+
+			var store = new FlatFileExerciseStore(new QueryEngine(ConfigurationManager.ConnectionStrings["SampleDatabase"].ConnectionString));
+			foreach (var file in Directory.EnumerateFiles(Server.MapPath("Exercises")))
+				store.Add(File.ReadAllText(file));
+			ExerciseStore = store;
 		}
 
 		private void SetDefaultLogProvider()

@@ -150,6 +150,7 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Content Include="Content\ScreenShot.png" />
+    <Content Include="Exercises\SelectExercises.txt" />
     <Content Include="favicon.png" />
     <Content Include="largeicon.png" />
     <Content Include="robots.txt" />

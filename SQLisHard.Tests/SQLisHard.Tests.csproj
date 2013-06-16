@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{10219070-B06F-4ADD-8BC7-AFFDD9F9AE77}</ProjectGuid>
+    <ProjectGuid>{376DC429-9B92-4931-A27A-960580C8768E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SQLisHard.Domain.Tests</RootNamespace>
-    <AssemblyName>SQLisHard.Domain.Tests</AssemblyName>
+    <RootNamespace>SQLisHard.Tests</RootNamespace>
+    <AssemblyName>SQLisHard.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,11 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq">
-      <HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.6.1.12217, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.1\lib\nunit.framework.dll</HintPath>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.2\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -45,23 +42,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exercises\DefinedExerciseResultTests.cs" />
-    <Compile Include="Exercises\ExerciseStore\FlatFileExerciseStoreTests.cs" />
-    <Compile Include="LessonEvaluator\LessonResultEvaluatorTests.cs" />
+    <Compile Include="ExerciseFileVerification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="QueryEngine\DatabaseExecution\QueryEngineTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SQLisHard.Core\SQLisHard.Core.csproj">
-      <Project>{578efd29-8165-4710-9622-72f931e1b23f}</Project>
-      <Name>SQLisHard.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SQLisHard.Domain\SQLisHard.Domain.csproj">
       <Project>{a535c1a1-a9d1-4c57-9148-bf75e8bd5dcf}</Project>
       <Name>SQLisHard.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SQLisHard\SQLisHard.csproj">
+      <Project>{e4518228-5fd8-43fa-ba3d-492244414bca}</Project>
+      <Name>SQLisHard</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

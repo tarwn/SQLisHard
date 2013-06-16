@@ -83,7 +83,7 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 		{
 			MockQueryEngine = new Mock<IQueryEngine>();
 			MockExerciseStore = new Mock<IExerciseStore>();
-			MockExerciseStore.Setup(me => me.GetExerciseResultForComparison(It.IsAny<string>())).Returns(new DefinedExerciseResultFake(true));
+			MockExerciseStore.Setup(me => me.GetExerciseResultForComparison(It.IsAny<string>(), It.IsAny<string>())).Returns(new DefinedExerciseResultFake(true));
 			MockHistoryStore = new Mock<IHistoryStore>();
 			InstanceUnderTest = new ExerciseResultEvaluator(MockQueryEngine.Object, MockExerciseStore.Object, MockHistoryStore.Object);
 		}

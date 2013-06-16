@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="Exercises\DefinedExerciseResult.cs" />
     <Compile Include="Exercises\DefinedExerciseSet.cs" />
+    <Compile Include="Exercises\ExerciseStore\DefinedExerciseFileFormatException.cs" />
+    <Compile Include="Exercises\ExerciseStore\FlatFileExerciseStore.cs" />
     <Compile Include="Exercises\IExerciseStore.cs" />
     <Compile Include="QueryEngine\IQueryEngine.cs" />
     <Compile Include="ExerciseEvaluator\IExerciseResultEvaluator.cs" />

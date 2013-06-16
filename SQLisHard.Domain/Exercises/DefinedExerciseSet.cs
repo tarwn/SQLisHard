@@ -7,6 +7,14 @@ namespace SQLisHard.Domain.Exercises
 {
 	public class DefinedExerciseSet
 	{
+		public DefinedExerciseSet(string id)
+		{
+			Id = id;
+			Finale = new DefinedFinale();
+			Exercises = new List<DefinedExercise>();
+		}
+
+		public string Id { get; set; }
 		public string Title { get; set; }
 		public string Summary { get; set; }
 		public DefinedFinale Finale { get; set; }
@@ -15,6 +23,11 @@ namespace SQLisHard.Domain.Exercises
 
 	public class DefinedExercise
 	{
+		public DefinedExercise(string id)
+		{
+			Id = id;
+		}
+
 		public string Id { get; set; }
 		public string Title { get; set; }
 		public string Details { get; set; }

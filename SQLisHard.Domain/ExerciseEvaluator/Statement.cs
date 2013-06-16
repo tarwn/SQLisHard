@@ -13,5 +13,7 @@ namespace SQLisHard.Domain.ExerciseEvaluator
 	{
 		public UserId RequestorId { get; set; }
 		public string ExerciseId { get; set; }
-    }
+		public string ExerciseSetId { get; set; }
+
+	}
 }

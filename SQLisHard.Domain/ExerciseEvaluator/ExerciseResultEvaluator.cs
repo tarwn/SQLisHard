@@ -41,7 +41,7 @@ namespace SQLisHard.Domain.ExerciseEvaluator
 			if (queryResult.ExecutionStatus == QueryExecutionStatus.Error)
 				return false;
 
-			var expectedResult = _exerciseStore.GetExerciseResultForComparison(statement.ExerciseId);
+			var expectedResult = _exerciseStore.GetExerciseResultForComparison(statement.ExerciseSetId, statement.ExerciseId);
 
 			return expectedResult != null && expectedResult.Equals(queryResult);
         }

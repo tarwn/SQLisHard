@@ -16,7 +16,7 @@ SqlIsHardApp.Services.ExerciseService = function (ko, $, routes) {
     var getExerciseList = function (exerciseSet, successCallback, errorCallback) {
         $.ajax(routes.exercisesUrl, {
             type: "GET",
-            //            data: { exerciseSet: exerciseSet },
+            data: { exerciseSetId: exerciseSet },
             contentType: "application/json",
             dataType: "json",
             success: function (result) {

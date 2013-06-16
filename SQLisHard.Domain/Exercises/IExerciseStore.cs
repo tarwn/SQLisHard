@@ -9,6 +9,6 @@ namespace SQLisHard.Domain.Exercises
 	{
 		DefinedExerciseSet GetList(string exerciseSetId);
 
-		DefinedExerciseResult GetExerciseResultForComparison(string exerciseId);
+		DefinedExerciseResult GetExerciseResultForComparison(string exerciseSetId, string exerciseId);
 	}
 }
