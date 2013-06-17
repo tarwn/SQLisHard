@@ -26,11 +26,11 @@ Details:	<p>The * means "return all of the columns". We can also ask for specifi
 ExerciseId:	S1.2
 Title:		S1.2 - SELECT Columns
 Query:		SELECT FirstName, Id FROM Customers
-Details:	<p>Asking for specific columns means less data to download and gives us control of the 
-			order the columns will be returned. It also means the database won't have to look up 
-			all the columns before executing the query, like it does when we SELECT *.</p>
-			<p>SELECT the <em>Id</em> and <em>FirstName</em> columns from the <em>Customers</e> in 
-			reverse order.</p>
+Details:	<p>Asking for specific columns means less data to download and means the database won't 
+			have to look up all the columns before executing the query, like it does when we SELECT 
+			*.</p>
+			<p>When we specify the columns we also have control of their order in the result. Last time we SELECTed the <em>Id</em> and <em>FirstName</em> columns,
+			let's SELECT them in the reverse order now (SELECT FirstName, Id ...)</p>
 
 ExerciseId:	S2.0
 Title:		S2.0 - WHERE
@@ -101,6 +101,43 @@ Details:	<p>More complex conditions can be built from several AND or OR cases us
 			<p>Let's select all columns (*) from <em>Orders</em> where their <em>OrderTotal</em> is greater
 			than 300 plus all records where the <em>OrderTotal</em> is greater than 200 and the 
 			<em>OrderTime</em> is after November 15th, 2012.</p>
+
+ExerciseId:	S3.0
+Title:		S3.0 - ORDER BY
+Query:		SELECT * FROM Orders ORDER BY OrderTotal
+Details:	<p>When we're SELECTing data, often the order we return it can be important. We can specify how
+			we would like the data to be sorted by using an ORDER BY statement:</p>
+			<code>SELECT *<br/>FROM Orders<br/>WHERE OrderTime > '2013-01-15'<br/>ORDER BY OrderTime</code>
+			<p>Let's SELECT all columns (*) from <em>Orders</em> and ORDER BY their <em>OrderTotal</em>.</p>
+
+ExerciseId:	S3.1
+Title:		S3.1 - ORDER BY DESC
+Query:		SELECT * FROM Orders ORDER BY DeliveryTime DESC
+Details:	<p>When defining the column we want to ORDER BY, we have the option of sorting in ascending 
+			or descending order. This is done by adding either ASC or DESC after the column name. When we 
+			don't tell it one, it assumes ASCending order.</p>
+			<code>SELECT *<br/>FROM Orders<br/>WHERE OrderTime > '2013-01-15'<br/>ORDER BY OrderTime DESC</code>
+			<p>SELECT all columns (*) from <em>Orders</em> again, but this time ORDER BY their <em>DeliveryTime</em> 
+			in descending order</p>
+			
+ExerciseId:	S3.2
+Title:		S3.2 - More ORDER BY
+Query:		SELECT * FROM Customers ORDER BY LastName, FirstName
+Details:	<p>Like the SELECT statement, we can specify multiple columns for the ORDER BY.</p>
+			<code>SELECT *<br/>FROM Orders<br/>WHERE OrderTime > '2013-01-15'<br/>ORDER BY OrderTime DESC, OrderTotal</code>
+			<p>Let's SELECT everyone (*) from the <em>Customers</em> and sort them by <em>LastName</em> and 
+			<em>FirstName</em> to see this in practice. Customers with matching last names will be sub-sorted
+			by their first names.</p>
+
+ExerciseId:	S3R
+Title:		S1.0 to 3.2 - Recap
+Query:		SELECT * FROM Orders WHERE OrderTime < '2013-02-01' AND DeliveryTime > '2013-01-31' ORDER BY OrderTotal DESC
+Details:	<p>We have successfully queried for specific columns and all (*) columns from a table, applied single and
+			multiple WHERE filters of varying types, and enforced sorting order on the table. </p>
+			<code>SELECT *<br/>FROM <em>TableName</em><br/>WHERE <em>condition</em> AND/OR <em>condition</em><br/>ORDER BY <em>ColumnName</em> ASC/DESC</code>
+			<p>Let's put it all together. Let's select all columns from the <em>Orders</em> table where the 
+			<em>OrderTime</em> is earlier than 2013-02-01 and the <em>DeliveryTime</em> is later than 2013-01-31 and
+			then finally order those records by the <em>OrderTotal</em> descending.</p>
 
 ExerciseId:	S4.0
 Title:		S4.0 - INNER JOIN
