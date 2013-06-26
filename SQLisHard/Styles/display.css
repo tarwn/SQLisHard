@@ -89,7 +89,7 @@ footer .version {
 
 /* Exercise Page */
  #left {
-        width: 400px;
+        width: 300px;
         float: left;
     }
 
@@ -100,7 +100,7 @@ footer .version {
     }
 
     #summary {
-        margin: .5em 1em 1em 1em;
+        margin: 2px 1em 1em 1em;
         border-bottom: 1px solid #990000;
         border-top: 1px solid #990000;
     }
@@ -147,9 +147,9 @@ footer .version {
 
     #main {
 		position: relative;
-        margin-left: 410px;
+        margin-left: 305px;
         margin-top: 10px;
-        max-width: 800px;
+        max-width: 900px;
 		border: 1px solid #dddddd;
 		background-color: #f6f6f6;
 		border-radius: 4px;
