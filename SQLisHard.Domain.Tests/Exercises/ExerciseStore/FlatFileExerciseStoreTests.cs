@@ -201,7 +201,9 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 			Assert.AreEqual("0", ex.Id);
 			Assert.AreEqual("Exercise #0", ex.Title);
 			Assert.AreEqual("SELECT TOP 0 FROM SampleTable;", ex.Query);
-			Assert.AreEqual("This is the multi-line\n\tdescription\n\t<code>with some code</code>\n".Replace("\t"," ").TrimEnd(), ex.Details);
+			Assert.AreEqual("This is the multi-line\n\tdescription".Replace("\t", " "), ex.Explanation);
+			Assert.AreEqual("<code>with some code</code>".Replace("\t", " "), ex.Example);
+			Assert.AreEqual("<p>Multi\n\tline exercise".Replace("\t", " ").TrimEnd(), ex.Exercise);
 		}
 
 		private string GenerateSampleData(string setId = "SampleId", string setTitle = "Sample Title", string setSummary = "Sample Summary",
@@ -223,7 +225,9 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 					"ExerciseId:{0}\n" +
 					"Title:Exercise #{0}\n" +
 					"Query:SELECT TOP {0} FROM SampleTable;\n" +
-					"Details:This is the multi-line\n\tdescription\n\t<code>with some code</code>\n",
+					"Explanation:This is the multi-line\n\tdescription\n" + 
+					"Example:\t<code>with some code</code>\n" +
+					"Exercise:\t<p>Multi\n\tline exercise",
 					i);
 			}
 

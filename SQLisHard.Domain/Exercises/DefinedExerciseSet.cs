@@ -30,8 +30,10 @@ namespace SQLisHard.Domain.Exercises
 
 		public string Id { get; set; }
 		public string Title { get; set; }
-		public string Details { get; set; }
 		public string Query { get; set; }
+		public string Explanation { get; set; }
+		public string Example { get;set; }
+		public string Exercise { get; set; }
 	}
 
 	public class DefinedFinale

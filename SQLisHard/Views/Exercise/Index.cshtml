@@ -36,7 +36,9 @@
 <div id="main">
     <div id="exerciseDescription" data-bind="with: exercises().currentExercise">
         <h2 data-bind="text: title">Exercise Title</h2>
-        <div data-bind="html: details"></div>
+        <div data-bind="html: explanation"></div>
+        <div data-bind="html: example"></div>
+        <div data-bind="html: exercise"></div>
     </div>
     <!-- ko with: exercises().currentExercise -->
     <div class="continueArea" data-bind="visible: ($root.user() != null && $root.user().hasCompleted(id))">Excellent! Lets <a class="button" id="continueButton" data-bind="click: $root.exercises().advanceExercise">Continue<i class="icon-play"></i></a>

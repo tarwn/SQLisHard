@@ -9,149 +9,149 @@ FinaleDetails: All Done!
 ExerciseId:	S1.0
 Title:		S1.0 - SELECT
 Query:		SELECT * FROM Customers
-Details:	<p>Databases store data in tables, which we can think of like spreadsheets. Each table 
+Explanation:	<p>Databases store data in tables, which we can think of like spreadsheets. Each table 
 			holds rows of data that share a common set of columns. We use the <em>SELECT</em> 
 			statement to retrieve rows of data from those tables. </p>
-			<code>SELECT *<br/> FROM <i>table_name</i></code>
-			<p>Try using the <em>SELECT</em> statement to retrieve rows from the <em>Customers</em> 
+Example:	<code>SELECT *<br/> FROM <i>table_name</i></code>
+Exercise:	<p>Try using the <em>SELECT</em> statement to retrieve rows from the <em>Customers</em> 
 			table.</p>
-
+			
 ExerciseId:	S1.1
 Title:		S1.1 - SELECT Columns
 Query:		SELECT Id, FirstName FROM Customers
-Details:	<p>The * means "return all of the columns". We can also ask for specific columns:</p>
-			<code> SELECT <i>column_name, column_name</i><br/> FROM <i>table_name</i></code> 
-			<p>Try editing your query to retrieve only the <em>Id</em> and <em>FirstName</em> columns.
+Explanation:	<p>The * means "return all of the columns". We can also ask for specific columns:</p>
+Example:	<code> SELECT <i>column_name, column_name</i><br/> FROM <i>table_name</i></code> 
+Exercise:	<p>Try editing your query to retrieve only the <em>Id</em> and <em>FirstName</em> columns.
 
 ExerciseId:	S1.2
 Title:		S1.2 - SELECT Columns
 Query:		SELECT FirstName, Id FROM Customers
-Details:	<p>Asking for specific columns means less data to download and means the database won't 
+Explanation:	<p>Asking for specific columns means less data to download and means the database won't 
 			have to look up all the columns before executing the query, like it does when we SELECT 
 			*.</p>
-			<p>When we specify the columns we also have control of their order in the result. Last time we SELECTed the <em>Id</em> and <em>FirstName</em> columns,
+Example:
+Exercise:	<p>When we specify the columns we also have control of their order in the result. Last time we SELECTed the <em>Id</em> and <em>FirstName</em> columns,
 			let's SELECT them in the reverse order now (SELECT FirstName, Id ...)</p>
 
 ExerciseId:	S2.0
 Title:		S2.0 - WHERE
 Query:		SELECT * FROM Customers WHERE Id = 5
-Details:	<p>Now we can read all of the rows from a table, but typically we only want to read rows
+Explanation:	<p>Now we can read all of the rows from a table, but typically we only want to read rows
 			that meet certain criteria. We can use the WHERE clause to supply those criteria, like so:</p>
-			<code> SELECT <i>column_name, column_name</i><br/>FROM <i>table_name</i><br/>WHERE <i>condition</i></code>
-			<p>A numeric condition to filter on id's that are equal to 5 would look like: <em>id = 5</em>.
+Example:	<code> SELECT <i>column_name, column_name</i><br/>FROM <i>table_name</i><br/>WHERE <i>condition</i></code>
+Exercise:	<p>A numeric condition to filter on id's that are equal to 5 would look like: <em>id = 5</em>.
 			Let's SELECT all columns (*) FROM the <em>Customers</em> table using that example condition.</p>
 
 ExerciseId:	S2.1
 Title:		S2.1 - WHERE conditions
 Query:		SELECT * FROM Orders WHERE OrderTotal BETWEEN 100 and 200
-Details:	<p>Besides equality comparisons, we can also make greater than &gt;, less than &lt;, not
+Explanation:	<p>Besides equality comparisons, we can also make greater than &gt;, less than &lt;, not
 			equals &lt;&gt;, and BETWEEN comparisons.</p>
-			<code> 
+Example:	<code> 
 				SELECT <i>column_name, column_name</i><br/>
 				FROM <i>table_name</i><br/>
 				WHERE <i>column_name</i> BETWEEN <i>value1</i> AND <i>value2</i>
 			</code>
-			<p>Let's select all columns (*) from <em>Orders</em> that have an <em>OrderTotal</em> BETWEEN 100 and 200</p>
+Exercise:	<p>Let's select all columns (*) from <em>Orders</em> that have an <em>OrderTotal</em> BETWEEN 100 and 200</p>
 
 ExerciseId:	S2.2
 Title:		S2.2 - WHERE conditions
 Query:		SELECT * FROM Orders WHERE DeliveryTime < '2013-06-20'
-Details:	<p>Conditions can be applied to any column in our tables, not just numbers. When we compare
+Explanation:	<p>Conditions can be applied to any column in our tables, not just numbers. When we compare
 			date and text values we have to surround them with single quotes.</p>
-			<code>SELECT *<br/>FROM Orders<br/>WHERE OrderTime > '2013-01-01'</code>
-			<p>Let's select all columns (*) from <em>Orders</em> where the <em>DeliveryTime</em> is less
+Example:	<code>SELECT *<br/>FROM Orders<br/>WHERE OrderTime > '2013-01-01'</code>
+Exercise:	<p>Let's select all columns (*) from <em>Orders</em> where the <em>DeliveryTime</em> is less
 			than June 20th, 2013.</p>
 
 ExerciseId:	S2.3
 Title:		S2.3 - LIKE
 Query:		SELECT * FROM Customers WHERE LastName LIKE 'A%'
-Details:	<p>The LIKE comparison allows us to search for text that matches a partial search string. 
+Explanation:	<p>The LIKE comparison allows us to search for text that matches a partial search string. 
 			For instance, searching for Name LIKE 'Jan%' would match Jane and Janet but not Jack. The %
 			character is a wildcard that can match any number of unknown characters and the _ character
 			will match a single unknown character.</p>
-			<code>SELECT *<br/>FROM Customers<br/>WHERE FirstName LIKE 'Jan%'</code>
-			<p>Let's select all columns (*) from <em>Customers</em> whose <em>LastName</em> starts with 
+Example:	<code>SELECT *<br/>FROM Customers<br/>WHERE FirstName LIKE 'Jan%'</code>
+Exercise:	<p>Let's select all columns (*) from <em>Customers</em> whose <em>LastName</em> starts with 
 			the letter A.</p>
 
 ExerciseId:	S2.4
 Title:		S2.4 - OR
 Query:		SELECT * FROM Customers WHERE FirstName LIKE 'A%' OR Id < 10
-Details:	<p>We can combine conditions with AND and OR statements to define more complex conditions.</p>
-			<code>SELECT *<br/>FROM Customers<br/>WHERE Id = 1 OR Id = 12</code>
-			<p>Let's select all columns (*) from <em>Customers</em> where their <em>FirstName</em> starts
+Explanation:	<p>We can combine conditions with AND and OR statements to define more complex conditions.</p>
+Example:	<code>SELECT *<br/>FROM Customers<br/>WHERE Id = 1 OR Id = 12</code>
+Exercise:	<p>Let's select all columns (*) from <em>Customers</em> where their <em>FirstName</em> starts
 			with A or their <em>Id</em> is less than 10.</p>
 
 ExerciseId:	S2.5
 Title:		S2.5 - AND
 Query:		SELECT * FROM Orders WHERE OrderTotal > 100 AND OrderTime > '2012-10-12'
-Details:	<p>An AND indicates that both conditions must be true in order for a record to be returned.</p>
-			<code>SELECT *<br/>FROM Customers<br/>WHERE <i>condition</i> AND <i>condition</i></code>
-			<p>Let's select all columns (*) from <em>Orders</em> where their <em>OrderTotal</em> is greater
+Explanation:	<p>An AND indicates that both conditions must be true in order for a record to be returned.</p>
+Example:	<code>SELECT *<br/>FROM Customers<br/>WHERE <i>condition</i> AND <i>condition</i></code>
+Exercise:	<p>Let's select all columns (*) from <em>Orders</em> where their <em>OrderTotal</em> is greater
 			than 100 AND their <em>OrderTime</em> is greater than October 12th, 2012.</p>
 
 ExerciseId:	S2.6
 Title:		S2.6 - Complex AND/OR
 Query:		SELECT * FROM Orders WHERE OrderTotal > 300 OR (OrderTotal > 200 AND OrderTime > '2012-11-15')
-Details:	<p>More complex conditions can be built from several AND or OR cases using parantheses to help
-			the server understand which conditions to evaluate first. </p><p>All rows with 
-			<em>FirstName</em> and <em>LastName</em> starting with 'A' plus the record with an <em>Id</em>
-			of 5: <code>(FirstName LIKE 'A%' AND LastName LIKE 'A%') OR Id = 5</code></p>
+Explanation:	<p>More complex conditions can be built from several AND or OR cases using parantheses to help
+			the server understand which conditions to evaluate first. </p>
+Example:	<p>All rows with <em>FirstName</em> and <em>LastName</em> starting with 'A' plus the record with 
+			an <em>Id</em> of 5: <code>(FirstName LIKE 'A%' AND LastName LIKE 'A%') OR Id = 5</code></p>
 			<p>All rows with <em>FirstName</em> starting with 'A' and either a <em>LastName</em> starting 
 			with 'A' or an <em>Id</em> of 5: <code>FirstName LIKE 'A%' AND (LastName LIKE 'A%' OR Id = 5)</code></p>
-			<p>Let's select all columns (*) from <em>Orders</em> where their <em>OrderTotal</em> is greater
+Exercise:	<p>Let's select all columns (*) from <em>Orders</em> where their <em>OrderTotal</em> is greater
 			than 300 plus all records where the <em>OrderTotal</em> is greater than 200 and the 
 			<em>OrderTime</em> is after November 15th, 2012.</p>
 
 ExerciseId:	S3.0
 Title:		S3.0 - ORDER BY
 Query:		SELECT * FROM Orders ORDER BY OrderTotal
-Details:	<p>When we're SELECTing data, often the order we return it can be important. We can specify how
+Explanation:	<p>When we're SELECTing data, often the order we return it can be important. We can specify how
 			we would like the data to be sorted by using an ORDER BY statement:</p>
-			<code>SELECT *<br/>FROM Orders<br/>WHERE OrderTime > '2013-01-15'<br/>ORDER BY OrderTime</code>
-			<p>Let's SELECT all columns (*) from <em>Orders</em> and ORDER BY their <em>OrderTotal</em>.</p>
+Example:	<code>SELECT *<br/>FROM Orders<br/>WHERE OrderTime > '2013-01-15'<br/>ORDER BY OrderTime</code>
+Exercise:	<p>Let's SELECT all columns (*) from <em>Orders</em> and ORDER BY their <em>OrderTotal</em>.</p>
 
 ExerciseId:	S3.1
 Title:		S3.1 - ORDER BY DESC
 Query:		SELECT * FROM Orders ORDER BY DeliveryTime DESC
-Details:	<p>When defining the column we want to ORDER BY, we have the option of sorting in ascending 
+Explanation:	<p>When defining the column we want to ORDER BY, we have the option of sorting in ascending 
 			or descending order. This is done by adding either ASC or DESC after the column name. When we 
 			don't tell it one, it assumes ASCending order.</p>
-			<code>SELECT *<br/>FROM Orders<br/>WHERE OrderTime > '2013-01-15'<br/>ORDER BY OrderTime DESC</code>
-			<p>SELECT all columns (*) from <em>Orders</em> again, but this time ORDER BY their <em>DeliveryTime</em> 
+Example:	<code>SELECT *<br/>FROM Orders<br/>WHERE OrderTime > '2013-01-15'<br/>ORDER BY OrderTime DESC</code>
+Exercise:	<p>SELECT all columns (*) from <em>Orders</em> again, but this time ORDER BY their <em>DeliveryTime</em> 
 			in descending order</p>
-			
+
 ExerciseId:	S3.2
 Title:		S3.2 - More ORDER BY
 Query:		SELECT * FROM Customers ORDER BY LastName, FirstName
-Details:	<p>Like the SELECT statement, we can specify multiple columns for the ORDER BY.</p>
-			<code>SELECT *<br/>FROM Orders<br/>WHERE OrderTime > '2013-01-15'<br/>ORDER BY OrderTime DESC, OrderTotal</code>
-			<p>Let's SELECT everyone (*) from the <em>Customers</em> and sort them by <em>LastName</em> and 
+Explanation:	<p>Like the SELECT statement, we can specify multiple columns for the ORDER BY.</p>
+Example:	<code>SELECT *<br/>FROM Orders<br/>WHERE OrderTime > '2013-01-15'<br/>ORDER BY OrderTime DESC, OrderTotal</code>
+Exercise:	<p>Let's SELECT everyone (*) from the <em>Customers</em> and sort them by <em>LastName</em> and 
 			<em>FirstName</em> to see this in practice. Customers with matching last names will be sub-sorted
 			by their first names.</p>
 
 ExerciseId:	S3R
 Title:		S1.0 to 3.2 - Recap
 Query:		SELECT * FROM Orders WHERE OrderTime < '2013-02-01' AND DeliveryTime > '2013-01-31' ORDER BY OrderTotal DESC
-Details:	<p>We have successfully queried for specific columns and all (*) columns from a table, applied single and
+Explanation:	<p>We have successfully queried for specific columns and all (*) columns from a table, applied single and
 			multiple WHERE filters of varying types, and enforced sorting order on the table. </p>
-			<code>SELECT *<br/>FROM <em>TableName</em><br/>WHERE <em>condition</em> AND/OR <em>condition</em><br/>ORDER BY <em>ColumnName</em> ASC/DESC</code>
-			<p>Let's put it all together. Let's select all columns from the <em>Orders</em> table where the 
+Example:	<code>SELECT *<br/>FROM <em>TableName</em><br/>WHERE <em>condition</em> AND/OR <em>condition</em><br/>ORDER BY <em>ColumnName</em> ASC/DESC</code>
+Exercise:	<p>Let's put it all together. Let's select all columns from the <em>Orders</em> table where the 
 			<em>OrderTime</em> is earlier than 2013-02-01 and the <em>DeliveryTime</em> is later than 2013-01-31 and
 			then finally order those records by the <em>OrderTotal</em> descending.</p>
 
 ExerciseId:	S4.0
 Title:		S4.0 - INNER JOIN
 Query:		SELECT * FROM Customers C INNER JOIN Orders O ON C.id = O.CustomerId
-Details:	<p>Now that we can pull data out of a single table, let's take it a step further. JOIN statements
+Explanation:	<p>Now that we can pull data out of a single table, let's take it a step further. JOIN statements
 			allow us to 'join' the records of several tables together using a condition to define how they 
 			match one another.</p>
-			<code>
+Example:	<code>
 				SELECT <i>[columns]</i><br/>
 				FROM <i>table_name</i><br/>
 					INNER JOIN <i>table_name2</i> ON <i>condition</i>
 			</code>
-			<p>Try using the INNER JOIN syntax to SELECT all columns from the <em>Customers</em> and 
+Exercise:	<p>Try using the INNER JOIN syntax to SELECT all columns from the <em>Customers</em> and 
 			<em>Orders</em> tables where the <em>CustomerId</em> column in <em>Orders</em> matches the <em>Id</em>
 			column in <em>Customers</em>.</p><p><i>Note: Both tables have an Id column, so you will need to spell
 			out <em>Customers.Id</em> in the condition<i/></p>
-

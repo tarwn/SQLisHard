@@ -60,12 +60,16 @@ SqlIsHardApp.Model.ExerciseSet = function (data) {
 SqlIsHardApp.Model.Exercise = function (data) {
     var id = data.Id || "",
         title = data.Title || "",
-        details = data.Details || "";
+        explanation = data.Explanation || "",
+        example = data.Example || null,
+        exercise = data.ExerciseDescription || "";
 
     return {
         id: id,
         title: title,
-        details: details
+        explanation: explanation,
+        example: example,
+        exercise: exercise
     };
 }
 

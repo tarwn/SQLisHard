@@ -68,16 +68,16 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 				throw new ArgumentException("Did not find any matching lines in the provided file");
 
 			if (!matches[0].Groups[1].Value.Equals(FileTokens.SET_ID))
-				throw new DefinedExerciseFileFormatException(String.Format("The first matched line started with '{0}' instead of Id",matches[0].Groups[1].Value));
+				throw new DefinedExerciseFileFormatException(String.Format("The first matched line started with '{0}' instead of Id", matches[0].Groups[1].Value));
 
 			var result = new DefinedExerciseSet(matches[0].Groups[2].Value);
 			var nextStep = ParseState.SetTitle;
-			DefinedExercise lastExercise = null ;
+			DefinedExercise lastExercise = null;
 
-			for(int i = 1; i < matches.Count; i++)
+			for (int i = 1; i < matches.Count; i++)
 			{
 				var currentField = matches[i];
-				switch(nextStep)
+				switch (nextStep)
 				{
 					case ParseState.SetTitle:
 						VerifyFieldIsCorrect(currentField, FileTokens.SET_TITLE);
@@ -96,7 +96,7 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 						break;
 					case ParseState.FinaleDetails:
 						VerifyFieldIsCorrect(currentField, FileTokens.FINALE_DETAILS);
-						result.Finale.Details = currentField.Groups[2].Value.Replace("\t"," ");
+						result.Finale.Details = currentField.Groups[2].Value.Replace("\t", " ");
 						nextStep++;
 						break;
 					case ParseState.NextExerciseOrDone:
@@ -115,10 +115,25 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 						lastExercise.Query = currentField.Groups[2].Value;
 						nextStep++;
 						break;
-					case ParseState.ExerciseDetails:
-						VerifyFieldIsCorrect(currentField, FileTokens.EXERCISE_DETAILS);
-						lastExercise.Details = currentField.Groups[2].Value.Replace("\t", " ");
-						nextStep = ParseState.NextExerciseOrDone;
+					case ParseState.ExerciseExplanation:
+						VerifyFieldIsCorrect(currentField, FileTokens.EXERCISE_EXPLANATION);
+						lastExercise.Explanation = currentField.Groups[2].Value.Replace("\t", " ");
+						nextStep++;
+						break;
+					case ParseState.ExerciseExample:
+					case ParseState.ExerciseExercise:
+						var token = VerifyFieldMatchesOneOf(currentField, new string[] { FileTokens.EXERCISE_EXERCISE, FileTokens.EXERCISE_EXAMPLE });
+
+						if (token.Equals(FileTokens.EXERCISE_EXAMPLE))
+						{
+							lastExercise.Example = currentField.Groups[2].Value.Replace("\t", " ");
+							nextStep++;
+						}
+						else
+						{
+							lastExercise.Exercise = currentField.Groups[2].Value.Replace("\t", " ");
+							nextStep = ParseState.NextExerciseOrDone;
+						}
 						break;
 				}
 			}
@@ -127,6 +142,14 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 				throw new DefinedExerciseFileFormatException(String.Format("File ended earlier then expected, currently expecting {0}", nextStep));
 
 			return result;
+		}
+
+		private static string VerifyFieldMatchesOneOf(Match match, string[] possibleTokens)
+		{
+			if (match.Groups.Count != 3 || !possibleTokens.Contains(match.Groups[1].Value))
+				throw new DefinedExerciseFileFormatException(String.Format("Expected one of: '{0}', but instead found '{1}'", string.Join("','", possibleTokens), match.Groups[1].Value));
+			else
+				return match.Groups[1].Value;
 		}
 
 		private static void VerifyFieldIsCorrect(Match match, string fieldToken)
@@ -144,7 +167,9 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 			NextExerciseOrDone = 5,
 			ExerciseTitle = 6,
 			ExerciseQuery = 7,
-			ExerciseDetails = 8
+			ExerciseExplanation = 8,
+			ExerciseExample = 9,
+			ExerciseExercise = 10
 		}
 
 		private static class FileTokens
@@ -157,6 +182,10 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 			public const string EXERCISE_ID = "ExerciseId";
 			public const string EXERCISE_TITLE = "Title";
 			public const string EXERCISE_QUERY = "Query";
+			public const string EXERCISE_EXPLANATION = "Explanation";
+			public const string EXERCISE_EXAMPLE = "Example";
+			public const string EXERCISE_EXERCISE = "Exercise";
+
 			public const string EXERCISE_DETAILS = "Details";
 		}
 	}

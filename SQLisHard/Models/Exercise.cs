@@ -11,6 +11,9 @@ namespace SQLisHard.Models
 		public string Id { get; set; }
 		public string Title { get; set; }
 		public string Details { get; set; }
+		public string Explanation { get; set; }
+		public string Example { get; set; }
+		public string ExerciseDescription { get; set; }
 
 		public Exercise() { }
 
@@ -18,7 +21,12 @@ namespace SQLisHard.Models
 		{
 			Id = exercise.Id;
 			Title = exercise.Title;
-			Details = exercise.Details;
+			Explanation = exercise.Explanation;
+			Example = exercise.Example;
+			ExerciseDescription = exercise.Exercise;
+
+			//TODO remove after a few pushes as part of removing details from client
+			Details = exercise.Explanation + "\n" + exercise.Example + "\n" + exercise.Exercise;
 		}
 	}
 }
