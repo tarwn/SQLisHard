@@ -1,6 +1,6 @@
-﻿Id:			SELECT
-Title:		SELECT Exercises
-Summary:	<p>Whether you're just getting started or trying to brush up on existing
+﻿SetId:		SELECT
+SetTitle:	SELECT Exercises
+SetSummary:	<p>Whether you're just getting started or trying to brush up on existing
 			skills, this is a great spot to start.</p>
 
 FinaleTitle: Finale

@@ -1,4 +1,5 @@
-﻿using SQLisHard.Domain.QueryEngine;
+﻿using SQLisHard.Domain.Exercises.ExerciseStore.Parser;
+using SQLisHard.Domain.QueryEngine;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -58,135 +59,77 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 
 		public static DefinedExerciseSet ParseFile(string data)
 		{
+			var transitions = FlatFileParser.DefineTransitions()
+								  .InitialTransition(ParseState.SetId)
+								  .AddTransition(ParseState.SetId, ParseState.SetTitle)
+								  .AddTransition(ParseState.SetTitle, ParseState.SetSummary)
+								  .AddTransition(ParseState.SetSummary, ParseState.FinaleTitle)
+								  .AddTransition(ParseState.FinaleTitle, ParseState.FinaleDetails)
+								  .AddTransition(ParseState.FinaleDetails, ParseState.NewExercise)
+								  .AddTransition(ParseState.NewExercise, ParseState.ExerciseTitle)
+								  .AddTransition(ParseState.ExerciseTitle, ParseState.ExerciseQuery)
+								  .AddTransition(ParseState.ExerciseQuery, ParseState.ExerciseExplanation)
+								  .AddTransition(ParseState.ExerciseExplanation, ParseState.ExerciseExample,
+																				 ParseState.ExerciseExercise)
+								  .AddTransition(ParseState.ExerciseExample, ParseState.ExerciseExercise)
+								  .AddTransition(ParseState.ExerciseExercise, ParseState.NewExercise)
+								  .AddFinalTransition(ParseState.ExerciseExercise);
+
 			var cleanData = data.Replace("\r", "");
+			var parser = new FlatFileParser(transitions);
 
-			var linePattern = "([A-Za-z]+):[ \\t]*((?:[^\\n]|\\n\\t)+)";
-			var regex = new Regex(linePattern);
-			var matches = regex.Matches(cleanData);
+			DefinedExerciseSet set = null;
+			DefinedExercise currentExercise = null;
 
-			if (matches.Count == 0)
-				throw new ArgumentException("Did not find any matching lines in the provided file");
+			var results = parser.ParseContent(cleanData);
 
-			if (!matches[0].Groups[1].Value.Equals(FileTokens.SET_ID))
-				throw new DefinedExerciseFileFormatException(String.Format("The first matched line started with '{0}' instead of Id", matches[0].Groups[1].Value));
-
-			var result = new DefinedExerciseSet(matches[0].Groups[2].Value);
-			var nextStep = ParseState.SetTitle;
-			DefinedExercise lastExercise = null;
-
-			for (int i = 1; i < matches.Count; i++)
+			foreach (var entry in results)
 			{
-				var currentField = matches[i];
-				switch (nextStep)
-				{
+				var cleanValue = entry.Value.Replace("\t", " ");
+				switch (entry.Config) { 
+					case ParseState.SetId:
+						set = new DefinedExerciseSet(cleanValue);
+						break;
 					case ParseState.SetTitle:
-						VerifyFieldIsCorrect(currentField, FileTokens.SET_TITLE);
-						result.Title = currentField.Groups[2].Value;
-						nextStep++;
+						set.Title = cleanValue;
 						break;
 					case ParseState.SetSummary:
-						VerifyFieldIsCorrect(currentField, FileTokens.SET_SUMMARY);
-						result.Summary = currentField.Groups[2].Value.Replace("\t", " ");
-						nextStep++;
+						set.Summary = cleanValue;
 						break;
 					case ParseState.FinaleTitle:
-						VerifyFieldIsCorrect(currentField, FileTokens.FINALE_TITLE);
-						result.Finale = new DefinedFinale() { Title = currentField.Groups[2].Value };
-						nextStep++;
+						set.Finale = new DefinedFinale();
+						set.Finale.Title = cleanValue;
 						break;
 					case ParseState.FinaleDetails:
-						VerifyFieldIsCorrect(currentField, FileTokens.FINALE_DETAILS);
-						result.Finale.Details = currentField.Groups[2].Value.Replace("\t", " ");
-						nextStep++;
+						set.Finale.Details = cleanValue;
 						break;
-					case ParseState.NextExerciseOrDone:
-						VerifyFieldIsCorrect(currentField, FileTokens.EXERCISE_ID);
-						lastExercise = new DefinedExercise(currentField.Groups[2].Value);
-						result.Exercises.Add(lastExercise);
-						nextStep++;
+					case ParseState.NewExercise:
+						currentExercise = new DefinedExercise(cleanValue);
+						set.Exercises.Add(currentExercise);
 						break;
 					case ParseState.ExerciseTitle:
-						VerifyFieldIsCorrect(currentField, FileTokens.EXERCISE_TITLE);
-						lastExercise.Title = currentField.Groups[2].Value;
-						nextStep++;
+						currentExercise.Title = cleanValue;
 						break;
 					case ParseState.ExerciseQuery:
-						VerifyFieldIsCorrect(currentField, FileTokens.EXERCISE_QUERY);
-						lastExercise.Query = currentField.Groups[2].Value;
-						nextStep++;
+						currentExercise.Query = cleanValue;
 						break;
 					case ParseState.ExerciseExplanation:
-						VerifyFieldIsCorrect(currentField, FileTokens.EXERCISE_EXPLANATION);
-						lastExercise.Explanation = currentField.Groups[2].Value.Replace("\t", " ");
-						nextStep++;
+						currentExercise.Explanation = cleanValue;
+						break;
+					case ParseState.ExerciseExercise:
+						currentExercise.Exercise = cleanValue;
 						break;
 					case ParseState.ExerciseExample:
-					case ParseState.ExerciseExercise:
-						var token = VerifyFieldMatchesOneOf(currentField, new string[] { FileTokens.EXERCISE_EXERCISE, FileTokens.EXERCISE_EXAMPLE });
-
-						if (token.Equals(FileTokens.EXERCISE_EXAMPLE))
-						{
-							lastExercise.Example = currentField.Groups[2].Value.Replace("\t", " ");
-							nextStep++;
-						}
-						else
-						{
-							lastExercise.Exercise = currentField.Groups[2].Value.Replace("\t", " ");
-							nextStep = ParseState.NextExerciseOrDone;
-						}
+						currentExercise.Example = cleanValue;
 						break;
+					default:
+						throw new DefinedExerciseFileFormatException(String.Format("An unexpected configuration was encountered: {0}", entry.Config));
 				}
 			}
 
-			if (nextStep != ParseState.NextExerciseOrDone)
-				throw new DefinedExerciseFileFormatException(String.Format("File ended earlier then expected, currently expecting {0}", nextStep));
-
-			return result;
+			return set;
 		}
 
-		private static string VerifyFieldMatchesOneOf(Match match, string[] possibleTokens)
-		{
-			if (match.Groups.Count != 3 || !possibleTokens.Contains(match.Groups[1].Value))
-				throw new DefinedExerciseFileFormatException(String.Format("Expected one of: '{0}', but instead found '{1}'", string.Join("','", possibleTokens), match.Groups[1].Value));
-			else
-				return match.Groups[1].Value;
-		}
 
-		private static void VerifyFieldIsCorrect(Match match, string fieldToken)
-		{
-			if (match.Groups.Count != 3 || !match.Groups[1].Value.Equals(fieldToken))
-				throw new DefinedExerciseFileFormatException(String.Format("Expected '{0}', but instead found '{1}'", fieldToken, match.Groups[1].Value));
-		}
-
-		private enum ParseState
-		{
-			SetTitle = 1,
-			SetSummary = 2,
-			FinaleTitle = 3,
-			FinaleDetails = 4,
-			NextExerciseOrDone = 5,
-			ExerciseTitle = 6,
-			ExerciseQuery = 7,
-			ExerciseExplanation = 8,
-			ExerciseExample = 9,
-			ExerciseExercise = 10
-		}
-
-		private static class FileTokens
-		{
-			public const string SET_ID = "Id";
-			public const string SET_TITLE = "Title";
-			public const string SET_SUMMARY = "Summary";
-			public const string FINALE_TITLE = "FinaleTitle";
-			public const string FINALE_DETAILS = "FinaleDetails";
-			public const string EXERCISE_ID = "ExerciseId";
-			public const string EXERCISE_TITLE = "Title";
-			public const string EXERCISE_QUERY = "Query";
-			public const string EXERCISE_EXPLANATION = "Explanation";
-			public const string EXERCISE_EXAMPLE = "Example";
-			public const string EXERCISE_EXERCISE = "Exercise";
-
-			public const string EXERCISE_DETAILS = "Details";
-		}
 	}
 }

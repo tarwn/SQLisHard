@@ -208,12 +208,12 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 
 		private string GenerateSampleData(string setId = "SampleId", string setTitle = "Sample Title", string setSummary = "Sample Summary",
 										  string finaleTitle = "Finale Title", string finaleDetails = "Finale Details",
-										  int exerciseCount = 0)
+										  int exerciseCount = 1)
 		{
 			string data = String.Format(
-				"Id:{0}\n" + 
-				"Title:{1}\n" +
-				"Summary:{2}\n" +
+				"SetId:{0}\n" + 
+				"SetTitle:{1}\n" +
+				"SetSummary:{2}\n" +
 				"FinaleTitle:{3}\n" + 
 				"FinaleDetails:{4}\n", 
 				setId, setTitle, setSummary, 
