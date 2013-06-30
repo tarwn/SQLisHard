@@ -13,6 +13,7 @@ namespace SQLisHard.IntegrationTests.Configs
 		public string BaseUrl { get; private set; }
 		public string FirstExerciseQuery { get; private set; }
 		public string FirefoxBinaryPath { get; set; }
+		public string PatternExerciseId { get; private set; }
 
 		private static Settings _settings;
 		public static Settings CurrentSettings
@@ -38,9 +39,11 @@ namespace SQLisHard.IntegrationTests.Configs
 			string url = settingsFile.Element("BaseURL").Value;
 			var settings = new Settings(url);
 			settings.FirstExerciseQuery = settingsFile.Element("FirstExerciseQuery").Value;
+			settings.PatternExerciseId = settingsFile.Element("PatternExerciseId").Value;
 
 			return settings;
 		}
+
 
 	}
 }

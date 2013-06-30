@@ -28,12 +28,18 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 				throw new ArgumentOutOfRangeException("Specified exercise set could not be found");
 		}
 
-		public DefinedExerciseResult GetExerciseResultForComparison(string exerciseSetId, string exerciseId)
+		public DefinedExercise GetExercise(string exerciseSetId, string exerciseId)
 		{
 			if (!_exercises.ContainsKey(exerciseSetId))
 				return null;
 
 			var exercise = _exercises[exerciseSetId].Exercises.Where(e => e.Id == exerciseId).FirstOrDefault();
+			return exercise;
+		}
+
+		public DefinedExerciseResult GetExerciseResultForComparison(string exerciseSetId, string exerciseId)
+		{
+			var exercise = GetExercise(exerciseSetId, exerciseId);
 			if (exercise == null)
 				return null;
 
@@ -129,7 +135,5 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 
 			return set;
 		}
-
-
 	}
 }

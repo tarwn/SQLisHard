@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace SQLisHard.Domain.ExerciseEvaluator
 {
@@ -25,11 +26,28 @@ namespace SQLisHard.Domain.ExerciseEvaluator
         public StatementResult Evaluate(Statement statement)
         {
             var queryResult = _queryEngine.ExecuteQuery(statement);
+
 			var evaluationResult = new StatementResult(queryResult)
+			{
+				ExerciseId = statement.ExerciseId,
+				CompletesExercise = true	// think happy thoughts
+			};
+
+			// pattern check, if defined
+			var exercise = _exerciseStore.GetExercise(statement.ExerciseSetId, statement.ExerciseId);
+			if (!String.IsNullOrWhiteSpace(exercise.Pattern))
+			{
+				if (!Regex.IsMatch(statement.Content, exercise.Pattern)) {
+					evaluationResult.CompletesExercise = false;
+					evaluationResult.Tip = exercise.PatternTip;
+				}
+			}
+
+			// evaluation of results, if still good
+			if(evaluationResult.CompletesExercise)			
             {
-                CompletesExercise = EvaluateResultSet(statement, queryResult),
-                ExerciseId = statement.ExerciseId
-            };
+				evaluationResult.CompletesExercise = EvaluateResultSet(statement, queryResult);
+            }
 
 			_historyStore.AddToHistory(statement.RequestorId, statement.Content, (int) evaluationResult.ExecutionStatus, evaluationResult.CompletesExercise);
 

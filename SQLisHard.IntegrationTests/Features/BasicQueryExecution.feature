@@ -53,3 +53,10 @@ Scenario: Get rest of results when query has more than 100
 	When I click the read more link
 	Then 101 result rows are displayed without the read more link
 
+@UI
+Scenario: Get tip when making an error for a pattern-based exercise
+	Given I am on the Exercise Page
+	And I have selected a pattern-based exercise
+	And I have entered a query of "SELECT TOP 101 * FROM dbo.Customers"
+	When I Press Execute
+	Then a tip is shown for the pattern

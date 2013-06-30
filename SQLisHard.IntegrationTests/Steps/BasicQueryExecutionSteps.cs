@@ -75,5 +75,18 @@ namespace SQLisHard.IntegrationTests.Steps
 			CurrentPage.As<ExercisePage>().AssertStatusDisplays(expectedStatus);
 		}
 
+		[Given(@"I have selected a pattern-based exercise")]
+		public void GivenIHaveSelectedAPattern_BasedExercise()
+		{
+			CurrentPage.As<ExercisePage>().SelectExercise(Settings.CurrentSettings.PatternExerciseId);
+			CurrentPage.As<ExercisePage>().WaitUpTo(5000, () => CurrentPage.As<ExercisePage>().IsCurrentExercise(Settings.CurrentSettings.PatternExerciseId), "Exercise has not updated");
+		}
+
+		[Then(@"a tip is shown for the pattern")]
+		public void ThenATipIsShownForThePattern()
+		{
+			CurrentPage.As<ExercisePage>().WaitUpTo(5000, () => CurrentPage.As<ExercisePage>().TipTabIsVisible, "Tip description is not visible");
+		}
+
     }
 }

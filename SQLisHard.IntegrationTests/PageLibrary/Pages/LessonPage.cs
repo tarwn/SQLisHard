@@ -27,6 +27,9 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 		[FindsBy(How = How.Id, Using = "queryError")]
 		public IWebElement QueryError { get; set; }
 
+		[FindsBy(How = How.Id, Using = "tipDescription")]
+		public IWebElement TipDescription { get; set; }
+
 		[FindsBy(How = How.Id, Using = "queryResults")]
 		public IWebElement QueryResults { get; set; }
 
@@ -41,6 +44,9 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 
 		[FindsBy(How = How.Id, Using = "moreResultsLinkTotalCount")]
 		public IWebElement MoreResultsLinkTotalCount { get; set; }
+
+		[FindsBy(How = How.Id, Using = "exerciseTitle")]
+		public IWebElement ExerciseTitle { get; set; }
 
 		public By ByResultRows { get { return By.CssSelector("#queryResults tbody tr"); } }
 
@@ -67,6 +73,14 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 			get
 			{
 				return QueryError.IsPresent();
+			}
+		}
+
+		public bool TipTabIsVisible
+		{
+			get
+			{
+				return TipDescription.IsPresent();
 			}
 		}
 
@@ -124,12 +138,25 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 			AssertElementPresent(ContinueButton, "ContinueButton");
 		}
 
-
 		internal bool IsNthExerciseIsSelected(int indexOfSelectedEntry)
 		{
 			var i = indexOfSelectedEntry - 1;
 			var exerciseList = Driver.FindElements(ByExerciseListItems);
 			return exerciseList.Count > i &&  exerciseList[i].GetAttribute("class") == "selected";
 		}
+
+		public void SelectExercise(string exerciseId)
+		{
+			var exerciseLink = Driver.FindElement(By.CssSelector("li[data-exerciseid='" + exerciseId + "']"));
+			AssertElementPresent(exerciseLink, "Exercise Link for '" + exerciseId + "'");
+			exerciseLink.Click();
+		}
+
+		public bool IsCurrentExercise(string exerciseId)
+		{
+			AssertElementPresent(ExerciseTitle, "Exercise Title");
+			return ExerciseTitle.GetAttribute("data-exerciseid") == exerciseId;
+		}
+
 	}
 }

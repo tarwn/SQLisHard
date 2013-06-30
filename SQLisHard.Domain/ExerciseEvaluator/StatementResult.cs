@@ -21,5 +21,6 @@ namespace SQLisHard.Domain.ExerciseEvaluator
 
 		public string ExerciseId { get; set; }
 		public bool CompletesExercise { get; set; }
+		public string Tip { get; set; }
 	}
 }
