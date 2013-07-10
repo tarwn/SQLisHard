@@ -74,7 +74,10 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 								  .AddTransition(ParseState.FinaleDetails, ParseState.NewExercise)
 								  .AddTransition(ParseState.NewExercise, ParseState.ExerciseTitle)
 								  .AddTransition(ParseState.ExerciseTitle, ParseState.ExerciseQuery)
-								  .AddTransition(ParseState.ExerciseQuery, ParseState.ExerciseExplanation)
+								  .AddTransition(ParseState.ExerciseQuery, ParseState.ExercisePattern,
+																		   ParseState.ExerciseExplanation)
+								  .AddTransition(ParseState.ExercisePattern, ParseState.ExercisePatternTip)
+								  .AddTransition(ParseState.ExercisePatternTip, ParseState.ExerciseExplanation)
 								  .AddTransition(ParseState.ExerciseExplanation, ParseState.ExerciseExample,
 																				 ParseState.ExerciseExercise)
 								  .AddTransition(ParseState.ExerciseExample, ParseState.ExerciseExercise)
@@ -118,6 +121,12 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 						break;
 					case ParseState.ExerciseQuery:
 						currentExercise.Query = cleanValue;
+						break;
+					case ParseState.ExercisePattern:
+						currentExercise.Pattern = cleanValue;
+						break;
+					case ParseState.ExercisePatternTip:
+						currentExercise.PatternTip = cleanValue;
 						break;
 					case ParseState.ExerciseExplanation:
 						currentExercise.Explanation = cleanValue;

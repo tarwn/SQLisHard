@@ -17,6 +17,8 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore.Parser
 			{ ParseState.NewExercise,			"ExerciseId" },
 			{ ParseState.ExerciseTitle,			"Title" },
 			{ ParseState.ExerciseQuery,			"Query" },
+			{ ParseState.ExercisePattern,		"Pattern" },
+			{ ParseState.ExercisePatternTip,	"PatternTip" },
 			{ ParseState.ExerciseExplanation,	"Explanation" },
 			{ ParseState.ExerciseExample,		"Example" },
 			{ ParseState.ExerciseExercise,		"Exercise" },
@@ -140,16 +142,18 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore.Parser
 
 	public enum ParseState
 	{
-		SetId = 0,
-		SetTitle = 1,
-		SetSummary = 2,
-		FinaleTitle = 3,
-		FinaleDetails = 4,
-		NewExercise = 5,
-		ExerciseTitle = 6,
-		ExerciseQuery = 7,
-		ExerciseExplanation = 8,
-		ExerciseExample = 9,
-		ExerciseExercise = 10
+		SetId,
+		SetTitle,
+		SetSummary,
+		FinaleTitle,
+		FinaleDetails,
+		NewExercise,
+		ExerciseTitle,
+		ExerciseQuery,
+		ExercisePattern,
+		ExercisePatternTip,
+		ExerciseExplanation,
+		ExerciseExample,
+		ExerciseExercise
 	}
 }

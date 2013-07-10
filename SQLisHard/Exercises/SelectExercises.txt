@@ -140,11 +140,44 @@ Exercise:	<p>Let's put it all together. Let's select all columns from the <em>Or
 			<em>OrderTime</em> is earlier than 2013-02-01 and the <em>DeliveryTime</em> is later than 2013-01-31 and
 			then finally order those records by the <em>OrderTotal</em> descending.</p>
 
+
 ExerciseId:	S4.0
-Title:		S4.0 - INNER JOIN
+Title:		S4.0 - Two Part Column Names
+Query:		SELECT Customers.Id FROM Customers WHERE Customers.Id = 5
+Pattern:	Customers\.Id.*Customers\.Id
+PatternTip:	Your query should have 2 references to Customers.Id
+Explanation:	<p>Shortly we will be accessing both the <em>Orders</em> and <em>Customers</em> table in the same query,
+			both of which have an Id column. We can clarify which Id colum we are referencing by prefixing the column
+			name with the table we are referencing it from.</p>
+Example:	<code>
+				SELECT Customers.Id<br/>
+				FROM Customers
+			</code>
+Exercise:	<p>Using the example query above, create a query for the <em>Customers</em>.<em>Id</em> column where the Id is 
+			less than 5. Use the two part Table.Column method whereever you access the Id column.</p>
+
+ExerciseId:	S4.1
+Title:		S4.1 - Table Aliases
+Query:		SELECT * FROM Customers CUST WHERE CUST.Id = 5
+Pattern:	FROM\sCustomers\sCUST.*CUST\.Id
+PatternTip:	Your from statement should look like "FROM Customers CUST" and you should have a reference to CUST.id in the WHERE clause
+Explanation:	<p>Typing the full table name can be tedious and will not work for queries that 
+			reference the same table more than once. Rather than using the full table name, it's possible to define an alias in
+			the FROM statement and use the alias instead of the full table name.</p>
+Example:	<code>
+				SELECT *<br/>
+				FROM Customers C<br/>
+				WHERE C.Id < 5
+			</code>
+Exercise:	<p>In this example I have used "C" as an alias for the <em>Customers</em> table. Starting with a similar query, retrieve
+			all columns (*) from <em>Customers</em> where the <em>Id</em> is less than 10, and use an alias of CUST for the <em>Customers</em>
+			table.</p>
+
+ExerciseId:	S4.2
+Title:		S4.2 - INNER JOIN
 Query:		SELECT * FROM Customers C INNER JOIN Orders O ON C.id = O.CustomerId
 Explanation:	<p>Now that we can pull data out of a single table, let's take it a step further. JOIN statements
-			allow us to 'join' the records of several tables together using a condition to define how they 
+			allow us to 'join' the rows of several tables together using a condition to define how they 
 			match one another.</p>
 Example:	<code>
 				SELECT <i>[columns]</i><br/>
@@ -155,3 +188,15 @@ Exercise:	<p>Try using the INNER JOIN syntax to SELECT all columns from the <em>
 			<em>Orders</em> tables where the <em>CustomerId</em> column in <em>Orders</em> matches the <em>Id</em>
 			column in <em>Customers</em>.</p><p><i>Note: Both tables have an Id column, so you will need to spell
 			out <em>Customers.Id</em> in the condition<i/></p>
+
+ExerciseId:	S5.0
+Title:		S5.0 - Column Aliasing
+Query:		SELECT OrderTotal, OrderTotal AS RenamedOrderTotal FROM Orders
+Explanation:	<p>When we start working with multiple tables or calculated columns, the ability to assign an alias
+			to tables or columns can be extremely useful.</p>
+Example:	<code>
+				SELECT OrderTotal, <br/>
+						OrderTotal AS RenamedOrderTotal<br/>
+				FROM Orders
+			</code>
+Exercise:	<p>Try the sample query above to select two <em>OrderTotal</em> columns, the secon with the alias "RenamedOrderTotal"</p>

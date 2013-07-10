@@ -77,6 +77,7 @@ SqlIsHardApp.Model.StatementResult = function (responseData) {
     // map incoming data
     var exerciseId = ko.observable(responseData.ExerciseId || ""),
         completesExercise = ko.observable(responseData.CompletesExercise || false),
+        tip = ko.observable(responseData.Tip || null),
         queryContent = ko.observable(responseData.Content || ""),
         data = {
             headers: ko.observableArray(responseData.Data.Headers || []),
@@ -100,6 +101,7 @@ SqlIsHardApp.Model.StatementResult = function (responseData) {
     return {
         exerciseId: exerciseId,
         completesExercise: completesExercise,
+        tip: tip,
         queryContent: queryContent,
         data: data,
         isSubsetOfRows: isSubsetOfRows,
