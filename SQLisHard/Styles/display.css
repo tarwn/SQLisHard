@@ -272,6 +272,11 @@ footer .version {
         color: red;
     }
 
+	#tipDescription {
+		padding: .25em 1em;
+		background-color: #F7F692;
+	}
+
     /* Editor.QueryResultsArea.QueryResults.DataTable*/
     #dataTable {
         border-spacing: 0;

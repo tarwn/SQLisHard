@@ -35,7 +35,7 @@ namespace SQLisHard.Domain.ExerciseEvaluator
 
 			// pattern check, if defined
 			var exercise = _exerciseStore.GetExercise(statement.ExerciseSetId, statement.ExerciseId);
-			if (!String.IsNullOrWhiteSpace(exercise.Pattern))
+			if (!String.IsNullOrWhiteSpace(exercise.Pattern) && evaluationResult.ExecutionStatus == QueryExecutionStatus.Success)
 			{
 				if (!Regex.IsMatch(statement.Content, exercise.Pattern)) {
 					evaluationResult.CompletesExercise = false;

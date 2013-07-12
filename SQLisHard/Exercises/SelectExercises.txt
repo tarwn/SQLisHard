@@ -4,7 +4,9 @@ SetSummary:	<p>Whether you're just getting started or trying to brush up on exis
 			skills, this is a great spot to start.</p>
 
 FinaleTitle: Finale
-FinaleDetails: All Done!
+FinaleDetails: <p>Congratulations, you have finished the prepared SQL exercises!</p>
+			<p>I continue to add more and expand the features so check back more or keep an eye on the 
+			official <a href="https://twitter.com/SQLisHard" title="@sqlishard on twitter">@sqlishard</a> twitter account</p>
 
 ExerciseId:	S1.0
 Title:		S1.0 - SELECT
@@ -142,7 +144,7 @@ Exercise:	<p>Let's put it all together. Let's select all columns from the <em>Or
 
 
 ExerciseId:	S4.0
-Title:		S4.0 - Two Part Column Names
+Title:		S4.0 - Qualified Columns
 Query:		SELECT Customers.Id FROM Customers WHERE Customers.Id = 5
 Pattern:	Customers\.Id.*Customers\.Id
 PatternTip:	Your query should have 2 references to Customers.Id
@@ -158,7 +160,7 @@ Exercise:	<p>Using the example query above, create a query for the <em>Customers
 
 ExerciseId:	S4.1
 Title:		S4.1 - Table Aliases
-Query:		SELECT * FROM Customers CUST WHERE CUST.Id = 5
+Query:		SELECT * FROM Customers CUST WHERE CUST.Id < 10
 Pattern:	FROM\sCustomers\sCUST.*CUST\.Id
 PatternTip:	Your from statement should look like "FROM Customers CUST" and you should have a reference to CUST.id in the WHERE clause
 Explanation:	<p>Typing the full table name can be tedious and will not work for queries that 
@@ -174,24 +176,10 @@ Exercise:	<p>In this example I have used "C" as an alias for the <em>Customers</
 			table.</p>
 
 ExerciseId:	S4.2
-Title:		S4.2 - INNER JOIN
-Query:		SELECT * FROM Customers C INNER JOIN Orders O ON C.id = O.CustomerId
-Explanation:	<p>Now that we can pull data out of a single table, let's take it a step further. JOIN statements
-			allow us to 'join' the rows of several tables together using a condition to define how they 
-			match one another.</p>
-Example:	<code>
-				SELECT <i>[columns]</i><br/>
-				FROM <i>table_name</i><br/>
-					INNER JOIN <i>table_name2</i> ON <i>condition</i>
-			</code>
-Exercise:	<p>Try using the INNER JOIN syntax to SELECT all columns from the <em>Customers</em> and 
-			<em>Orders</em> tables where the <em>CustomerId</em> column in <em>Orders</em> matches the <em>Id</em>
-			column in <em>Customers</em>.</p><p><i>Note: Both tables have an Id column, so you will need to spell
-			out <em>Customers.Id</em> in the condition<i/></p>
-
-ExerciseId:	S5.0
-Title:		S5.0 - Column Aliasing
-Query:		SELECT OrderTotal, OrderTotal AS RenamedOrderTotal FROM Orders
+Title:		S4.2 - Column Aliasing
+Query:		SELECT Id AS OrderId FROM Orders WHERE OrderTotal < 50
+Pattern:	SELECT\s*Id\s*AS\s*OrderId
+PatternTip:	Your SELECT statement should look like 'SELECT Id AS OrderId'
 Explanation:	<p>When we start working with multiple tables or calculated columns, the ability to assign an alias
 			to tables or columns can be extremely useful.</p>
 Example:	<code>
@@ -199,4 +187,35 @@ Example:	<code>
 						OrderTotal AS RenamedOrderTotal<br/>
 				FROM Orders
 			</code>
-Exercise:	<p>Try the sample query above to select two <em>OrderTotal</em> columns, the secon with the alias "RenamedOrderTotal"</p>
+Exercise:	<p>Try selecting the <em>Id</em> column from the <em>Orders</em> table, but alias it as "OrderId" and only include rows where the <em>OrderTotal</em> is less than 50</p>
+
+ExerciseId:	S5.0
+Title:		S5.0 - INNER JOIN
+Query:		SELECT * FROM Customers C INNER JOIN Orders O ON C.id = O.CustomerId
+Explanation:	<p>Now that we can pull data out of a single table and qualify column names, let's take it a step further. JOIN statements
+			allow us to 'join' the rows of several tables together using a condition to define how they 
+			match one another.</p>
+Example:	<code>
+				SELECT <i>[columns]</i><br/>
+				FROM <i>FirstTable</i><br/>
+					INNER JOIN <i>SecondTable</i> ON <i>FirstTable.Id = SecondTable.FirstTableId</i>
+			</code>
+Exercise:	<p>Try using the INNER JOIN syntax to SELECT all columns from the <em>Customers</em> and 
+			<em>Orders</em> tables where the <em>CustomerId</em> column in <em>Orders</em> matches the <em>Id</em>
+			column in <em>Customers</em>. Since both tables have an Id column, you will need to qualify the 
+			<em>Customers</em> id in the WHERE clause with either the table name or a table alias.</p>
+
+ExerciseId:	S5.1
+Title:		S5.1 - JOIN w/ WHERE
+Query:		SELECT * FROM Customers C INNER JOIN Orders O ON C.id = O.CustomerId WHERE O.OrderTotal > 200
+Explanation:	<p>Just like querying a single table, we can include a WHERE clause on our JOINed tables to 
+			filter down the results.</p>
+Example:	<code>
+				SELECT *<br/>
+				FROM Customers C<br/>
+					INNER JOIN Orders O ON O.CustomerId = C.Id<br/>
+				WHERE C.LastName LIKE 'A%'
+			</code>
+Exercise:	<p>Try using the INNER JOIN syntax to SELECT all columns from the <em>Customers</em> and 
+			<em>Orders</em> tables using the ON statement above and a WHERE statement to limit the results
+			to rows with an OrderTotal greater than 200</p>

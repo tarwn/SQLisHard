@@ -53,7 +53,7 @@
         <div id="queryResultsArea">
             <div id="queryResultsTab">Results</div>
             <div id="queryResults" data-bind="with: currentQuery.queryResult">
-                <div data-bind="text: tip, if: tip"></div>
+                <div data-bind="text: tip, if: tip, visible: tip" id="tipDescription"></div>
                 <div data-bind="template: { name: isError() ? 'result-error' : 'result-rows' }"></div>
             </div>
         </div>
