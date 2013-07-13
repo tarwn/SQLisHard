@@ -40,7 +40,7 @@ namespace SQLisHard.Domain.ExerciseEvaluator
 
 			if (!String.IsNullOrWhiteSpace(exercise.Pattern) && evaluationResult.ExecutionStatus == QueryExecutionStatus.Success)
 			{
-				if (!Regex.IsMatch(statement.Content, exercise.Pattern)) {
+				if (!Regex.IsMatch(statement.Content, exercise.Pattern, RegexOptions.IgnoreCase)) {
 					evaluationResult.CompletesExercise = false;
 					evaluationResult.Tip = exercise.PatternTip;
 				}
