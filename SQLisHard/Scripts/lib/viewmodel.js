@@ -18,12 +18,22 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
             isRunning: ko.observable(false),
             queryResult: ko.observable(null),
             toStatementDTO: function (limitResults) {
-                return {
-                    exerciseSetId: exercises().id(),
-                    exerciseId: exercises().currentExercise().id,
-                    content: currentQuery.queryText,
-                    limitResults: limitResults
-                };
+                if (!exercises().currentExercise().id) {
+                    return {
+                        exerciseSetId: exercises().id(),
+                        exerciseId: exercises().debug(),
+                        content: currentQuery.queryText,
+                        limitResults: limitResults
+                    };
+                }
+                else {
+                    return {
+                        exerciseSetId: exercises().id(),
+                        exerciseId: exercises().currentExercise().id,
+                        content: currentQuery.queryText,
+                        limitResults: limitResults
+                    };
+                }
             }
         },
         isDebug = ko.observable(isDebug || false);
