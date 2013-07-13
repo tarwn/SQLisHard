@@ -35,8 +35,8 @@ namespace SQLisHard.Domain.ExerciseEvaluator
 
 			// pattern check, if defined
 			var exercise = _exerciseStore.GetExercise(statement.ExerciseSetId, statement.ExerciseId);
-			if (exercise == null)
-				throw new ArgumentException(String.Format("Specified exercise id could not be found. Set Id: {0} Exercise Id: {1}",statement.ExerciseSetId, statement.ExerciseId));
+			//if (exercise == null)
+			//	throw new ArgumentException(String.Format("Specified exercise id could not be found. Set Id: {0} Exercise Id: {1}",statement.ExerciseSetId, statement.ExerciseId));
 
 			if (!String.IsNullOrWhiteSpace(exercise.Pattern) && evaluationResult.ExecutionStatus == QueryExecutionStatus.Success)
 			{

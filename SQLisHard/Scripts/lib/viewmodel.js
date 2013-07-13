@@ -10,8 +10,6 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
             updateExercises();
         };
 
-    var debugOutput = ko.observable();
-
     // Private variables
     var exercises = ko.observable(SqlIsHardApp.Model.ExerciseSet(Constants.InitialExerciseData)),
         user = ko.observable(null),
@@ -20,11 +18,7 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
             isRunning: ko.observable(false),
             queryResult: ko.observable(null),
             toStatementDTO: function (limitResults) {
-                if (!exercises().currentExercise().id) {
-                    debugOutput(exercises.debug());
-                }
-
-                return {
+               return {
                     exerciseSetId: exercises().id(),
                     exerciseId: exercises().currentExercise().id,
                     content: currentQuery.queryText,
@@ -99,7 +93,6 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
         user: user,
         currentQuery: currentQuery,
         isDebug: isDebug,
-        debugOutput: debugOutput,
         // methods
         executeQuery: executeQuery,
         updateExercises: updateExercises

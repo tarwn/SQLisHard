@@ -15,10 +15,6 @@ SqlIsHardApp.Model.ExerciseSet = function (data) {
         rawExercises[ex] = SqlIsHardApp.Model.Exercise(data.Exercises[ex]);
     var exercises = ko.observableArray(rawExercises);
 
-    exercises.debug = ko.computed(function () {
-        return currentExerciseIndex();
-    }, this);
-
     // computed variables
     var currentExercise = ko.computed(function () {
         if (currentExerciseIndex() == Constants.ExercisePlaceHolder.FINALE)
