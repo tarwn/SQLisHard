@@ -13,6 +13,7 @@ namespace SQLisHard.IntegrationTests.Steps
         public void GivenIAmOnTheExercisePage()
         {
 			CurrentPage = PageBase.LoadPage<ExercisePage>(CurrentDriver, Settings.CurrentSettings.BaseUrl);
+			CurrentPage.As<ExercisePage>().WaitUpTo(5000, () => CurrentPage.As<ExercisePage>().IsNthExerciseIsSelected(1), "First exercise is loaded");
         }
         
         [Given(@"I have entered a query of ""(.*)""")]
