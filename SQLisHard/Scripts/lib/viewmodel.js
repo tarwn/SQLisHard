@@ -21,7 +21,7 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
                 if (!exercises().currentExercise().id) {
                     return {
                         exerciseSetId: exercises().id(),
-                        exerciseId: exercises().debug(),
+                        exerciseId: exercises.debug(),
                         content: currentQuery.queryText,
                         limitResults: limitResults
                     };
