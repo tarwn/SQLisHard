@@ -145,6 +145,13 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 			return exerciseList.Count > i &&  exerciseList[i].GetAttribute("class") == "selected";
 		}
 
+		public bool ExercisesHaveLoaded()
+		{ 
+			var exerciseList = Driver.FindElements(ByExerciseListItems);
+			return exerciseList.Count > 1;	// starts with a 'Loading...' item
+		}
+
+
 		public void SelectExercise(string exerciseId)
 		{
 			var exerciseLink = Driver.FindElement(By.CssSelector("li[data-exerciseid='" + exerciseId + "']"));
