@@ -41,6 +41,7 @@ h1 a, h1 a:visited {
 }
 #topBar a {
 	text-decoration: none;
+	margin-right: 1em;
 }
 #topBar a:hover {
 	text-decoration: underline;
@@ -372,3 +373,8 @@ footer .version {
     .about .selected a {
         color: black;
     }
+
+	.about .commentary {
+		color: #666666;
+		font-style: italic;
+	}
