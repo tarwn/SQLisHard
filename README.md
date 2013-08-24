@@ -5,14 +5,13 @@ Learning SQL can be difficult and we tend to learn best by doing. This started a
 to build a site that would allow you to interactively learn SQL, but real life has caused it to 
 take far longer than I originally planned.
 
-SQLisHard.com does not have public links to the exercises yet, but that will be changing in the
-near future as I open up some of the early exercises.
-
 The initial release is focused entirely on a minimal product with a string foundation. A lot of 
 the change deployment, test infrastructure, and so on has been built to let me quickly add small
 features or additions as I have time. Additional exercises, new exercise sets, more extensive
 query functionality, the ability to save progress and login, these are all features in the idea 
 list that have not been added yet.
+
+Check out the About section of http://sqlishard.com for more up to date general information.
 
 Licensing
 ==========
