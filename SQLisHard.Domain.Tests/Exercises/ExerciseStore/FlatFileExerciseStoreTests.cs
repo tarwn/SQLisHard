@@ -65,7 +65,7 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 
 			var result = store.GetExerciseResultForComparison(sampleSetId, sampleExerciseId);
 
-			engine.Verify(e => e.ExecuteQuery(It.Is<Query>(q => q.Content == sampleQuery)));
+			engine.Verify(e => e.ExecuteQuery(It.Is<Query>(q => q.Content == sampleQuery), It.IsAny<bool>()));
 		}
 
 		[Test]

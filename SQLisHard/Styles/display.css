@@ -251,19 +251,27 @@ footer .version {
     }
 
     /* Editor.QueryResultsArea.QueryResultsTab */
-    #queryResultsTab {
+    .query-results-tab {
         background-color: white;
         margin-left: .25em;
         display: inline;
-        border-top-left-radius: .25em;
-        border-top-right-radius: .25em;
+        border-radius: .25em;
         padding: 1px 1em 3px 1em;
         position:relative;
-        z-index:20;
         border:1px solid #aaaaaa;
         border-width: 1px 1px 0px 1px;
         font-size: 90%;
+        z-index:0;
     }
+
+	.query-results-tab.selected {
+        z-index:20;
+	}
+
+	.query-results-messages {
+		padding: 6px;
+		font-size: 11pt;
+	}
 
     /* Editor.QueryResultsArea.QueryResults */
     #queryResults {

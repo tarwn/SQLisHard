@@ -88,6 +88,7 @@ SqlIsHardApp.Model.StatementResult = function (responseData) {
         errorMessage = ko.observable(responseData.ErrorMessage || ""),
         errorNumber = ko.observable(responseData.ErrorNumber || 0),
         executionStatus = ko.observable(responseData.ExecutionStatus || "");
+        infoMessages = ko.observableArray(responseData.InfoMessages);
 
     // computed fields
     var
@@ -108,6 +109,7 @@ SqlIsHardApp.Model.StatementResult = function (responseData) {
         totalRowCount: totalRowCount,
         errorMessage: errorMessage,
         errorNumber: errorNumber,
+        infoMessages: infoMessages,
         executionStatus: executionStatus,
         isError: isError,
         isServerError: isServerError

@@ -18,4 +18,9 @@ Constants.InitialExerciseData = {
 
 Constants.Text = {
     "QUERY_INITIAL_TEXT": "type a query here"
-}
+};
+
+Constants.ResultsTab = {
+    Results: 'results',
+    Messages: 'messages'
+};

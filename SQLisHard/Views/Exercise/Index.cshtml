@@ -51,10 +51,21 @@
             <textarea id="queryInput" cols="80" rows="5" data-bind="value: currentQuery.queryText"></textarea>
         </div>
         <div id="queryResultsArea">
-            <div id="queryResultsTab">Results</div>
+            <div class="query-results-tab" data-bind="visible: !currentQuery.queryResult.isError, css: { selected: selectedResultsTab() == 'results' }, click: selectResultsTab">Results</div>
+            <div class="query-results-tab" data-bind="css: { selected: selectedResultsTab() == 'messages' }, click: selectMessagesTab">Messages</div>
             <div id="queryResults" data-bind="with: currentQuery.queryResult">
-                <div data-bind="text: tip, if: tip, visible: tip" id="tipDescription"></div>
-                <div data-bind="template: { name: isError() ? 'result-error' : 'result-rows' }"></div>
+                <div data-bind="if: tip, visible: tip, text: tip" id="tipDescription"></div>
+                <div data-bind="visible: $root.selectedResultsTab() == 'results' && !isError()">
+                    <!-- sub-div so we won't recalc table every time we change tabs -->
+                    <div data-bind="template: { name: 'result-rows', if: !isError() }"></div>
+                </div>
+                <div data-bind="template: { name: 'result-error', if: $root.selectedResultsTab() == 'messages' && isError() }"></div>
+                <div data-bind="visible: $root.selectedResultsTab() == 'messages' && !isError()">
+                    <!-- sub-div so we won't recalc contents every time we change tabs -->
+                    <div id="queryMessages" data-bind="foreach: infoMessages" class="query-results-messages">
+                        <div data-bind="text: $data"></div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="queryExecutionStatusBar">

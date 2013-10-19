@@ -22,8 +22,8 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 		public void Evaluate_Statement_ReturnsStatementForPassedQuery()
 		{
 			var lre = new ExerciseResultEvaluatorHarness();
-			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>()))
-							   .Returns<Query>((qry) => new StatementResult(new QueryResult(qry)));
+			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>(), It.IsAny<bool>()))
+							   .Returns<Query, bool>((qry, useStats) => new StatementResult(new QueryResult(qry)));
 			var initialStatement = new Statement() { Content = "Fake Query", LimitResults = true, ExerciseId = "123" };
 
 			var result = lre.InstanceUnderTest.Evaluate(initialStatement);
@@ -37,8 +37,8 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 		public void Evaluate_SuccessfulQuery_IsAddedToHistory()
 		{
 			var lre = new ExerciseResultEvaluatorHarness();
-			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>()))
-							   .Returns<Query>((qry) => new StatementResult(new QueryResult(qry)));
+			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>(), It.IsAny<bool>()))
+							   .Returns<Query, bool>((qry, useStats) => new StatementResult(new QueryResult(qry)));
 			var initialStatement = new Statement() { Content = "Fake Query", LimitResults = true, ExerciseId = "123", RequestorId = new UserId() };
 
 			var queryResult = lre.InstanceUnderTest.Evaluate(initialStatement);
@@ -77,8 +77,8 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 			string pattern = "SELECT \\* FROM TableName ([^\\s]+) WHERE \\1\\.Column = 5";
 			string query = "SELECT * FROM TableName TN WHERE TN.Column = 5";
 			var lre = new ExerciseResultEvaluatorHarness();
-			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>()))
-							   .Returns<Query>((qry) => new StatementResult(new QueryResult(qry)));
+			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>(), It.IsAny<bool>()))
+							   .Returns<Query, bool>((qry, useStats) => new StatementResult(new QueryResult(qry)));
 			lre.MockExerciseStore.Setup(e => e.GetExercise("ABC", exerciseId))
 								 .Returns(new DefinedExercise(exerciseId) { Query = "Fake Query", Pattern = pattern });
 			var initialStatement = new Statement() { ExerciseSetId = "ABC", ExerciseId = exerciseId, Content = query, LimitResults = true, RequestorId = new UserId() };
@@ -95,8 +95,8 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 			string pattern = "SELECT \\* FROM TableName ([^\\s]+) WHERE \\1\\.Column = 5";
 			string query = "SELECT * FROM TableName TN WHERE TN.Column = 5";
 			var lre = new ExerciseResultEvaluatorHarness();
-			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>()))
-							   .Returns<Query>((qry) => new StatementResult(new QueryResult(qry)));
+			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>(), It.IsAny<bool>()))
+							   .Returns<Query, bool>((qry, useStats) => new StatementResult(new QueryResult(qry)));
 			lre.MockExerciseStore.Setup(e => e.GetExercise("ABC", exerciseId))
 								 .Returns(new DefinedExercise(exerciseId) { Query = "Fake Query", Pattern = pattern });
 			var initialStatement = new Statement() { ExerciseSetId = "ABC", ExerciseId = exerciseId, Content = query, LimitResults = true, RequestorId = new UserId() };
@@ -113,8 +113,8 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 			string pattern = "SELECT * FROM TableName ([^\\s]+) WHERE \\1.Column = 5";
 			string query = "SELECT * FROM TableName WHERE Column = 5";
 			var lre = new ExerciseResultEvaluatorHarness();
-			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>()))
-							   .Returns<Query>((qry) => new StatementResult(new QueryResult(qry)));
+			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>(), It.IsAny<bool>()))
+							   .Returns<Query, bool>((qry, useStats) => new StatementResult(new QueryResult(qry)));
 			lre.MockExerciseStore.Setup(e => e.GetExercise("ABC", exerciseId))
 								 .Returns(new DefinedExercise(exerciseId) { Query = "Fake Query", Pattern = pattern });
 			var initialStatement = new Statement() { ExerciseSetId = "ABC", ExerciseId = exerciseId, Content = query, LimitResults = true, RequestorId = new UserId() };
@@ -133,8 +133,8 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 			string query = "SELECT * FROM TableName WHERE Column = 5";
 			string patternTip = "That was close, make sure you do the thing with other thing next time";
 			var lre = new ExerciseResultEvaluatorHarness();
-			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>()))
-							   .Returns<Query>((qry) => new StatementResult(new QueryResult(qry)));
+			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>(), It.IsAny<bool>()))
+							   .Returns<Query,bool>((qry, useStats) => new StatementResult(new QueryResult(qry)));
 			lre.MockExerciseStore.Setup(e => e.GetExercise("ABC", exerciseId))
 								 .Returns(new DefinedExercise(exerciseId) { Query = "Fake Query", Pattern = pattern, PatternTip = patternTip });
 			var initialStatement = new Statement() { ExerciseSetId = "ABC", ExerciseId = exerciseId, Content = query, LimitResults = true, RequestorId = new UserId() };
@@ -152,8 +152,8 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 			string pattern = "SELECT * FROM TableName ([^\\s]+) WHERE \\1.Column = 5";
 			string query = "SELECT * FROM TableName WHERE Column = 5";
 			var lre = new ExerciseResultEvaluatorHarness();
-			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>()))
-							   .Returns<Query>((qry) => new StatementResult(new QueryResult(qry)));
+			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>(), It.IsAny<bool>()))
+							   .Returns<Query,bool>((qry, useStats) => new StatementResult(new QueryResult(qry)));
 			lre.MockExerciseStore.Setup(e => e.GetExercise("ABC", exerciseId))
 								 .Returns(new DefinedExercise(exerciseId) { Query = "Fake Query", Pattern = pattern });
 			var initialStatement = new Statement() { ExerciseSetId = "ABC", ExerciseId = exerciseId, Content = query, LimitResults = true, RequestorId = new UserId() };
@@ -171,8 +171,8 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 			string pattern = "SELECT * FROM TableName ([^\\s]+) WHERE \\1.Column = 5";
 			string query = "SELECT * FROM TableName WHERE Column = 5";
 			var lre = new ExerciseResultEvaluatorHarness();
-			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>()))
-							   .Returns<Query>((qry) => new StatementResult(new QueryResult(qry)));
+			lre.MockQueryEngine.Setup(e => e.ExecuteQuery(It.IsAny<Query>(), It.IsAny<bool>()))
+							   .Returns<Query, bool>((qry, useStats) => new StatementResult(new QueryResult(qry)));
 			lre.MockExerciseStore.Setup(e => e.GetExercise("ABC", exerciseId))
 								 .Returns(new DefinedExercise(exerciseId) { Query = "Fake Query", Pattern = pattern });
 			var initialStatement = new Statement() { ExerciseSetId = "ABC", ExerciseId = exerciseId, Content = query, LimitResults = true, RequestorId = new UserId() };

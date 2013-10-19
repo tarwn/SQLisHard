@@ -17,12 +17,22 @@ namespace SQLisHard.Domain.QueryEngine.DatabaseExecution
 			_connectionString = connectionString;
 		}
 
-		public QueryResult ExecuteQuery(Query query)
+		public QueryResult ExecuteQuery(Query query, bool includeStatistics)
 		{
 			//TODO connection errors not captured as part of reslut - need ability to capture result that is not user error
 			using (var conn = new SqlConnection(_connectionString))
 			{
+				// move this outside one day + capture error bool on statements, this is proof of concept
+				List<string> infoMessages = new List<string>();
+				conn.InfoMessage += (sender, e) =>
+				{
+					infoMessages.Add(e.Message);
+				};
+				//conn.FireInfoMessageEventOnUserErrors = true;
 				var command = new SqlCommand(query.Content, conn);
+
+				if (includeStatistics)
+					command.CommandText = "SET STATISTICS IO ON; " + command.CommandText;
 
 				conn.Open();
 				try
@@ -46,11 +56,15 @@ namespace SQLisHard.Domain.QueryEngine.DatabaseExecution
 							}
 						}
 
+						// spin through remainder of result sets so we can consume messages
+						while (reader.NextResult()) { }
+
 						reader.Close();
 
 						if (query.LimitResults && result.TotalRowCount > result.Data.Rows.Count)
 							result.IsSubsetOfRows = true;
 
+						result.InfoMessages.AddRange(infoMessages);
 						return result;
 					}
 				}

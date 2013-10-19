@@ -8,6 +8,6 @@ namespace SQLisHard.Domain.QueryEngine
 {
     public interface IQueryEngine
     {
-		QueryResult ExecuteQuery(Query query);
+		QueryResult ExecuteQuery(Query query, bool includeStatistics);
     }
 }

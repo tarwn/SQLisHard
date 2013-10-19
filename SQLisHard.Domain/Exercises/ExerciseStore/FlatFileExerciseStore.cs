@@ -48,7 +48,7 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 				LimitResults = true
 			};
 
-			var result = _engine.ExecuteQuery(query);
+			var result = _engine.ExecuteQuery(query, false);
 			return new DefinedExerciseResult(result);
 		}
 

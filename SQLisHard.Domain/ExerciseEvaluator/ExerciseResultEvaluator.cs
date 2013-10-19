@@ -25,7 +25,7 @@ namespace SQLisHard.Domain.ExerciseEvaluator
 
         public StatementResult Evaluate(Statement statement)
         {
-            var queryResult = _queryEngine.ExecuteQuery(statement);
+            var queryResult = _queryEngine.ExecuteQuery(statement, true);
 
 			var evaluationResult = new StatementResult(queryResult)
 			{

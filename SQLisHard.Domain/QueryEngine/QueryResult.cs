@@ -20,16 +20,19 @@ namespace SQLisHard.Domain.QueryEngine
 
         public int ErrorNumber { get; set; }
 
+		public List<string> InfoMessages { get; set; }
 
         public QueryResult()
         {
             Data = new DataTable();
+			InfoMessages = new List<string>();
         }
 
         public QueryResult(Query originalQuery) : base(originalQuery)
         {
             Data = new DataTable();
-        }
+			InfoMessages = new List<string>();
+		}
 
         public QueryResult(QueryResult anotherResult)
             : base(anotherResult)
@@ -41,6 +44,8 @@ namespace SQLisHard.Domain.QueryEngine
             ExecutionStatus = anotherResult.ExecutionStatus;
             ErrorMessage = anotherResult.ErrorMessage;
             ErrorNumber = anotherResult.ErrorNumber;
+			InfoMessages = new List<string>();
+			InfoMessages.AddRange(anotherResult.InfoMessages);
         }
 
     }

@@ -1,4 +1,5 @@
-﻿
+﻿/// <reference path="constants.js" />
+
 var SqlIsHardApp = SqlIsHardApp || {};
 
 SqlIsHardApp.ViewModel = (function (ko, isDebug) {
@@ -11,22 +12,33 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
         };
 
     // Private variables
-    var exercises = ko.observable(SqlIsHardApp.Model.ExerciseSet(Constants.InitialExerciseData)),
-        user = ko.observable(null),
-        currentQuery = {
-            queryText: ko.observable(""),
-            isRunning: ko.observable(false),
-            queryResult: ko.observable(null),
-            toStatementDTO: function (limitResults) {
-               return {
-                    exerciseSetId: exercises().id(),
-                    exerciseId: exercises().currentExercise().id,
-                    content: currentQuery.queryText,
-                    limitResults: limitResults
-                };
-            }
-        },
-        isDebug = ko.observable(isDebug || false);
+    var 
+    exercises = ko.observable(SqlIsHardApp.Model.ExerciseSet(Constants.InitialExerciseData)),
+    user = ko.observable(null),
+    currentQuery = {
+        queryText: ko.observable(""),
+        isRunning: ko.observable(false),
+        queryResult: ko.observable(null),
+        toStatementDTO: function (limitResults) {
+            return {
+                exerciseSetId: exercises().id(),
+                exerciseId: exercises().currentExercise().id,
+                content: currentQuery.queryText,
+                limitResults: limitResults
+            };
+        }
+    },
+    isDebug = ko.observable(isDebug || false),
+    selectedResultsTab = ko.observable(Constants.ResultsTab.Results);
+
+    // UI Methods
+    var
+    selectResultsTab = function (vm) {
+        vm.selectedResultsTab(Constants.ResultsTab.Results);
+    },
+    selectMessagesTab = function (vm) {
+        vm.selectedResultsTab(Constants.ResultsTab.Messages);
+    };
 
     // Exercise Methods
     var
@@ -44,6 +56,13 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
                     currentQuery.queryText(queryContent);
 
                 var exerciseCompleted = currentQuery.queryResult().completesExercise();
+
+                if (currentQuery.queryResult().isError()) {
+                    selectedResultsTab(Constants.ResultsTab.Messages);
+                }
+                else {
+                    selectedResultsTab(Constants.ResultsTab.Results);
+                }
 
                 //if (exerciseCompleted) {
                 //    exercises().advanceExercise();
@@ -93,8 +112,11 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
         user: user,
         currentQuery: currentQuery,
         isDebug: isDebug,
+        selectedResultsTab: selectedResultsTab,
         // methods
         executeQuery: executeQuery,
-        updateExercises: updateExercises
+        updateExercises: updateExercises,
+        selectResultsTab: selectResultsTab,
+        selectMessagesTab: selectMessagesTab
     };
 })(ko, false);
