@@ -11,6 +11,9 @@
 	<parameter name="Storm.ProjectId" description="Splunk Storm project id" defaultvalue="false">
 		<parameterEntry kind="XmlFile" scope="Web.config" match="/configuration/appSettings/add[@key='Storm.ProjectId']/@value" />
 	</parameter>
+	<parameter name="Scalyr.WriteToken" description="Scalyr API Write Token" defaultvalue="">
+		<parameterEntry kind="XmlFile" scope="Web.config" match="/configuration/appSettings/add[@key='Scalyr.WriteToken']/@value" />
+	</parameter>
 	<parameter name="SMTP.FromAddress" description="from address for outgoing mail" defaultvalue="">
 		<parameterEntry kind="XmlFile" scope="Web.config" match="/configuration/system.net/mailSettings/smtp/@host" />
 	</parameter>
