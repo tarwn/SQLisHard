@@ -43,20 +43,30 @@ namespace SQLisHard
 
 		private void SetDefaultLogProvider()
 		{
+			// switching to use the multiprovider which performs NullProvider services when nothing else is available
+			var provider = new MultiProvider();
+			Logger.SetDefaultLogger(provider);
+
+			var environmentName = ConfigurationManager.AppSettings["Environment.Name"] + ".sqlishard.com";
+			var version = ConfigurationManager.AppSettings["Application.Version"];
+
+			// Storm if settings available
 			// only uses storm on text and live servers so I don't have to commit the acces token or provider
 			//	will figure out a local solution later
 			var stormBaseUrl = ConfigurationManager.AppSettings["Storm.BaseUrl"];
 			var stormAccessToken = ConfigurationManager.AppSettings["Storm.AccessToken"];
 			var stormProjectId = ConfigurationManager.AppSettings["Storm.ProjectId"];
-			var environmentName = ConfigurationManager.AppSettings["Environment.Name"] + ".sqlishard.com";
-			var version = ConfigurationManager.AppSettings["Application.Version"];
 
-			ILogProvider provider;
-			if (string.IsNullOrWhiteSpace(stormAccessToken) || stormAccessToken == "off")	//special hardcoded value becaue ms deploy params can't be empty
-				provider = new NullLogProvider();
-			else
-				provider = new StormProvider(stormBaseUrl, stormAccessToken, stormProjectId, environmentName, version, true);
-			Logger.SetDefaultLogger(provider);
+			if (!string.IsNullOrWhiteSpace(stormAccessToken) && stormAccessToken != "off")	//special hardcoded value because ms deploy params can't be empty
+				provider.AddProvider(new StormProvider(stormBaseUrl, stormAccessToken, stormProjectId, environmentName, version, true));
+
+			// Scalyr if settings are available
+			var scalyrBaseUrl = ConfigurationManager.AppSettings["Scalyr.BaseUrl"];
+			var scalyrWriteToken = ConfigurationManager.AppSettings["Scalyr.WriteToken"];
+
+			if (!string.IsNullOrWhiteSpace(scalyrWriteToken) && scalyrWriteToken != "off")	//special hardcoded value because ms deploy params can't be empty
+				provider.AddProvider(new ScalyrProvider(scalyrBaseUrl, scalyrWriteToken, environmentName, version, true));
+
 		}
 	}
 }

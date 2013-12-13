@@ -55,7 +55,9 @@
     <Compile Include="ExperienceLogging\Communications\Result.cs" />
     <Compile Include="ExperienceLogging\Log\ILogProvider.cs" />
     <Compile Include="ExperienceLogging\Log\Logger.cs" />
+    <Compile Include="ExperienceLogging\Log\MultiProvider.cs" />
     <Compile Include="ExperienceLogging\Log\NullLogProvider.cs" />
+    <Compile Include="ExperienceLogging\Log\ScalyrProvider.cs" />
     <Compile Include="ExperienceLogging\Log\StormProvider.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
