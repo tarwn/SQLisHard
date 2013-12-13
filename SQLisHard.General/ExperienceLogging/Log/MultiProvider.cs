@@ -34,7 +34,7 @@ namespace SQLisHard.General.ExperienceLogging.Log
 						lock (resultsLock)
 						{
 							results.Add(result);
-							if (results.Count == expectedCount)
+							if (results.Count == expectedCount && callback != null)
 							{
 								var collectiveResult = new Result();
 								collectiveResult.Success = results.All(r => r.Success == true);
@@ -47,7 +47,8 @@ namespace SQLisHard.General.ExperienceLogging.Log
 			}
 			else
 			{
-				callback(new Result() { Success = true });
+				if(callback != null)
+					callback(new Result() { Success = true });
 			}
 		}
 	}

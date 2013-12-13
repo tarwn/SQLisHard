@@ -20,7 +20,8 @@ namespace SQLisHard.Attributes.MVC
 				{"Controller", filterContext.ActionDescriptor.ControllerDescriptor.ControllerName},
 				{"Action", filterContext.ActionDescriptor.ActionName},
 				/* todo: add in action parameters when I start using them */
-				{"Environment", ConfigurationManager.AppSettings["Environment.Name"]}
+				{"Environment", ConfigurationManager.AppSettings["Environment.Name"]},
+				{"SessionId", filterContext.RequestContext.HttpContext.Session.SessionID }
 			};
 			filterContext.HttpContext.Items[INTERACTION_LOGGER_KEY] = Logger.CaptureElapsedTime(data, null);
 		}

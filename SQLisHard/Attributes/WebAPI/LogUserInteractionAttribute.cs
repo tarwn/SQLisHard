@@ -6,6 +6,8 @@ using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Http.Filters;
+using System.Net.Http;
+using System.Web.Security;
 
 namespace SQLisHard.Attributes.WebAPI
 {
@@ -35,12 +37,22 @@ namespace SQLisHard.Attributes.WebAPI
 					result = "exception " + actionExecutedContext.Exception.GetType().Name;
 				elapsedCaptureObject.Add("Result", result);
 
-				if (HttpContext.Current != null && HttpContext.Current.User.Identity.IsAuthenticated)
+				if (HttpContext.Current != null)
 				{
-					var user = HttpContext.Current.User as UserPrincipal;
-					if (user != null)
+					var allTheDamnCookiesBecauseProvidingANameDoesntWork = actionExecutedContext.Request.Headers.GetCookies();
+					var cookie = allTheDamnCookiesBecauseProvidingANameDoesntWork.SelectMany(cc => cc.Cookies.Where(c => c.Name == "ASP.NET_SessionId")).FirstOrDefault();
+					if (cookie != null)
 					{
-						elapsedCaptureObject.Add("UserId", user.UserIdentity.Id.ToString());
+						elapsedCaptureObject.Add("SessionId", cookie.Value);
+					}
+		
+					if (HttpContext.Current.User.Identity.IsAuthenticated)
+					{
+						var user = HttpContext.Current.User as UserPrincipal;
+						if (user != null)
+						{
+							elapsedCaptureObject.Add("UserId", user.UserIdentity.Id.ToString());
+						}
 					}
 				}
 

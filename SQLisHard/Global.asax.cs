@@ -41,6 +41,12 @@ namespace SQLisHard
 			ExerciseStore = store;
 		}
 
+		protected void Session_Start(Object sender, EventArgs e)
+		{
+			// http://stackoverflow.com/questions/2874078/asp-net-session-sessionid-changes-between-requests
+			Session["seriously?"] = "yeah, seriously";
+		}
+
 		private void SetDefaultLogProvider()
 		{
 			// switching to use the multiprovider which performs NullProvider services when nothing else is available

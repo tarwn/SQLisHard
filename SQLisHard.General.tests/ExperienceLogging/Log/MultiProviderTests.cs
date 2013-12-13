@@ -146,5 +146,33 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 
 			Assert.IsFalse(actualResult.Success);
 		}
+
+		[Test]
+		public void Log_NoProvidersAssignedAndNoCallback_DoesNotBlowUp()
+		{
+			var provider = new MultiProvider();
+			var sampleMessage = new Dictionary<string, string>();
+			var actualResult = GetErrorResult();	// start with error to be sure the Result is updated
+
+			provider.Log(sampleMessage, null);
+
+			// expect no exception to occur
+		}
+
+		[Test]
+		public void Log_SingleProviderWithoutCallback_DoesNotBlowUp()
+		{
+			var provider = new MultiProvider();
+			var sampleMessage = new Dictionary<string, string>();
+			var fakeProvider = new Mock<ILogProvider>();
+			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, string>>(), It.IsAny<Action<Result>>()))
+						.Callback<Dictionary<string, string>, Action<Result>>((msg, callback) => callback(GetSuccessResult()));
+			provider.AddProvider(fakeProvider.Object);
+			var actualResult = GetErrorResult();	// start with error to be sure the Result is updated
+
+			provider.Log(sampleMessage, null);
+
+			// expect no exception to occur
+		}
 	}
 }
