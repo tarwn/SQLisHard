@@ -34,14 +34,14 @@ namespace SQLisHard.General.ExperienceLogging.Log
 			}
 		}
 
-		public void Log(Dictionary<string, string> message, Action<Communications.Result> callback)
+		public void Log(Dictionary<string, object> message, Action<Communications.Result> callback)
 		{
 
 			message["version"] = _version;
 
 			var evt = new ScalyrEvent(DateTime.UtcNow);
-			foreach (var pair in message.Where(kvp => !kvp.Key.Equals("SessionId")))
-				evt.attrs[pair.Key] = pair.Value;
+			foreach (var pair in message.Select(kvp => kvp))
+				evt.attrs[pair.Key] = pair.Value.ToString();
 
 			var messageObject = new ScalyrMessage() {
 				token = _accessToken,

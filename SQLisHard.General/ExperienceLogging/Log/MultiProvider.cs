@@ -20,7 +20,7 @@ namespace SQLisHard.General.ExperienceLogging.Log
 			_providers.Add(additionalProvider);
 		}
 
-		public void Log(Dictionary<string, string> message, Action<Communications.Result> callback)
+		public void Log(Dictionary<string, object> message, Action<Communications.Result> callback)
 		{
 			if (_providers.Count > 0)
 			{

@@ -23,19 +23,19 @@ namespace SQLisHard.General.ExperienceLogging.Communications
 			_useJson = useJson;
 		}
 
-		public HttpJsonPost(Dictionary<string, string> message, NetworkCredential credentials = null, bool useJson = true)
+		public HttpJsonPost(Dictionary<string, object> message, NetworkCredential credentials = null, bool useJson = true)
 		{
 			_message = ConvertToMessage(message, useJson);
 			_credentials = credentials;
 			_useJson = useJson;
 		}
 
-		private string ConvertToMessage(Dictionary<string, string> message, bool useJson)
+		private string ConvertToMessage(Dictionary<string, object> message, bool useJson)
 		{
 			if (useJson)
 				return JsonSerializer.SerializeToString(message);
 			else
-				return string.Join(" ", message.Select(m => String.Format("{0}={1}", m.Key, m.Value)));
+				return string.Join(" ", message.Select(m => String.Format("{0}={1}", m.Key, m.Value.ToString())));
 		}
 
 		private HttpWebRequest InitializeRequest(string url, string method)

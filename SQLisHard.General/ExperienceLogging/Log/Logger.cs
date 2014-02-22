@@ -18,7 +18,7 @@ namespace SQLisHard.General.ExperienceLogging.Log
 			_logProvider = logProvider;
 		}
 
-		public void LogMessage(Dictionary<string, string> message, Action<Result> callback)
+		public void LogMessage(Dictionary<string, object> message, Action<Result> callback)
 		{
 			_logProvider.Log(message, callback);
 		}
@@ -40,12 +40,12 @@ namespace SQLisHard.General.ExperienceLogging.Log
 			}
 		}
 
-		public static void Log(Dictionary<string, string> message, Action<Result> callback)
+		public static void Log(Dictionary<string, object> message, Action<Result> callback)
 		{
 			GetDefaultLogger().LogMessage(message, callback);
 		}
 
-		public static LoggerWithElapsedTime CaptureElapsedTime(Dictionary<System.String, System.String> message, Action<Result> callback)
+		public static LoggerWithElapsedTime CaptureElapsedTime(Dictionary<string, object> message, Action<Result> callback)
 		{
 			return new LoggerWithElapsedTime(GetDefaultLogger(), message, callback);
 		}
@@ -54,12 +54,12 @@ namespace SQLisHard.General.ExperienceLogging.Log
 	public class LoggerWithElapsedTime : IDisposable
 	{
 
-		private Dictionary<string, string> _message;
+		private Dictionary<string, object> _message;
 		private Stopwatch _timer;
 		private Action<Result> _callback;
 		private Logger _logger;
 
-		public LoggerWithElapsedTime(Logger logger, Dictionary<string, string> initialMessage, Action<Result> callback)
+		public LoggerWithElapsedTime(Logger logger, Dictionary<string, object> initialMessage, Action<Result> callback)
 		{
 			_message = initialMessage;
 			_message.Add("StartTime", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ"));
@@ -71,7 +71,7 @@ namespace SQLisHard.General.ExperienceLogging.Log
 
 		public void Dispose()
 		{
-			_message.Add("ElapsedTime", _timer.ElapsedMilliseconds.ToString());
+			_message.Add("ElapsedTime", _timer.ElapsedMilliseconds);
 			_logger.LogMessage(_message, _callback);
 		}
 

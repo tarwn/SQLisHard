@@ -15,7 +15,7 @@ namespace SQLisHard.Attributes.MVC
 
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{
-			var data = new Dictionary<string, string>() { 
+			var data = new Dictionary<string, object>() { 
 				{"EndpointType", "MVC"},
 				{"Controller", filterContext.ActionDescriptor.ControllerDescriptor.ControllerName},
 				{"Action", filterContext.ActionDescriptor.ActionName},

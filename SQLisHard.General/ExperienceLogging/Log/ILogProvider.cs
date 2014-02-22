@@ -8,6 +8,6 @@ namespace SQLisHard.General.ExperienceLogging.Log
 {
 	public interface ILogProvider
 	{
-		void Log(Dictionary<string, string> message, Action<Result> callback);
+		void Log(Dictionary<string, object> message, Action<Result> callback);
 	}
 }

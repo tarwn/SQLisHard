@@ -35,7 +35,7 @@ namespace SQLisHard.General.ExperienceLogging.Log
 			}
 		}
 
-		public void Log(Dictionary<string, string> message, Action<Communications.Result> callback)
+		public void Log(Dictionary<string, object> message, Action<Communications.Result> callback)
 		{
 			message["timestamp"] = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
 			message["version"] = _version;

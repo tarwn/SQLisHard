@@ -18,7 +18,7 @@ namespace SQLisHard.Attributes.WebAPI
 
 		public override void OnActionExecuting(System.Web.Http.Controllers.HttpActionContext actionContext)
 		{
-			var data = new Dictionary<string, string>() { 
+			var data = new Dictionary<string, object>() { 
 				{"EndpointType", "WebAPI"},
 				{"Controller", actionContext.ControllerContext.ControllerDescriptor.ControllerName},
 				{"Action", actionContext.ActionDescriptor.ActionName},
