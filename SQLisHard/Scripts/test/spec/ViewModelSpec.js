@@ -15,23 +15,23 @@ var getMockDataService = function () {
 
 describe("SqlIsHard.ViewModel", function () {
     
-    it("Initializes the query entry window with helpful text", function () {
-        var testServices = getMockDataService();
-        var viewmodel = SqlIsHardApp.ViewModel;
+    //it("Initializes the query entry window with helpful text", function () {
+    //    var testServices = getMockDataService();
+    //    var viewmodel = SqlIsHardApp.ViewModel;
         
-        viewmodel.init(testServices, Constants.Text);
+    //    viewmodel.init(testServices, Constants.Text);
 
-        expect(viewmodel.currentQuery.queryText()).toEqual(Constants.Text["QUERY_INITIAL_TEXT"]);
-    });
+    //    expect(viewmodel.currentQuery.queryText()).toEqual(Constants.Text["QUERY_INITIAL_TEXT"]);
+    //});
 
-    it("Requests an updated exercise list on initialization", function () {
-        var testServices = getMockDataService();
-        var viewmodel = SqlIsHardApp.ViewModel;
+    //it("Requests an updated exercise list on initialization", function () {
+    //    var testServices = getMockDataService();
+    //    var viewmodel = SqlIsHardApp.ViewModel;
 
-        viewmodel.init(testServices, Constants.Text);
+    //    viewmodel.init(testServices, Constants.Text);
 
-        expect(testServices.exercises.getExerciseList).toHaveBeenCalled();
-    });
+    //    expect(testServices.exercises.getExerciseList).toHaveBeenCalled();
+    //});
 
     //describe("QueryExecution", function () {
 

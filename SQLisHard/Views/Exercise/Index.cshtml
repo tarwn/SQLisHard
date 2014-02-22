@@ -17,7 +17,7 @@
             <h2 data-bind="text: title">Exercises</h2>
             <div data-bind="html: summary"></div>
             <ul data-bind="foreach: exercises">
-                <li data-bind="click: $parent.goToExercise.bind($data, id), css: { selected: id == $root.exercises().currentExercise().id }, attr: { 'data-exerciseid': id }">
+                <li data-bind="click: $root.navigateTo.bind($data, '#/exercises/' + $parent.id() + '/' + id), css: { selected: id == $root.exercises().currentExercise().id }, attr: { 'data-exerciseid': id }">
                     <!-- ko if: ($root.user() != null && $root.user().hasCompleted(id)) -->
                         <i class="icon-check"></i>
                     <!-- /ko -->
@@ -30,7 +30,7 @@
         </div>
     </div>
 
-    <a href="javascript: void(0)" class="DEBUG" data-bind="visible: isDebug, click: exercises().advanceExercise">Next Exercise</a>
+    <a href="#" class="DEBUG" data-bind="visible: isDebug, attr: { href: '#/exercises/' + exercises().id() + '/' + exercises().nextExerciseId() }">Next Exercise</a>
 </div>
 <div id="main">
     <div id="exerciseDescription" data-bind="with: exercises().currentExercise">
@@ -40,7 +40,7 @@
         <div data-bind="html: exercise"></div>
     </div>
     <!-- ko with: exercises().currentExercise -->
-    <div class="continueArea" data-bind="visible: ($root.user() != null && $root.user().hasCompleted(id))">Excellent! Lets <a class="button" id="continueButton" data-bind="click: $root.exercises().advanceExercise">Continue<i class="icon-play"></i></a>
+    <div class="continueArea" data-bind="visible: ($root.user() != null && $root.user().hasCompleted(id))">Excellent! Lets <a class="button" id="continueButton" data-bind="attr: { href: '#/exercises/' + $root.exercises().id() + '/' + $root.exercises().nextExerciseId() }">Continue<i class="icon-play"></i></a>
     </div>
     <!-- /ko -->
     <div id="editor">
@@ -80,6 +80,7 @@
         // init so we can pass in API URL
         SqlIsHardApp.init(ko, jQuery, infuser, '@baseUrl', '@statementApiUrl', '@exercisesApiUrl', '@userApiUrl');
         SqlIsHardApp.ViewModel.isDebug(false);
+        Finch.listen();
 
         // apply bindings
         ko.applyBindings(SqlIsHardApp.ViewModel);

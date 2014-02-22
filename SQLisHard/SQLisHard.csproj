@@ -155,6 +155,7 @@
     <Content Include="favicon.png" />
     <Content Include="largeicon.png" />
     <Content Include="robots.txt" />
+    <Content Include="Scripts\finch-0.5.13.min.js" />
     <Content Include="Scripts\lib\constants.js" />
     <Content Include="Scripts\lib\model\exercises.js" />
     <Content Include="Scripts\lib\main.js" />

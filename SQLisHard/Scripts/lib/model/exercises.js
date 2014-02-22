@@ -21,6 +21,12 @@ SqlIsHardApp.Model.ExerciseSet = function (data) {
             return finale();
         else
             return exercises()[currentExerciseIndex()];
+    }, this),
+    nextExerciseId = ko.computed(function () {
+        if (currentExerciseIndex() != Constants.ExercisePlaceHolder.FINALE && parseInt(currentExerciseIndex()) + 1 < exercises().length)
+            return exercises()[parseInt(currentExerciseIndex()) + 1].id;
+        else
+            return "finale";
     }, this);
 
     // methods
@@ -37,10 +43,15 @@ SqlIsHardApp.Model.ExerciseSet = function (data) {
             currentExerciseIndex(0);
     };
     var goToExercise = function (id) {
-        var rawExercises = exercises();
-        for (var ex in rawExercises) {
-            if (rawExercises[ex].id == id)
-                currentExerciseIndex(ex);
+        if (id == "finale") {
+            currentExerciseIndex(Constants.ExercisePlaceHolder.FINALE);
+        }
+        else {
+            var rawExercises = exercises();
+            for (var ex in rawExercises) {
+                if (rawExercises[ex].id == id)
+                    currentExerciseIndex(ex);
+            }
         }
         // error or eat it?
     };
@@ -51,6 +62,7 @@ SqlIsHardApp.Model.ExerciseSet = function (data) {
         summary: summary,
         exercises: exercises,
         currentExercise: currentExercise,
+        nextExerciseId: nextExerciseId,
         advanceExercise: advanceExercise,
         previousExercise: previousExercise,
         goToExercise: goToExercise

@@ -2,13 +2,24 @@
 
 var SqlIsHardApp = SqlIsHardApp || {};
 
-SqlIsHardApp.ViewModel = (function (ko, isDebug) {
+SqlIsHardApp.ViewModel = (function (ko, Finch, isDebug) {
     // Initialization
     var dataService = null,
         initialize = function (actualDataService, textResource) {
             dataService = actualDataService;
             currentQuery.queryText(textResource['QUERY_INITIAL_TEXT']);
-            updateExercises();
+            
+            Finch.route("/exercises/:exerciseSet", function (args, childCallback) {
+                updateExercises(args.exerciseSet, childCallback);
+            });
+
+            Finch.route("[/exercises/:exerciseSet]/:exercise", function (args) {
+                exercises().goToExercise(args.exercise);
+            });
+
+            Finch.route("/", function () {
+                Finch.call("/exercises/SELECT");
+            });
         };
 
     // Private variables
@@ -81,10 +92,12 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
 
             });
         },
-        updateExercises = function () {
-            dataService.exercises.getExerciseList("SELECT",
+        updateExercises = function (exerciseSetName, callback) {
+            dataService.exercises.getExerciseList(exerciseSetName,
                 function (exerciseSet) {
                     exercises(exerciseSet);
+                    if(callback)
+                        callback();
                 },
                 function (error, rawData) {
                     alert("TODO: tell Eli he didn't handle the error for exercises.getExerciseList");
@@ -104,6 +117,12 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
                 });
         };
 
+    // shortcut method b/c menus are currently li's and I don't want to mess with re-CSSing them right now
+    var navigateTo = function (url) {
+        console.log("going to " + url);
+        Finch.navigate(url);
+    };
+
     return {
         // init
         init: initialize,
@@ -117,6 +136,7 @@ SqlIsHardApp.ViewModel = (function (ko, isDebug) {
         executeQuery: executeQuery,
         updateExercises: updateExercises,
         selectResultsTab: selectResultsTab,
-        selectMessagesTab: selectMessagesTab
+        selectMessagesTab: selectMessagesTab,
+        navigateTo: navigateTo
     };
-})(ko, false);
+})(ko, Finch, false);
