@@ -80,9 +80,10 @@
         // init so we can pass in API URL
         SqlIsHardApp.init(ko, jQuery, infuser, '@baseUrl', '@statementApiUrl', '@exercisesApiUrl', '@userApiUrl');
         SqlIsHardApp.ViewModel.isDebug(false);
-        Finch.listen();
 
         // apply bindings
         ko.applyBindings(SqlIsHardApp.ViewModel);
+
+        Finch.listen();
     });
 </script>

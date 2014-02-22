@@ -10,14 +10,17 @@ SqlIsHardApp.ViewModel = (function (ko, Finch, isDebug) {
             currentQuery.queryText(textResource['QUERY_INITIAL_TEXT']);
             
             Finch.route("/exercises/:exerciseSet", function (args, childCallback) {
+                console.log("route /exercises/:exerciseSet");
                 updateExercises(args.exerciseSet, childCallback);
             });
 
             Finch.route("[/exercises/:exerciseSet]/:exercise", function (args) {
+                console.log("route [/exercises/:exerciseSet]/:exercise");
                 exercises().goToExercise(args.exercise);
             });
 
             Finch.route("/", function () {
+                console.log("route /");
                 Finch.call("/exercises/SELECT");
             });
         };
@@ -100,7 +103,24 @@ SqlIsHardApp.ViewModel = (function (ko, Finch, isDebug) {
                         callback();
                 },
                 function (error, rawData) {
-                    alert("TODO: tell Eli he didn't handle the error for exercises.getExerciseList");
+                    exercises(SqlIsHardApp.Model.ExerciseSet({
+                        Id: exerciseSetName,
+                        Title: 'Unknown Set',
+                        Summary: 'Selected exercise set "' + exerciseSetName + '" could not be found.',
+                        Finale: {
+                            Title: 'Completed Unknown Exercise Set',
+                            Details: 'Details of this missing exercise set have been sent to Eli to look into.'
+                        },
+                        Exercises: [{
+                            Id: 'Unknown',
+                            Title: 'Exercises Not Found',
+                            Explanation: 'Sorry, no exercises could be located for a set named "' + exerciseSetName + '". Eli has been notified with the details so he can look into it.',
+                            Example: '',
+                            ExerciseDescription: '<br/>Why not try the <a href="#/exercises/SELECT">SELECT exercises</a> instead?'
+                        }]
+                    }));
+                    if (callback)
+                        callback();
                 });
         };
 
