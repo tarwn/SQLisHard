@@ -69,9 +69,10 @@ namespace SQLisHard
 			// Scalyr if settings are available
 			var scalyrBaseUrl = ConfigurationManager.AppSettings["Scalyr.BaseUrl"];
 			var scalyrWriteToken = ConfigurationManager.AppSettings["Scalyr.WriteToken"];
+			var scalyrSession = Environment.MachineName;
 
 			if (!string.IsNullOrWhiteSpace(scalyrWriteToken) && scalyrWriteToken != "off")	//special hardcoded value because ms deploy params can't be empty
-				provider.AddProvider(new ScalyrProvider(scalyrBaseUrl, scalyrWriteToken, environmentName, version, true));
+				provider.AddProvider(new ScalyrProvider(scalyrBaseUrl, scalyrWriteToken, environmentName, version, scalyrSession, true));
 
 		}
 	}

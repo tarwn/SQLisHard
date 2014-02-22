@@ -14,14 +14,16 @@ namespace SQLisHard.General.ExperienceLogging.Log
 		private bool _sendAsync;
 		private string _host;
 		private string _version;
+		private string _session;
 
-		public ScalyrProvider(string baseUrl, string accessToken, string host, string version, bool sendAsync = true)
+		public ScalyrProvider(string baseUrl, string accessToken, string host, string version, string session, bool sendAsync = true)
 		{
 			_baseUrl = baseUrl;
 			_accessToken = accessToken;
 			_sendAsync = sendAsync;
 			_host = host;
 			_version = version;
+			_session = session;
 		}
 
 		public string FullUrl
@@ -34,9 +36,6 @@ namespace SQLisHard.General.ExperienceLogging.Log
 
 		public void Log(Dictionary<string, string> message, Action<Communications.Result> callback)
 		{
-			string session = Guid.NewGuid().ToString();
-			if (message.ContainsKey("SessionId"))
-				session = message["SessionId"];
 
 			message["version"] = _version;
 
@@ -46,7 +45,7 @@ namespace SQLisHard.General.ExperienceLogging.Log
 
 			var messageObject = new ScalyrMessage() {
 				token = _accessToken,
-				session = session
+				session = _session
 			};
 			messageObject.sessionInfo.serverId = _host;
 			messageObject.events.Add(evt);
