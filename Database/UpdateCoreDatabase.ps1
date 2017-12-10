@@ -47,7 +47,9 @@ catch{
 
     #database
         Write-Host "Checking database exists...";
+        Write-Host "SELECT [name] FROM [sys].[databases] WHERE [name] = N'$database'";
         $result = Invoke-Sqlcmd -Query "SELECT [name] FROM [sys].[databases] WHERE [name] = N'$database'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+        Write-Host $result
         if($result.name){
             Write-Host "Database already exists";
         }
