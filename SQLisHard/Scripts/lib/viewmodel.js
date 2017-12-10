@@ -10,17 +10,17 @@ SqlIsHardApp.ViewModel = (function (ko, Finch, isDebug) {
             currentQuery.queryText(textResource['QUERY_INITIAL_TEXT']);
             
             Finch.route("/exercises/:exerciseSet", function (args, childCallback) {
-                console.log("route /exercises/:exerciseSet");
+                //console.log("route /exercises/:exerciseSet");
                 updateExercises(args.exerciseSet, childCallback);
             });
 
             Finch.route("[/exercises/:exerciseSet]/:exercise", function (args) {
-                console.log("route [/exercises/:exerciseSet]/:exercise");
+                //console.log("route [/exercises/:exerciseSet]/:exercise");
                 exercises().goToExercise(args.exercise);
             });
 
             Finch.route("/", function () {
-                console.log("route /");
+                //console.log("route /");
                 Finch.call("/exercises/SELECT");
             });
         };

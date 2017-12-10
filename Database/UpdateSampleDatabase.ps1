@@ -73,32 +73,32 @@ catch{
     }
 
     #user
-    try{
-        Write-Host "Creating User: $NewUserName"
-        $result = Invoke-Sqlcmd -Query "SELECT [name] FROM sys.sql_logins WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-        if($result.name){
-            Write-Host "Login already exists"
-        }
-        else{
-            Write-Host "Creating login..."
-            Invoke-Sqlcmd -Query "CREATE LOGIN $NewUserName WITH PASSWORD = '$NewPassword'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
-            Write-Host "Login Created."
-        }
+#    try{
+#        Write-Host "Creating User: $NewUserName"
+#        $result = Invoke-Sqlcmd -Query "SELECT [name] FROM sys.sql_logins WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+#        if($result.name){
+#            Write-Host "Login already exists"
+#        }
+#        else{
+#            Write-Host "Creating login..."
+#            Invoke-Sqlcmd -Query "CREATE LOGIN $NewUserName WITH PASSWORD = '$NewPassword'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "master" -ErrorAction Stop
+#            Write-Host "Login Created."
+#        }
 
-        $result = Invoke-Sqlcmd -Query "SELECT [name] FROM sys.sysusers WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
-        if($result.name){
-            Write-Host "User already exists"
-        }
-        else{
-            Write-Host "Creating user..."
-            Invoke-Sqlcmd -Query "CREATE USER $NewUserName FOR LOGIN $NewUserName WITH DEFAULT_SCHEMA = dbo" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
-            Invoke-Sqlcmd -Query "EXEC sp_addrolemember 'db_datareader','$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
-            Write-Host "User Created."
-        }
-    }
-    catch{
-        Write-Error "Powershell Script error: $_" -EA Stop
-    }
+#        $result = Invoke-Sqlcmd -Query "SELECT [name] FROM sys.sysusers WHERE name = '$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+#        if($result.name){
+#            Write-Host "User already exists"
+#        }
+#        else{
+#            Write-Host "Creating user..."
+#            Invoke-Sqlcmd -Query "CREATE USER $NewUserName FOR LOGIN $NewUserName WITH DEFAULT_SCHEMA = dbo" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+#            Invoke-Sqlcmd -Query "EXEC sp_addrolemember 'db_datareader','$NewUserName'" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+#            Write-Host "User Created."
+#        }
+#    }
+#    catch{
+#        Write-Error "Powershell Script error: $_" -EA Stop
+#    }
 
 # ---------------------------------- Content Generation ---------------------------------------------
 # Scripts to generate content dynamically and update the appropriate update script

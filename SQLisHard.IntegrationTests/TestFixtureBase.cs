@@ -9,6 +9,7 @@ using TechTalk.SpecFlow;
 using OpenQA.Selenium;
 using System.Drawing.Imaging;
 using SQLisHard.IntegrationTests.Configs;
+using OpenQA.Selenium.Chrome;
 
 namespace SQLisHard.IntegrationTests
 {
@@ -19,28 +20,27 @@ namespace SQLisHard.IntegrationTests
 		[SetUp]
 		public void Test_Setup()
 		{
-			FirefoxBinary fb;
-			if (!String.IsNullOrWhiteSpace(Settings.CurrentSettings.FirefoxBinaryPath))
-			{
-				fb = new FirefoxBinary(Settings.CurrentSettings.FirefoxBinaryPath);
-			}
-			else
-			{
-				fb = new FirefoxBinary();
-			}
-			CurrentDriver = new FirefoxDriver(fb, new FirefoxProfile());
+            //FirefoxBinary fb;
+            //if (!String.IsNullOrWhiteSpace(Settings.CurrentSettings.FirefoxBinaryPath))
+            //{
+            //	fb = new FirefoxBinary(Settings.CurrentSettings.FirefoxBinaryPath);
+            //}
+            //else
+            //{
+            //	fb = new FirefoxBinary();
+            //}
+            //CurrentDriver = new FirefoxDriver(fb, new FirefoxProfile());
+            CurrentDriver = new ChromeDriver(Environment.CurrentDirectory);
 		}
 
-
-
-		[TearDown]
+        [TearDown]
 		public void Test_Teardown()
 		{
 			try
 			{
 				if (CurrentDriver is ITakesScreenshot && TestContext.CurrentContext.Result.Status == TestStatus.Failed)
 				{
-					((ITakesScreenshot)CurrentDriver).GetScreenshot().SaveAsFile(TestContext.CurrentContext.Test.FullName + ".jpg", ImageFormat.Jpeg);
+					((ITakesScreenshot)CurrentDriver).GetScreenshot().SaveAsFile(TestContext.CurrentContext.Test.FullName + ".jpg", ScreenshotImageFormat.Jpeg);
 				}
 			}
 			catch (Exception exc)

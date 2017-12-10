@@ -8,7 +8,7 @@ CREATE TABLE dbo.Orders(
 	DeliveryTime	DateTime2(0) NOT NULL
 );
 
-DECLARE @OneYearAgoIsh DateTime2(0) = DateAdd(MONTH,-13,GETDATE());
+DECLARE @OneYearAgoIsh DateTime2(0) = '20120601';
 
 CREATE TABLE #Randomness (
 	CustomerId		int,
