@@ -11,7 +11,4 @@
 	<setParameter name="SMTP.EnableSsl" value="{{SMTP.ENABLESSL}}" />
 	<setParameter name="Application.Version" value="{{APPLICATION.VERSION}}" />
 	<setParameter name="Environment.Name" value="{{ENVIRONMENT.NAME}}" />
-	<setParameter name="Storm.AccessToken" value="{{STORM.ACCESSTOKEN}}" />
-	<setParameter name="Storm.ProjectId" value="{{STORM.PROJECTID}}" />
-	<setParameter name="Scalyr.WriteToken" value="{{SCALYR.WRITETOKEN}}" />
 </parameters>
