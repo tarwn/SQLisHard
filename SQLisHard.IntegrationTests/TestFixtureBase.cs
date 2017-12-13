@@ -13,13 +13,13 @@ using OpenQA.Selenium.Chrome;
 
 namespace SQLisHard.IntegrationTests
 {
-	public class TestFixtureBase
-	{
-		protected RemoteWebDriver CurrentDriver { get; set; }
+    public class TestFixtureBase
+    {
+        protected RemoteWebDriver CurrentDriver { get; set; }
 
-		[SetUp]
-		public void Test_Setup()
-		{
+        [SetUp]
+        public void Test_Setup()
+        {
             //FirefoxBinary fb;
             //if (!String.IsNullOrWhiteSpace(Settings.CurrentSettings.FirefoxBinaryPath))
             //{
@@ -30,31 +30,34 @@ namespace SQLisHard.IntegrationTests
             //	fb = new FirefoxBinary();
             //}
             //CurrentDriver = new FirefoxDriver(fb, new FirefoxProfile());
-            CurrentDriver = new ChromeDriver(Environment.CurrentDirectory);
-		}
+
+            var options = new ChromeOptions();
+            options.AddArgument("--window-size=1280,1024");
+            CurrentDriver = new ChromeDriver(Environment.CurrentDirectory, options);
+        }
 
         [TearDown]
-		public void Test_Teardown()
-		{
-			try
-			{
-				if (CurrentDriver is ITakesScreenshot && TestContext.CurrentContext.Result.Status == TestStatus.Failed)
-				{
-					((ITakesScreenshot)CurrentDriver).GetScreenshot().SaveAsFile(TestContext.CurrentContext.Test.FullName + ".jpg", ScreenshotImageFormat.Jpeg);
-				}
-			}
-			catch (Exception exc)
-			{
-				Console.WriteLine("Exception capturing screenshot: " + exc.Message);
-			}	// null ref exception occurs from accessing TestContext.CurrentContext.Result.Status property
+        public void Test_Teardown()
+        {
+            try
+            {
+                if (CurrentDriver is ITakesScreenshot && TestContext.CurrentContext.Result.Status == TestStatus.Failed)
+                {
+                    ((ITakesScreenshot)CurrentDriver).GetScreenshot().SaveAsFile(TestContext.CurrentContext.Test.FullName + ".jpg", ScreenshotImageFormat.Jpeg);
+                }
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine("Exception capturing screenshot: " + exc.Message);
+            }   // null ref exception occurs from accessing TestContext.CurrentContext.Result.Status property
 
-			try
-			{
-				CurrentDriver.Quit();
-			}
-			catch { }
-		}
+            try
+            {
+                CurrentDriver.Quit();
+            }
+            catch { }
+        }
 
-	}
+    }
 
 }
