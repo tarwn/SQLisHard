@@ -32,6 +32,8 @@ namespace SQLisHard.IntegrationTests
             //CurrentDriver = new FirefoxDriver(fb, new FirefoxProfile());
 
             var options = new ChromeOptions();
+            options.AddArgument("headless");
+            options.AddArgument("disable-gpu");
             options.AddArguments("window-size=1280,1024");
             CurrentDriver = new ChromeDriver(Environment.CurrentDirectory, options);
             CurrentDriver.Manage().Window.Size = new System.Drawing.Size(1280, 1024);
