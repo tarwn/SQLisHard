@@ -1,0 +1,1 @@
+ALTER TABLE dbo.[History] ADD ExerciseId varchar(20) NULL;

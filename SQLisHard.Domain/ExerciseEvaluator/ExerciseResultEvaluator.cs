@@ -52,7 +52,7 @@ namespace SQLisHard.Domain.ExerciseEvaluator
 				evaluationResult.CompletesExercise = EvaluateResultSet(statement, queryResult);
             }
 
-			_historyStore.AddToHistory(statement.RequestorId, statement.Content, (int) evaluationResult.ExecutionStatus, evaluationResult.CompletesExercise);
+			_historyStore.AddToHistory(statement.RequestorId, statement.Content, (int) evaluationResult.ExecutionStatus, evaluationResult.CompletesExercise, statement.ExerciseId);
 
 			return evaluationResult;
         }

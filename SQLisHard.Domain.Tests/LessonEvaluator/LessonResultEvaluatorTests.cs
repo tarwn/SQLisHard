@@ -43,7 +43,7 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 
 			var queryResult = lre.InstanceUnderTest.Evaluate(initialStatement);
 
-			lre.MockHistoryStore.Verify(hs => hs.AddToHistory(initialStatement.RequestorId, initialStatement.Content, (int)queryResult.ExecutionStatus, true), Times.Once());
+			lre.MockHistoryStore.Verify(hs => hs.AddToHistory(initialStatement.RequestorId, initialStatement.Content, (int)queryResult.ExecutionStatus, true, "123"), Times.Once());
 		}
 
 		[Test]
@@ -180,7 +180,7 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 
 			var queryResult = lre.InstanceUnderTest.Evaluate(initialStatement);
 
-			lre.MockHistoryStore.Verify(hs => hs.AddToHistory(initialStatement.RequestorId, initialStatement.Content, (int)queryResult.ExecutionStatus, false), Times.Once());
+			lre.MockHistoryStore.Verify(hs => hs.AddToHistory(initialStatement.RequestorId, initialStatement.Content, (int)queryResult.ExecutionStatus, false, exerciseId), Times.Once());
 		}
 
 	}

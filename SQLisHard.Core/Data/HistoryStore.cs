@@ -17,7 +17,7 @@ namespace SQLisHard.Core.Data
 			_connectionString = connectionString;
 		}
 
-		public void AddToHistory(UserId userId, string sqlStatement, int evaluationResult, bool completesExercise)
+		public void AddToHistory(UserId userId, string sqlStatement, int evaluationResult, bool completesExercise, string exerciseId)
 		{
 			using (var db = new Database(_connectionString, "System.Data.SqlClient"))
 			{
@@ -25,7 +25,8 @@ namespace SQLisHard.Core.Data
 					UserId = userId.Value,
 					SqlStatement = sqlStatement,
 					Result = evaluationResult,
-					CompletesExercise = completesExercise
+					CompletesExercise = completesExercise,
+                    ExerciseId = exerciseId
 				});
 			}
 		}
