@@ -5,8 +5,10 @@ var SqlIsHardApp = SqlIsHardApp || {};
 SqlIsHardApp.ViewModel = (function (ko, Finch, isDebug) {
     // Initialization
     var dataService = null,
-        initialize = function (actualDataService, textResource) {
+        appInsightsInstance = null,
+        initialize = function (actualDataService, textResource, appInsights) {
             dataService = actualDataService;
+            appInsightsInstance = appInsights;
             currentQuery.queryText(textResource['QUERY_INITIAL_TEXT']);
             
             Finch.route("/exercises/:exerciseSet", function (args, childCallback) {
@@ -17,6 +19,7 @@ SqlIsHardApp.ViewModel = (function (ko, Finch, isDebug) {
             Finch.route("[/exercises/:exerciseSet]/:exercise", function (args) {
                 //console.log("route [/exercises/:exerciseSet]/:exercise");
                 exercises().goToExercise(args.exercise);
+                trackPageView(args.exerciseSet, args.exercise);
             });
 
             Finch.route("/", function () {
@@ -44,6 +47,25 @@ SqlIsHardApp.ViewModel = (function (ko, Finch, isDebug) {
     },
     isDebug = ko.observable(isDebug || false),
     selectedResultsTab = ko.observable(Constants.ResultsTab.Results);
+
+
+    // private tracking functions
+    function trackPageView(exerciseSet, exercise) {
+        if (!appInsightsInstance) return;
+
+        appInsightsInstance.trackPageView("Exercise " + exerciseSet + " " + exercise, window.location.hash, {
+            app: 'SQLisHard',
+            exerciseSet: exerciseSet,
+            exercise: exercise
+        });
+    }
+
+    function trackEvent(eventName, data) {
+        if (!appInsightsInstance) return;
+
+        data.app = 'SQLisHard';
+        appInsightsInstance.trackEvent(eventName, data);
+    }
 
     // UI Methods
     var
@@ -92,6 +114,12 @@ SqlIsHardApp.ViewModel = (function (ko, Finch, isDebug) {
                 else if (exerciseCompleted) {
                     user().markExerciseAsCompleted(exerciseId);
                 }
+
+                trackEvent('executeQuery', {
+                    exerciseSet: exercises().id,
+                    exercise: exercises().currentExercise().id,
+                    completedSuccessfully: exerciseCompleted
+                });
 
             });
         },
