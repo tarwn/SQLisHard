@@ -262,6 +262,7 @@ footer .version {
         border-width: 1px 1px 0px 1px;
         font-size: 90%;
         z-index:0;
+        cursor: pointer;
     }
 
 	.query-results-tab.selected {

@@ -1,0 +1,148 @@
+﻿SetId:		Aggregate
+SetTitle:	Aggregate Exercises
+SetSummary:	<p>Aggregation functions are great for data analysis over sets of data</p>
+
+FinaleTitle: Finale
+FinaleDetails: <p>Congratulations, you have finished the prepared SQL exercises!</p>
+			<p>I continue to add more and expand the features so check back more or keep an eye on the 
+			official <a href="https://twitter.com/SQLisHard" title="@sqlishard on twitter">@sqlishard</a> twitter account</p>
+
+ExerciseId:	A1.0
+Title:		A1.0 - COUNT
+Query:		SELECT COUNT(*) FROM Orders;
+Explanation:	<p>Aggregation functions are extremely useful for data analysis. One really useful aggregate function is COUNT. Here is an example of counting all of the records in the Customers table:</p>
+Example:	<code>
+				SELECT COUNT(*)<br/>
+				FROM Customers C<br/>
+			</code>
+Exercise:	<p>Try writing a statement to count the records in Orders.</p>
+
+ExerciseId:	A1.1
+Title:		A1.1 - SUM
+Query:		SELECT SUM(OrderTotal) FROM Orders WHERE OrderTime > '2013-01-01'
+Explanation:	<p>Another useful aggregate is SUM(), which sums the values of a column for us, just like COUNT can count records.</p>
+Example:	<code>
+				SELECT SUM(OrderTotal) <br/>
+				FROM Orders<br/>
+			</code>
+Exercise:	<p>Try writing a statement that returns the total order amount for orders after 1/1/2013. <i>If you need to see the column names, SELECT TOP 10 * FROM Orders can help</i></p>
+
+ExerciseId:	A1.2
+Title:		A1.2 - GROUP BY
+Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
+Explanation:	<p>Aggregate functions are useful, but what makes them even more useful is being able to run them on subsets of data. For example, getting a count of orders for each year in our data:</p>
+Example:	<code>
+				SELECT Year(OrderTime) AS OrderYear, <br/>
+					COUNT(*) as OrderCount<br/>
+				FROM Orders <br/>
+				GROUP BY Year(OrderTime)<br/>
+				ORDER BY Year(OrderTime)
+			</code>
+Exercise:	<p>This will return a row of data for each year, with the count applied only to the records for that year. Try altering this query to return an OrderYear and SUM of OrderTotal for each year.</p>
+
+ExerciseId:	A1.3
+Title:		A1.3 - More GROUP BY
+Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
+Explanation:	<p>So far we have only grouped by a single column, but we can also group by multiple columns for more detail. For example, grouping by Year and Month to get monthly order totals:</p>
+Example:	<code>
+				SELECT Date(Year(OrderDate), Month(OrderDate), 1) AS Month, <br/>
+						SUM(OrderTotal) AS OrderTotal <br/>
+				FROM Orders <br/>
+				GROUP BY Year(OrderDate), Month(OrderDate)<br/>
+				ORDER BY Year(OrderDate), Month(OrderDate)
+			</code>
+Exercise:	<p>In this case the data will be grouped into sets that have the same month and year, then the order total will be calculated. Can you extend this to include grouping by Year, Month, and Day?</p>
+
+ExerciseId:	A1.4
+Title:		A1.4 - MIN/MAX
+Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
+Explanation:	<p>In addition to COUNT and SUM, there are also MIN and MAX aggregate functions, which return the smallest or largest value for the specified column.</p>
+Example:	<code>
+				SELECT MIN(OrderDate) AS EarliestDate, MAX(OrderDate) AS LatestDate <br/>
+				FROM Orders
+			</code>
+Exercise:	<p>This query returns the dates of the earliest and latest order in the database, since I didn't include a GROUP BY clause. See if you can modify your previous query to return the MAX order amount for each year and month.</p>
+
+ExerciseId:	A1.5
+Title:		A1.5 - AVG/STDEV
+Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
+Explanation:	<p>Earlier we calculated a SUM of our OrderTotals and more recently we looked at MIN/MAX. Other useful values for a set of numbers are their Average (AVG) and Standard Deviation (STDEV):</p>
+Example:	<code>
+				SELECT AVG(DateDiff(day,OrderTime, DeliveryTIme)), STDEV(DateDiff(day,OrderTime, DeliveryTIme)) <br/>
+				FROM Orders
+			</code>
+Exercise:	<p>This uses DATEDIFF(<i>interval, from, to</i>) to calculate the delivery time for each order, then calculates an aggregate AVG. Another useful pieces of data would be the average OrferTotal for each year.</p>
+
+ExerciseId:	A2.0
+Title:		A2.0 - HAVING
+Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
+Explanation:	<p>Great, we can count, sum, and min/max across all records and small groups of records. But sometimes we only want the most notable groups and that's where HAVING comes in:</p>
+Example:	<code>
+				SELECT CustomerId, COUNT(*)<br/>
+				FROM Orders<br/>
+				GROUP BY CustomerId<br/>
+				HAVING COUNT(*) > 5
+			</code>
+Exercise:	<p>This query finds return shoppers. It counts how many orders each customer has placed, but only returns the customers (groups) that have more than 5 orders. Lets find big spenders by instead SUMming the OrderTotal and only returning those that have spent more than $1000</p>
+
+
+ExerciseId:	A2.2
+Title:		A2.2 - ORDER BY
+Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
+Explanation:	<p>When a query is executed, the database processes the FROM and WHERE, then GROUP BY, then HAVING, then SELECT, then ORDER BY. Since the GROUP BY and HAVING occur before the ORDER BY, we can ORDER BY aggregate functions</p>
+Example:	<code>
+				SELECT CustomerId, COUNT(*)<br/>
+				FROM Orders<br/>
+				GROUP BY CustomerId<br/>
+				ORDER BY COUNT(*) DESC
+			</code>
+Exercise:	<p>Now we're looking at the number of orders per customer, ordered by most prolific to least.... need exercise</p>
+
+
+ExerciseId:	A2.3
+Title:		A2.3 - INNER JOIN
+Query:		SELECT 1;
+Explanation:	<p>use an inner join w/ an aggregate</p>
+Example:	<code>
+				example
+			</code>
+Exercise:	<p>exercise</p>
+
+
+ExerciseId:	A2.4
+Title:		A2.4 - INNER JOIN Duplication
+Query:		SELECT 1;
+Explanation:	<p>use an inner join w/ an aggregate + duplicatation of rows</p>
+Example:	<code>
+				example
+			</code>
+Exercise:	<p>exercise</p>
+
+
+ExerciseId:	A2.5
+Title:		A2.5 - LEFT JOIN
+Query:		SELECT 1;
+Explanation:	<p>use a left join w/ an aggregate</p>
+Example:	<code>
+				example
+			</code>
+Exercise:	<p>exercise</p>
+
+ExerciseId:	A3.0
+Title:		A3.0 - Conditional Tricks
+Query:		SELECT 1;
+Explanation:	<p>SUM a conditional field - ordertotals based on short/long delivery</p>
+Example:	<code>
+				example
+			</code>
+Exercise:	<p>exercise</p>
+
+
+ExerciseId:	A3.1
+Title:		A3.1 - Conditional Tricks #2
+Query:		SELECT 1;
+Explanation:	<p>Pseudo count (SUM IF blah THEN 1 ELSE 0 END)</p>
+Example:	<code>
+				example
+			</code>
+Exercise:	<p>exercise</p>
