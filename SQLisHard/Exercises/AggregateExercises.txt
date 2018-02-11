@@ -1,4 +1,4 @@
-﻿SetId:		Aggregate
+﻿SetId:		AGGREGATE
 SetTitle:	Aggregate Exercises
 SetSummary:	<p>Aggregation functions are great for data analysis over sets of data</p>
 
@@ -10,68 +10,83 @@ FinaleDetails: <p>Congratulations, you have finished the prepared SQL exercises!
 ExerciseId:	A1.0
 Title:		A1.0 - COUNT
 Query:		SELECT COUNT(*) FROM Orders;
-Explanation:	<p>Aggregation functions are extremely useful for data analysis. One really useful aggregate function is COUNT. Here is an example of counting all of the records in the Customers table:</p>
+Explanation:	<p>SELECTing rows of data out of the database is pretty powerful, but AGGREGATE functions provide the ability to perofmr analysis on the data. For instance,
+				we could <br/>
+				<br/>
+				<code>SELECT * FROM Customers</code> 
+				<br/>
+				and look at the row count returned, or use this handy COUNT function: </p>
 Example:	<code>
-				SELECT COUNT(*)<br/>
-				FROM Customers C<br/>
+				SELECT COUNT(*) FROM Customers<br/>
 			</code>
 Exercise:	<p>Try writing a statement to count the records in Orders.</p>
 
 ExerciseId:	A1.1
 Title:		A1.1 - SUM
 Query:		SELECT SUM(OrderTotal) FROM Orders WHERE OrderTime > '2013-01-01'
-Explanation:	<p>Another useful aggregate is SUM(), which sums the values of a column for us, just like COUNT can count records.</p>
+Explanation:	<p>Another useful aggregate is SUM(), which sums the values of a given column. One way we can use this is to look at the total money we've made from Orders:</p>
 Example:	<code>
 				SELECT SUM(OrderTotal) <br/>
 				FROM Orders<br/>
 			</code>
-Exercise:	<p>Try writing a statement that returns the total order amount for orders after 1/1/2013. <i>If you need to see the column names, SELECT TOP 10 * FROM Orders can help</i></p>
+Exercise:	<p>Trying using a WHERE statement and the SUM function to return the OrderTotal for orders placed after 1/1/2013 (OrderTime)</p>
 
 ExerciseId:	A1.2
 Title:		A1.2 - GROUP BY
-Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
-Explanation:	<p>Aggregate functions are useful, but what makes them even more useful is being able to run them on subsets of data. For example, getting a count of orders for each year in our data:</p>
+Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) AS TotalOfOrderTotal FROM Orders GROUP BY Year(OrderTime)
+Pattern:	SUM\(OrderTotal\)\s+AS\s+TotalOfOrderTotal\s*
+PatternTip:	Use 'SUM(OrderTotal) AS TotalOfOrderTotal' to name your column 'TotalOfOrderTotal'
+Explanation:	<p>We can also use the GROUP BY statement to return functions on multiple subsets of data. For example, getting a count of orders for each year in our data:</p>
 Example:	<code>
 				SELECT Year(OrderTime) AS OrderYear, <br/>
 					COUNT(*) as OrderCount<br/>
 				FROM Orders <br/>
-				GROUP BY Year(OrderTime)<br/>
-				ORDER BY Year(OrderTime)
+				GROUP BY Year(OrderTime)
 			</code>
-Exercise:	<p>This will return a row of data for each year, with the count applied only to the records for that year. Try altering this query to return an OrderYear and SUM of OrderTotal for each year.</p>
+Exercise:	<p>This returns 1 row per year in the database, with the COUNT for that year. Try altering the query to return an OrderYear and SUM of OrderTotal for each year.</p>
 
 ExerciseId:	A1.3
 Title:		A1.3 - More GROUP BY
-Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
-Explanation:	<p>So far we have only grouped by a single column, but we can also group by multiple columns for more detail. For example, grouping by Year and Month to get monthly order totals:</p>
+Query:		SELECT Year(OrderTime) AS OrderYear, Month(OrderTime) AS OrderMonth, Day(OrderTime) AS OrderDay, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime), Month(OrderTime), Day(OrderTime) ORDER BY Year(OrderTime), Month(OrderTime), Day(OrderTime)
+Explanation:	<p>We can also GROUP BY multiple columns, for example grouping by Year and Month to get monthly order totals:</p>
 Example:	<code>
-				SELECT Date(Year(OrderDate), Month(OrderDate), 1) AS Month, <br/>
+				SELECT Year(OrderTime) AS OrderYear, <br/>
+						Month(OrderTime) AS OrderMonth, <br/>
 						SUM(OrderTotal) AS OrderTotal <br/>
 				FROM Orders <br/>
-				GROUP BY Year(OrderDate), Month(OrderDate)<br/>
-				ORDER BY Year(OrderDate), Month(OrderDate)
+				GROUP BY Year(OrderTime), Month(OrderTime)<br/>
+				ORDER BY Year(OrderTime), Month(OrderTime)
 			</code>
-Exercise:	<p>In this case the data will be grouped into sets that have the same month and year, then the order total will be calculated. Can you extend this to include grouping by Year, Month, and Day?</p>
+Exercise:	<p>Now we have monthly order totals and they're in order by year and month. Can you extend this to include grouping by Year, Month, and Day?</p>
 
 ExerciseId:	A1.4
 Title:		A1.4 - MIN/MAX
-Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
+Query:		SELECT Year(OrderTime) AS OrderYear, MAX(OrderTotal) as LargestOrderTotal FROM Orders GROUP BY Year(OrderTime)
 Explanation:	<p>In addition to COUNT and SUM, there are also MIN and MAX aggregate functions, which return the smallest or largest value for the specified column.</p>
 Example:	<code>
-				SELECT MIN(OrderDate) AS EarliestDate, MAX(OrderDate) AS LatestDate <br/>
+				SELECT MIN(OrderTime) AS EarliestDate, MAX(OrderTime) AS LatestDate <br/>
 				FROM Orders
 			</code>
-Exercise:	<p>This query returns the dates of the earliest and latest order in the database, since I didn't include a GROUP BY clause. See if you can modify your previous query to return the MAX order amount for each year and month.</p>
+Exercise:	<p>This is an easy way to find the smallest and largest values for a column. Can you find the largest OrderTotal for each year?
+				<code>
+					SELECT Year(OrderTime) AS OrderYear,</br>
+						??? AS LargestOrderTotal<br/>
+					FROM Orders<br/>
+					??
+				</code>
+			</p>
 
 ExerciseId:	A1.5
 Title:		A1.5 - AVG/STDEV
-Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
-Explanation:	<p>Earlier we calculated a SUM of our OrderTotals and more recently we looked at MIN/MAX. Other useful values for a set of numbers are their Average (AVG) and Standard Deviation (STDEV):</p>
+Query:		SELECT AVG(OrderTotal) AS AverageOrderTotal, Year(OrderTime) AS OrderYear FROM Orders GROUP BY Year(OrderTime)
+Explanation:	<p>We can also look at average values using AVG() and the standard deviation, using STDEV.</p>
+				<p>Using DateDiff(<i>interval, from, to</i>) to calculate the number of days between OrderTime 
+				and DeliveryTime for each order, here is the AVG delivery time for all orders:</p>
 Example:	<code>
-				SELECT AVG(DateDiff(day,OrderTime, DeliveryTIme)), STDEV(DateDiff(day,OrderTime, DeliveryTIme)) <br/>
+				SELECT AVG(DateDiff(day,OrderTime, DeliveryTime)) AS AverageDeliveryTime<br/>
 				FROM Orders
 			</code>
-Exercise:	<p>This uses DATEDIFF(<i>interval, from, to</i>) to calculate the delivery time for each order, then calculates an aggregate AVG. Another useful pieces of data would be the average OrferTotal for each year.</p>
+Exercise:	<p>Using the AVG function, can you calculate the average OrderTotal for each year, naming these AverageOrderTotal and OrderYear?</p>
 
 ExerciseId:	A2.0
 Title:		A2.0 - HAVING

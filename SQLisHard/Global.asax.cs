@@ -20,7 +20,11 @@ namespace SQLisHard
 	{
 		public static IExerciseStore ExerciseStore { get; private set; }
 
-		protected void Application_Start()
+#if DEBUG
+        private FileSystemWatcher _fw;
+#endif
+
+        protected void Application_Start()
 		{
 			AreaRegistration.RegisterAllAreas();
 
@@ -36,12 +40,35 @@ namespace SQLisHard
 			SetDefaultLogProvider();
 
 			var store = new FlatFileExerciseStore(new QueryEngine(ConfigurationManager.ConnectionStrings["SampleDatabase"].ConnectionString));
-			foreach (var file in Directory.EnumerateFiles(Server.MapPath("Exercises")))
-				store.Add(File.ReadAllText(file));
+            foreach (var file in Directory.EnumerateFiles(Server.MapPath("Exercises")))
+            {
+                store.Add(File.ReadAllText(file));
+            }
 			ExerciseStore = store;
-		}
 
-		protected void Session_Start(Object sender, EventArgs e)
+#if DEBUG
+            _fw = new FileSystemWatcher(Server.MapPath("Exercises"),"*.txt");
+            _fw.EnableRaisingEvents = true;
+            _fw.Changed += ExerciseChanged;
+#endif
+        }
+
+#if DEBUG
+        private void ExerciseChanged(object sender, FileSystemEventArgs e)
+        {
+            try
+            {
+                if (ExerciseStore is FlatFileExerciseStore)
+                {
+                    ((FlatFileExerciseStore)ExerciseStore).Add(File.ReadAllText(e.FullPath));
+                }
+            }
+            catch
+            { }
+        }
+#endif
+
+        protected void Session_Start(Object sender, EventArgs e)
 		{
 			// http://stackoverflow.com/questions/2874078/asp-net-session-sessionid-changes-between-requests
 			Session["seriously?"] = "yeah, seriously";
