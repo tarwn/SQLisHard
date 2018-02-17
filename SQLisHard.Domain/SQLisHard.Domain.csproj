@@ -51,6 +51,7 @@
     <Compile Include="Exercises\ExerciseStore\FlatFileExerciseStore.cs" />
     <Compile Include="Exercises\ExerciseStore\Parser\FlatFileParser.cs" />
     <Compile Include="Exercises\IExerciseStore.cs" />
+    <Compile Include="Exercises\QueryResultComparison.cs" />
     <Compile Include="QueryEngine\IQueryEngine.cs" />
     <Compile Include="ExerciseEvaluator\IExerciseResultEvaluator.cs" />
     <Compile Include="ExerciseEvaluator\ExerciseResultEvaluator.cs" />

@@ -20,6 +20,7 @@ Exercise:	<p>Try using the <em>SELECT</em> statement to retrieve rows from the <
 			
 ExerciseId:	S1.1
 Title:		S1.1 - SELECT Columns
+RequireExactColumnMatch: true
 Query:		SELECT Id, FirstName FROM Customers
 Explanation:	<p>The * means "return all of the columns". We can also ask for specific columns:</p>
 Example:	<code> SELECT <i>column_name, column_name</i><br/> FROM <i>table_name</i></code> 
@@ -27,6 +28,7 @@ Exercise:	<p>Try editing your query to retrieve only the <em>Id</em> and <em>Fir
 
 ExerciseId:	S1.2
 Title:		S1.2 - SELECT Columns
+RequireExactColumnMatch: true
 Query:		SELECT FirstName, Id FROM Customers
 Explanation:	<p>Asking for specific columns means less data to download and means the database won't 
 			have to look up all the columns before executing the query, like it does when we SELECT 
@@ -177,6 +179,7 @@ Exercise:	<p>In this example I have used "C" as an alias for the <em>Customers</
 
 ExerciseId:	S4.2
 Title:		S4.2 - Column Aliasing
+RequireExactColumnMatch: true
 Query:		SELECT Id AS OrderId FROM Orders WHERE OrderTotal < 50
 Pattern:	SELECT\s*Id\s*AS\s*OrderId
 PatternTip:	Your SELECT statement should look like 'SELECT Id AS OrderId'
@@ -191,6 +194,7 @@ Exercise:	<p>Try selecting the <em>Id</em> column from the <em>Orders</em> table
 
 ExerciseId:	S5.0
 Title:		S5.0 - INNER JOIN
+RequireExactColumnMatch: true
 Query:		SELECT * FROM Customers C INNER JOIN Orders O ON C.id = O.CustomerId
 Explanation:	<p>Now that we can pull data out of a single table and qualify column names, let's take it a step further. JOIN statements
 			allow us to 'join' the rows of several tables together using a condition to define how they 

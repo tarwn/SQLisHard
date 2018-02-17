@@ -49,7 +49,7 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 			};
 
 			var result = _engine.ExecuteQuery(query, false);
-			return new DefinedExerciseResult(result);
+			return new DefinedExerciseResult(result, exercise.RequireExactColumnMatch);
 		}
 
 		public void Add(DefinedExerciseSet sampleSet)
@@ -73,8 +73,10 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 								  .AddTransition(ParseState.FinaleTitle, ParseState.FinaleDetails)
 								  .AddTransition(ParseState.FinaleDetails, ParseState.NewExercise)
 								  .AddTransition(ParseState.NewExercise, ParseState.ExerciseTitle)
-								  .AddTransition(ParseState.ExerciseTitle, ParseState.ExerciseQuery)
-								  .AddTransition(ParseState.ExerciseQuery, ParseState.ExercisePattern,
+								  .AddTransition(ParseState.ExerciseTitle, ParseState.RequireExactColumnMatch,
+                                                                           ParseState.ExerciseQuery)
+                                  .AddTransition(ParseState.RequireExactColumnMatch, ParseState.ExerciseQuery)
+                                  .AddTransition(ParseState.ExerciseQuery, ParseState.ExercisePattern,
 																		   ParseState.ExerciseExplanation)
 								  .AddTransition(ParseState.ExercisePattern, ParseState.ExercisePatternTip)
 								  .AddTransition(ParseState.ExercisePatternTip, ParseState.ExerciseExplanation)
@@ -116,10 +118,13 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 						currentExercise = new DefinedExercise(cleanValue);
 						set.Exercises.Add(currentExercise);
 						break;
-					case ParseState.ExerciseTitle:
-						currentExercise.Title = cleanValue;
-						break;
-					case ParseState.ExerciseQuery:
+                    case ParseState.ExerciseTitle:
+                        currentExercise.Title = cleanValue;
+                        break;
+                    case ParseState.RequireExactColumnMatch:
+                        currentExercise.RequireExactColumnMatch = Boolean.Parse(cleanValue);
+                        break;
+                    case ParseState.ExerciseQuery:
 						currentExercise.Query = cleanValue;
 						break;
 					case ParseState.ExercisePattern:
@@ -135,7 +140,9 @@ namespace SQLisHard.Domain.Exercises.ExerciseStore
 						currentExercise.Exercise = cleanValue;
 						break;
 					case ParseState.ExerciseExample:
-						currentExercise.Example = cleanValue;
+						currentExercise.Example = entry.Value.Replace("\t\t\t\t","")
+                                                             .Trim()
+                                                             .Replace("\t","&nbsp;");
 						break;
 					default:
 						throw new DefinedExerciseFileFormatException(String.Format("An unexpected configuration was encountered: {0}", entry.Config));

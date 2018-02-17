@@ -9,6 +9,7 @@ FinaleDetails: <p>Congratulations, you have finished the prepared SQL exercises!
 
 ExerciseId:	A1.0
 Title:		A1.0 - COUNT
+RequireExactColumnMatch: true
 Query:		SELECT COUNT(*) FROM Orders;
 Explanation:	<p>SELECTing rows of data out of the database is pretty powerful, but AGGREGATE functions provide the ability to perofmr analysis on the data. For instance,
 				we could <br/>
@@ -17,19 +18,19 @@ Explanation:	<p>SELECTing rows of data out of the database is pretty powerful, b
 				<br/>
 				and look at the row count returned, or use this handy COUNT function: </p>
 Example:	<code>
-				SELECT COUNT(*) FROM Customers<br/>
+				SELECT COUNT(*) FROM Customers
 			</code>
-Exercise:	<p>Try writing a statement to count the records in Orders.</p>
+Exercise:	<p>Try writing a statement to count the records in <em>Orders</em>.</p>
 
 ExerciseId:	A1.1
 Title:		A1.1 - SUM
 Query:		SELECT SUM(OrderTotal) FROM Orders WHERE OrderTime > '2013-01-01'
-Explanation:	<p>Another useful aggregate is SUM(), which sums the values of a given column. One way we can use this is to look at the total money we've made from Orders:</p>
+Explanation:	<p>Another useful aggregate is SUM(), which sums the values of a given column. One way we can use this is to look at the total money we've made from <em>Orders</em>:</p>
 Example:	<code>
 				SELECT SUM(OrderTotal) <br/>
-				FROM Orders<br/>
+				FROM Orders
 			</code>
-Exercise:	<p>Trying using a WHERE statement and the SUM function to return the OrderTotal for orders placed after 1/1/2013 (OrderTime)</p>
+Exercise:	<p>Trying using a WHERE statement and the SUM function to return the <em>OrderTotal</em> for orders placed after 1/1/2013 (hint: <em>OrderTime</em>)</p>
 
 ExerciseId:	A1.2
 Title:		A1.2 - GROUP BY
@@ -43,7 +44,7 @@ Example:	<code>
 				FROM Orders <br/>
 				GROUP BY Year(OrderTime)
 			</code>
-Exercise:	<p>This returns 1 row per year in the database, with the COUNT for that year. Try altering the query to return an OrderYear and SUM of OrderTotal for each year.</p>
+Exercise:	<p>This returns 1 row per year in the database, with the COUNT for that year. Try altering the query to return a Year and SUM of <em>OrderTotal</em> for each year.</p>
 
 ExerciseId:	A1.3
 Title:		A1.3 - More GROUP BY
@@ -70,7 +71,7 @@ Example:	<code>
 Exercise:	<p>This is an easy way to find the smallest and largest values for a column. Can you find the largest OrderTotal for each year?
 				<code>
 					SELECT Year(OrderTime) AS OrderYear,</br>
-						??? AS LargestOrderTotal<br/>
+					&nbsp;&nbsp;??? AS LargestOrderTotal<br/>
 					FROM Orders<br/>
 					??
 				</code>
@@ -86,19 +87,20 @@ Example:	<code>
 				SELECT AVG(DateDiff(day,OrderTime, DeliveryTime)) AS AverageDeliveryTime<br/>
 				FROM Orders
 			</code>
-Exercise:	<p>Using the AVG function, can you calculate the average OrderTotal for each year, naming these AverageOrderTotal and OrderYear?</p>
+Exercise:	<p>Using the AVG function, can you calculate the average OrderTotal for each year?</p>
 
 ExerciseId:	A2.0
 Title:		A2.0 - HAVING
-Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
-Explanation:	<p>Great, we can count, sum, and min/max across all records and small groups of records. But sometimes we only want the most notable groups and that's where HAVING comes in:</p>
+Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) AS "*" FROM Orders GROUP BY Year(OrderTime)
+Explanation:	<p>Now we have several ways we can aggregate and can use the WHERE and GROUP BY clauses, but sometimes we want to filter the results <u>after</u> we aggregate. That's where HAVING comes in:</p>
 Example:	<code>
-				SELECT CustomerId, COUNT(*)<br/>
+				SELECT CustomerId, COUNT(*) AS OrderCount<br/>
 				FROM Orders<br/>
 				GROUP BY CustomerId<br/>
 				HAVING COUNT(*) > 5
 			</code>
-Exercise:	<p>This query finds return shoppers. It counts how many orders each customer has placed, but only returns the customers (groups) that have more than 5 orders. Lets find big spenders by instead SUMming the OrderTotal and only returning those that have spent more than $1000</p>
+Exercise:	<p>This query will count how many orders each customer has placed, then filter only for customers with more than 5. 
+				Try to alter this query to find big spenders whose total OrderTotal is more than $1000.</p>
 
 
 ExerciseId:	A2.2
