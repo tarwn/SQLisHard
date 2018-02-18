@@ -105,61 +105,81 @@ Exercise:	<p>This query will count how many orders each customer has placed, the
 
 ExerciseId:	A2.2
 Title:		A2.2 - ORDER BY
-Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) as OrderTotal FROM Orders GROUP BY Year(OrderTime)
-Explanation:	<p>When a query is executed, the database processes the FROM and WHERE, then GROUP BY, then HAVING, then SELECT, then ORDER BY. Since the GROUP BY and HAVING occur before the ORDER BY, we can ORDER BY aggregate functions</p>
+Query:		SELECT TOP 10 CustomerId, SUM(OrderTotal) FROM Orders GROUP BY CustomerId ORDER BY SUM(OrderTotal) DESC
+Explanation:	<p>Just like a regular SELECT query, we can also user ORDER BY and TOP on queries with aggregates. Here we find the 5 customers that placed the most orders:</p>
 Example:	<code>
-				SELECT CustomerId, COUNT(*)<br/>
+				SELECT TOP 5 CustomerId, COUNT(*)<br/>
 				FROM Orders<br/>
 				GROUP BY CustomerId<br/>
 				ORDER BY COUNT(*) DESC
 			</code>
-Exercise:	<p>Now we're looking at the number of orders per customer, ordered by most prolific to least.... need exercise</p>
+Exercise:	<p>Can you change this query to find the 10 customers that have spent the most using ORDER BY and SUM()?</p>
 
 
 ExerciseId:	A2.3
 Title:		A2.3 - INNER JOIN
-Query:		SELECT 1;
-Explanation:	<p>use an inner join w/ an aggregate</p>
+Query:		SELECT TOP 10 CustomerId, SUM(OrderTotal), FirstName, LastName FROM Orders O INNER JOIN Customers C ON C.Id = O.CustomerId GROUP BY CustomerId, FirstName, LastName ORDER BY SUM(OrderTotal) DESC;
+Explanation:	<p>Just like a basic SELECT statement, we can use INNER JOIN to combine records from multiple tables. For instance, here is the average order amount for the first letter of peoples names:</p>
 Example:	<code>
-				example
+				SELECT LEFT(FirstName, 1), AVG(OrderTotal)<br/>
+				FROM Orders O<br/>
+					INNER JOIN Customers C ON C.Id = O.CustomerId<br/>
+				GROUP BY LEFT(FirstName, 1)<br/>
+				ORDER BY LEFT(FirstName, 1)
 			</code>
-Exercise:	<p>exercise</p>
+Exercise:	<p>Using your previous query from 2.2 (top 10 customers that have spent the most), can you expand it to return CustomerId, the total, and FirstName and LastName?</p>
 
 
 ExerciseId:	A2.4
-Title:		A2.4 - INNER JOIN Duplication
-Query:		SELECT 1;
-Explanation:	<p>use an inner join w/ an aggregate + duplicatation of rows</p>
+Title:		A2.4 - LEFT JOIN
+Query:		SELECT LastName, SUM(OrderTotal) FROM Customers C INNER JOIN Orders O ON O.CustomerId = C.Id GROUP BY LastName ORDER BY SUM(OrderTotal)
+Explanation:	<p>Sometimes we will want to SUM records, but won't have records in the second table. An INNER JOIN only returns results when there are matches in both tables, a LEFT JOIN will always return records from the LEFT table, even if there isn't a match in the RIGHT one:</p>
 Example:	<code>
-				example
+				SELECT LastName, COUNT(O.Id)
+				FROM Customers C
+					LEFT JOIN Orders O ON C.Id = O.CustomerId AND O.OrderTime BETWEEN '2013-01-01' AND '2013-02-01'
+				GROUP BY LastName
+				HAVING COUNT(O.Id) = 0
 			</code>
-Exercise:	<p>exercise</p>
-
-
-ExerciseId:	A2.5
-Title:		A2.5 - LEFT JOIN
-Query:		SELECT 1;
-Explanation:	<p>use a left join w/ an aggregate</p>
-Example:	<code>
-				example
-			</code>
-Exercise:	<p>exercise</p>
+Exercise:	<p>Here we have JOINed only to <em>Orders</em> for 1 month of 2013 to find who didn't order in this period.</p>
+			<p>Can you use a LEFT JOIN to return LastName and SUM() of <em>OrderTotal</em> for all customers, ORDERed from smalledt to largest SUM?</p>
 
 ExerciseId:	A3.0
-Title:		A3.0 - Conditional Tricks
-Query:		SELECT 1;
-Explanation:	<p>SUM a conditional field - ordertotals based on short/long delivery</p>
+Title:		A3.0 - Putting it all together
+Query:		SELECT TOP  10 FirstName , LastName, O.Id, MAX(DateDiff(minute,OrderTime,DeliveryTime)) FROM Customers C    INNER JOIN Orders O ON C.Id = O.CustomerId GROUP BY FirstName , LastName, O.Id ORDER BY MAX(DateDiff(minute,OrderTime,DeliveryTime)) DESC;
+Explanation:	<p>Now let's put all of thethings we've learned together.</p>
 Example:	<code>
-				example
+				SELECT TOP ? ???
+				FROM ???
+					INNER JOIN ??? ON ???.??? = ???.???
+				WHERE ???
+				GROUP BY ???
+				HAVING ???
+				ORDER BY ???
 			</code>
-Exercise:	<p>exercise</p>
+Exercise:	<p>Find the 10 customers who have had the longest delivery time, <em>MAX(DateDiff(minute,OrderTime,DeliveryTime))</em> and return their <em>FirstName</em>, <em>LastName</em>, Order <em>Id</em>, and that elapsed delivery time in minutes.</p>
 
 
 ExerciseId:	A3.1
-Title:		A3.1 - Conditional Tricks #2
-Query:		SELECT 1;
-Explanation:	<p>Pseudo count (SUM IF blah THEN 1 ELSE 0 END)</p>
+Title:		A3.1 - Conditional Tricks
+Query:		SELECT SUM(CASE WHEN DATEPART(weekday,OrderTime) = 1 THEN 1 ELSE 0 END) AS Saturdays, SUM(CASE WHEN DATEPART(weekday,OrderTime) = 1 THEN 0 ELSE 1 END) AS TheRest 	FROM Orders
+Explanation:	<p>Once you have Aggregate functions, you can alsdo do some interesting tricks with conditional statements (CASE WHEN x THEN y ELSE z END). For instance, you could use 2 consitional statements to calculate average orders for saturdays versus the rest of the week:</p>
 Example:	<code>
-				example
+				SELECT AVG(CASE WHEN DATEPART(weekday,OrderTime) = 1 THEN OrderTotal ELSE NULL END) AS Saturdays,<br/>
+					AVG(CASE WHEN DATEPART(weekday,OrderTime) = 1 THEN NULL ELSE OrderTotal END) AS TheRest<br/>
+				FROM Orders
 			</code>
-Exercise:	<p>exercise</p>
+Exercise:	<p>In the first CASE we return OrderTotal if the record is a saturday, or 0 if it is not. Switch these to SUM instead of AVG and return 1 instead of OrderTotal, this will give us a count of Saturday vs non-Saturday orders.</p>
+
+
+ExerciseId:	A3.2
+Title:		A3.2 - Conditional Tricks #2
+Query:		SELECT COUNT(*), CASE WHEN DATEPART(weekday,OrderTime) = 1 THEN 'Saturday' ELSE 'Not Saturday' END FROM Orders GROUP BY CASE WHEN DATEPART(weekday,OrderTime) = 1 THEN 'Saturday' ELSE 'Not Saturday' END  
+Explanation:	<p>You can also use a conditional in a GROUP BY to return individual records instead of columns. Here is the same AVG <em>OrderTotal</em> for Saturdays vs non as individual records:</p>
+Example:	<code>
+				SELECT AVG(OrderTotal),<br/>
+					CASE WHEN DATEPART(weekday,OrderTime) = 1 THEN 'Saturday' ELSE 'Not Saturday' END<br/>
+				FROM Orders<br/>
+				GROUP BY CASE WHEN DATEPART(weekday,OrderTime) = 1 THEN 'Saturday' ELSE 'Not Saturday' END
+			</code>
+Exercise:	<p>Try using a GROUP BY to Count Orders on Saturdays vs not-saturdays like this example.</p>
