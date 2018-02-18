@@ -13,6 +13,22 @@ list that have not been added yet.
 
 Check out the About section of http://sqlishard.com for more up to date general information.
 
+This is Experimental Code
+==========================
+
+This system works and has a deployment pipeline and integraiton tests to help keep it in working
+order.
+
+However...
+
+When writing this system initially (in 2012), it also served as a test bed for a whole variety of
+different patterns and technologies that I was trying. Some of these I continued to use in other
+projects (knockout, selenium, logging) and some I did not (SquishIt, general architecture patterns).
+Even the ones I kept, like knockout, evolved a great deal in other projects.
+
+So short version: This works but beware copying patterns from the code, as is often the case when
+we look back on older code, I want to take everything I've learned and rewrite the whole thing.
+
 Licensing
 ==========
 
