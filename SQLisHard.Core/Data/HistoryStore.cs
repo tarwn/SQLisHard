@@ -30,5 +30,13 @@ namespace SQLisHard.Core.Data
 				});
 			}
 		}
-	}
+
+        public List<string> GetCompletedExercises(UserId id)
+        {
+            using (var db = new Database(_connectionString, "System.Data.SqlClient"))
+            {
+                return db.Fetch<string>("SELECT ExerciseId FROM History WHERE UserId = @0 AND CompletesExercise = 1;", id.Value).ToList();
+            }
+        }
+    }
 }

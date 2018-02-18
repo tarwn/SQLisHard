@@ -26,6 +26,8 @@ SqlIsHardApp.ViewModel = (function (ko, Finch, isDebug) {
                 //console.log("route /");
                 Finch.call("/exercises/SELECT");
             });
+
+            loadUser(function () { });
         };
 
     // Private variables
