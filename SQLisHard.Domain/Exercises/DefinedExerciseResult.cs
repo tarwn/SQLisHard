@@ -13,7 +13,7 @@ namespace SQLisHard.Domain.Exercises
 
         protected DefinedExerciseResult() { }
 
-        public DefinedExerciseResult(QueryResult queryResult, bool exactColumnMatchOnly)
+        public DefinedExerciseResult(QueryResult queryResult, bool exactColumnMatchOnly = false)
         {
             _rawQueryResult = queryResult;
             _exactColumnMatchOnly = exactColumnMatchOnly;
@@ -30,7 +30,7 @@ namespace SQLisHard.Domain.Exercises
             return false;
         }
 
-        public QueryResultComparison CompareTo(QueryResult userResult)
+        public virtual QueryResultComparison CompareTo(QueryResult userResult)
         {
             return CompareTo(_rawQueryResult, userResult, _exactColumnMatchOnly);
         }

@@ -208,15 +208,25 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 	public class DefinedExerciseResultFake : DefinedExerciseResult
 	{
 		bool _expectedEqualsValue;
+        private QueryResultComparison _expectedComparison;
 
-		public DefinedExerciseResultFake(bool expectedEqualsValue) 
+        public DefinedExerciseResultFake(bool expectedEqualsValue) 
 		{
 			_expectedEqualsValue = expectedEqualsValue;
-		}
+            _expectedComparison = new QueryResultComparison() {
+                DataMismatch = !expectedEqualsValue
+            };
+
+        }
 
 		public override bool Equals(object obj)
 		{
 			return _expectedEqualsValue;
 		}
-	}
+
+        public override QueryResultComparison CompareTo(QueryResult userResult)
+        {
+            return _expectedComparison;
+        }
+    }
 }
