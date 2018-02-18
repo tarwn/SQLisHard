@@ -176,6 +176,7 @@ SqlIsHardApp.ViewModel = (function (ko, Finch, isDebug) {
         init: initialize,
         // properties
         exercises: exercises,
+        exerciseSets: ['SELECT','AGGREGATE'],
         user: user,
         currentQuery: currentQuery,
         isDebug: isDebug,

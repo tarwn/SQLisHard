@@ -28,6 +28,12 @@
                 </li>
             </ul>
         </div>
+        <div>
+            <h3>Other Sets</h3>
+            <ul data-bind="foreach: $root.exerciseSets">
+                <li data-bind="visible: $data != $root.exercises().id()"><a href="#" data-bind="text: $data + ' Exercises', attr: { href: '#/exercises/' + $data }"></a></li>
+            </ul>
+        </div>
     </div>
 
     <a href="#" class="DEBUG" data-bind="visible: isDebug, attr: { href: '#/exercises/' + exercises().id() + '/' + exercises().nextExerciseId() }">Next Exercise</a>
