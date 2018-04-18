@@ -91,7 +91,7 @@ Exercise:	<p>Using the AVG function, can you calculate the average OrderTotal fo
 
 ExerciseId:	A2.0
 Title:		A2.0 - HAVING
-Query:		SELECT Year(OrderTime) AS OrderYear, SUM(OrderTotal) AS "*" FROM Orders GROUP BY Year(OrderTime)
+Query:		SELECT CustomerId, SUM(OrderTotal) FROM Orders GROUP BY CustomerId HAVING SUM(OrderTotal) > 1000
 Explanation:	<p>Now we have several ways we can aggregate and can use the WHERE and GROUP BY clauses, but sometimes we want to filter the results <u>after</u> we aggregate. That's where HAVING comes in:</p>
 Example:	<code>
 				SELECT CustomerId, COUNT(*) AS OrderCount<br/>
