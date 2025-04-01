@@ -11,3 +11,5 @@ This is observations as I perform the modernization using Cursor.
 5. Cursor is running the build and tests again before I finished approving the changes it made, which then fail because I haven't approved all the changes yet because I'm still reading
 
 6. When approving change-by-change, the editor does not scroll to the next change to review
+
+7. Editor went completely off the rails, adding new tests, modifying behavior, then failing because I rejected edits and telling me I had to manually make the changes. So trying fresh.

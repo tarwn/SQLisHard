@@ -23,7 +23,7 @@ namespace SQLisHard.Domain.Tests.Exercises
 
 			var result = definedResult.Equals(queryResult);
 
-			Assert.IsTrue(result);
+			Assert.That(result, Is.True);
 		}
 
 		[Test]
@@ -37,7 +37,7 @@ namespace SQLisHard.Domain.Tests.Exercises
 
 			var result = definedResult.Equals(queryResult);
 
-			Assert.IsFalse(result);
+			Assert.That(result, Is.False);
 		}
 
 		[Test]
@@ -51,7 +51,7 @@ namespace SQLisHard.Domain.Tests.Exercises
 
 			var result = definedResult.Equals(queryResult);
 
-			Assert.IsFalse(result);
+			Assert.That(result, Is.False);
 		}
 
 		[Test]
@@ -65,7 +65,7 @@ namespace SQLisHard.Domain.Tests.Exercises
 
 			var result = definedResult.Equals(queryResult);
 
-			Assert.IsFalse(result);
+			Assert.That(result, Is.False);
 		}
 
 		[Test]
@@ -79,7 +79,7 @@ namespace SQLisHard.Domain.Tests.Exercises
 
 			var result = definedResult.Equals(queryResult);
 
-			Assert.IsFalse(result);
+			Assert.That(result, Is.False);
 		}
 
 		[Test]
@@ -93,7 +93,7 @@ namespace SQLisHard.Domain.Tests.Exercises
 
 			var result = definedResult.Equals(queryResult);
 
-			Assert.IsFalse(result);
+			Assert.That(result, Is.False);
 		}
 
 		[Test]
@@ -107,7 +107,7 @@ namespace SQLisHard.Domain.Tests.Exercises
 
 			var result = definedResult.Equals(queryResult);
 
-			Assert.IsFalse(result);
+			Assert.That(result, Is.False);
 		}
 
 		[Test]
@@ -121,7 +121,7 @@ namespace SQLisHard.Domain.Tests.Exercises
 
 			var result = definedResult.Equals(queryResult);
 
-			Assert.IsTrue(result);
+			Assert.That(result, Is.True);
 		}
 
 		[Test]
@@ -137,7 +137,7 @@ namespace SQLisHard.Domain.Tests.Exercises
 
 			var result = definedResult.Equals(queryResult);
 
-			Assert.IsTrue(result);
+			Assert.That(result, Is.True);
 		}
 
         [Test]
@@ -150,13 +150,13 @@ namespace SQLisHard.Domain.Tests.Exercises
 
             var result = DefinedExerciseResult.CompareTo(queryResult, rawQueryResult);
 
-            Assert.IsTrue(result.IsMatch);
-            Assert.IsFalse(result.ColumnCountMismatch);
-            Assert.IsFalse(result.DataMismatch);
-            Assert.IsFalse(result.HasUnrecognizedColumn);
-            Assert.IsFalse(result.ReturnedRowCountMismatch);
-            Assert.IsFalse(result.SomeOtherRowCountMismatch);
-            Assert.IsFalse(result.TotalRowCountMismatch);
+            Assert.That(result.IsMatch, Is.True);
+            Assert.That(result.ColumnCountMismatch, Is.False);
+            Assert.That(result.DataMismatch, Is.False);
+            Assert.That(result.HasUnrecognizedColumn, Is.False);
+            Assert.That(result.ReturnedRowCountMismatch, Is.False);
+            Assert.That(result.SomeOtherRowCountMismatch, Is.False);
+            Assert.That(result.TotalRowCountMismatch, Is.False);
         }
 
         [Test]
@@ -169,13 +169,13 @@ namespace SQLisHard.Domain.Tests.Exercises
 
             var result = DefinedExerciseResult.CompareTo(queryResult, rawQueryResult);
 
-            Assert.IsFalse(result.IsMatch);
-            Assert.IsFalse(result.ColumnCountMismatch);
-            Assert.IsFalse(result.DataMismatch);
-            Assert.IsFalse(result.HasUnrecognizedColumn);
-            Assert.IsFalse(result.ReturnedRowCountMismatch);
-            Assert.IsFalse(result.SomeOtherRowCountMismatch);
-            Assert.IsTrue(result.TotalRowCountMismatch);
+            Assert.That(result.IsMatch, Is.False);
+            Assert.That(result.ColumnCountMismatch, Is.False);
+            Assert.That(result.DataMismatch, Is.False);
+            Assert.That(result.HasUnrecognizedColumn, Is.False);
+            Assert.That(result.ReturnedRowCountMismatch, Is.False);
+            Assert.That(result.SomeOtherRowCountMismatch, Is.False);
+            Assert.That(result.TotalRowCountMismatch, Is.True);
         }
 
         [Test]
@@ -188,13 +188,13 @@ namespace SQLisHard.Domain.Tests.Exercises
 
             var result = DefinedExerciseResult.CompareTo(queryResult, rawQueryResult);
 
-            Assert.IsFalse(result.IsMatch);
-            Assert.IsTrue(result.ColumnCountMismatch);
-            Assert.IsTrue(result.DataMismatch);
-            Assert.IsFalse(result.HasUnrecognizedColumn);
-            Assert.IsFalse(result.ReturnedRowCountMismatch);
-            Assert.IsFalse(result.SomeOtherRowCountMismatch);
-            Assert.IsFalse(result.TotalRowCountMismatch);
+            Assert.That(result.IsMatch, Is.False);
+            Assert.That(result.ColumnCountMismatch, Is.True);
+            Assert.That(result.DataMismatch, Is.True);
+            Assert.That(result.HasUnrecognizedColumn, Is.False);
+            Assert.That(result.ReturnedRowCountMismatch, Is.False);
+            Assert.That(result.SomeOtherRowCountMismatch, Is.False);
+            Assert.That(result.TotalRowCountMismatch, Is.False);
         }
 
         [Test]
@@ -207,13 +207,13 @@ namespace SQLisHard.Domain.Tests.Exercises
 
             var result = DefinedExerciseResult.CompareTo(queryResult, rawQueryResult);
 
-            Assert.IsTrue(result.IsMatch);
-            Assert.IsFalse(result.ColumnCountMismatch);
-            Assert.IsFalse(result.DataMismatch);
-            Assert.IsFalse(result.HasUnrecognizedColumn);
-            Assert.IsFalse(result.ReturnedRowCountMismatch);
-            Assert.IsFalse(result.SomeOtherRowCountMismatch);
-            Assert.IsFalse(result.TotalRowCountMismatch);
+            Assert.That(result.IsMatch, Is.True);
+            Assert.That(result.ColumnCountMismatch, Is.False);
+            Assert.That(result.DataMismatch, Is.False);
+            Assert.That(result.HasUnrecognizedColumn, Is.False);
+            Assert.That(result.ReturnedRowCountMismatch, Is.False);
+            Assert.That(result.SomeOtherRowCountMismatch, Is.False);
+            Assert.That(result.TotalRowCountMismatch, Is.False);
         }
 
         [Test]
@@ -226,13 +226,13 @@ namespace SQLisHard.Domain.Tests.Exercises
 
             var result = DefinedExerciseResult.CompareTo(queryResult, rawQueryResult);
 
-            Assert.IsFalse(result.IsMatch);
-            Assert.IsFalse(result.ColumnCountMismatch);
-            Assert.IsTrue(result.DataMismatch);
-            Assert.IsFalse(result.HasUnrecognizedColumn);
-            Assert.IsFalse(result.ReturnedRowCountMismatch);
-            Assert.IsFalse(result.SomeOtherRowCountMismatch);
-            Assert.IsFalse(result.TotalRowCountMismatch);
+            Assert.That(result.IsMatch, Is.False);
+            Assert.That(result.ColumnCountMismatch, Is.False);
+            Assert.That(result.DataMismatch, Is.True);
+            Assert.That(result.HasUnrecognizedColumn, Is.False);
+            Assert.That(result.ReturnedRowCountMismatch, Is.False);
+            Assert.That(result.SomeOtherRowCountMismatch, Is.False);
+            Assert.That(result.TotalRowCountMismatch, Is.False);
         }
 
 
@@ -246,13 +246,13 @@ namespace SQLisHard.Domain.Tests.Exercises
 
             var result = DefinedExerciseResult.CompareTo(queryResult, rawQueryResult);
 
-            Assert.IsFalse(result.IsMatch);
-            Assert.IsFalse(result.ColumnCountMismatch);
-            Assert.IsTrue(result.DataMismatch);
-            Assert.IsFalse(result.HasUnrecognizedColumn);
-            Assert.IsFalse(result.ReturnedRowCountMismatch);
-            Assert.IsFalse(result.SomeOtherRowCountMismatch);
-            Assert.IsFalse(result.TotalRowCountMismatch);
+            Assert.That(result.IsMatch, Is.False);
+            Assert.That(result.ColumnCountMismatch, Is.False);
+            Assert.That(result.DataMismatch, Is.True);
+            Assert.That(result.HasUnrecognizedColumn, Is.False);
+            Assert.That(result.ReturnedRowCountMismatch, Is.False);
+            Assert.That(result.SomeOtherRowCountMismatch, Is.False);
+            Assert.That(result.TotalRowCountMismatch, Is.False);
         }
 
         [Test]
@@ -265,13 +265,13 @@ namespace SQLisHard.Domain.Tests.Exercises
 
             var result = DefinedExerciseResult.CompareTo(queryResult, rawQueryResult);
 
-            Assert.IsFalse(result.IsMatch);
-            Assert.IsFalse(result.ColumnCountMismatch);
-            Assert.IsTrue(result.DataMismatch);
-            Assert.IsFalse(result.HasUnrecognizedColumn);
-            Assert.IsFalse(result.ReturnedRowCountMismatch);
-            Assert.IsTrue(result.SomeOtherRowCountMismatch);
-            Assert.IsFalse(result.TotalRowCountMismatch);
+            Assert.That(result.IsMatch, Is.False);
+            Assert.That(result.ColumnCountMismatch, Is.False);
+            Assert.That(result.DataMismatch, Is.True);
+            Assert.That(result.HasUnrecognizedColumn, Is.False);
+            Assert.That(result.ReturnedRowCountMismatch, Is.False);
+            Assert.That(result.SomeOtherRowCountMismatch, Is.True);
+            Assert.That(result.TotalRowCountMismatch, Is.False);
         }
 
         [Test]
@@ -284,13 +284,13 @@ namespace SQLisHard.Domain.Tests.Exercises
 
             var result = DefinedExerciseResult.CompareTo(queryResult, rawQueryResult);
 
-            Assert.IsFalse(result.IsMatch);
-            Assert.IsFalse(result.ColumnCountMismatch);
-            Assert.IsTrue(result.DataMismatch);
-            Assert.IsFalse(result.HasUnrecognizedColumn);
-            Assert.IsTrue(result.ReturnedRowCountMismatch);
-            Assert.IsFalse(result.SomeOtherRowCountMismatch);
-            Assert.IsFalse(result.TotalRowCountMismatch);
+            Assert.That(result.IsMatch, Is.False);
+            Assert.That(result.ColumnCountMismatch, Is.False);
+            Assert.That(result.DataMismatch, Is.True);
+            Assert.That(result.HasUnrecognizedColumn, Is.False);
+            Assert.That(result.ReturnedRowCountMismatch, Is.True);
+            Assert.That(result.SomeOtherRowCountMismatch, Is.False);
+            Assert.That(result.TotalRowCountMismatch, Is.False);
         }
 
         [Test]
@@ -303,13 +303,13 @@ namespace SQLisHard.Domain.Tests.Exercises
 
             var result = DefinedExerciseResult.CompareTo(queryResult, rawQueryResult);
 
-            Assert.IsTrue(result.IsMatch);
-            Assert.IsFalse(result.ColumnCountMismatch);
-            Assert.IsFalse(result.DataMismatch);
-            Assert.IsFalse(result.HasUnrecognizedColumn);
-            Assert.IsFalse(result.ReturnedRowCountMismatch);
-            Assert.IsFalse(result.SomeOtherRowCountMismatch);
-            Assert.IsFalse(result.TotalRowCountMismatch);
+            Assert.That(result.IsMatch, Is.True);
+            Assert.That(result.ColumnCountMismatch, Is.False);
+            Assert.That(result.DataMismatch, Is.False);
+            Assert.That(result.HasUnrecognizedColumn, Is.False);
+            Assert.That(result.ReturnedRowCountMismatch, Is.False);
+            Assert.That(result.SomeOtherRowCountMismatch, Is.False);
+            Assert.That(result.TotalRowCountMismatch, Is.False);
         }
 
         [Test]
@@ -324,13 +324,13 @@ namespace SQLisHard.Domain.Tests.Exercises
 
             var result = DefinedExerciseResult.CompareTo(queryResult, rawQueryResult);
 
-            Assert.IsTrue(result.IsMatch);
-            Assert.IsFalse(result.ColumnCountMismatch);
-            Assert.IsFalse(result.DataMismatch);
-            Assert.IsFalse(result.HasUnrecognizedColumn);
-            Assert.IsFalse(result.ReturnedRowCountMismatch);
-            Assert.IsFalse(result.SomeOtherRowCountMismatch);
-            Assert.IsFalse(result.TotalRowCountMismatch);
+            Assert.That(result.IsMatch, Is.True);
+            Assert.That(result.ColumnCountMismatch, Is.False);
+            Assert.That(result.DataMismatch, Is.False);
+            Assert.That(result.HasUnrecognizedColumn, Is.False);
+            Assert.That(result.ReturnedRowCountMismatch, Is.False);
+            Assert.That(result.SomeOtherRowCountMismatch, Is.False);
+            Assert.That(result.TotalRowCountMismatch, Is.False);
         }
 
         private void FillDataTable(DataTable data, int expColumnCount, int expRowCount, string colPrefix = "", string rowPrefix = "")

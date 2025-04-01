@@ -16,14 +16,11 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 	{
 
 		[Test]
-		[ExpectedException(typeof(ArgumentOutOfRangeException))]
 		public void GetList_NonexistentSet_ThrowsException()
 		{
 			var store = new FlatFileExerciseStore(new Mock<IQueryEngine>().Object);
 
-			var result = store.GetList("bad set id");
-
-			// expect exception
+			Assert.Throws<ArgumentOutOfRangeException>(() => store.GetList("bad set id"));
 		}
 
 		[Test]
@@ -35,7 +32,7 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 
 			var result = store.GetList("SampleId");
 
-			Assert.AreEqual(sampleSet, result);
+			Assert.That(result, Is.EqualTo(sampleSet));
 		}
 
 		[Test]
@@ -45,7 +42,7 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 
 			var result = store.GetExerciseResultForComparison("NonexistentId", "NonexistentId");
 
-			Assert.IsNull(result);
+			Assert.That(result, Is.Null);
 		}
 
 		[Test]
@@ -75,9 +72,9 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 
 			var result = FlatFileExerciseStore.ParseFile(data);
 
-			Assert.AreEqual("SampleSetId", result.Id);
-			Assert.AreEqual("Set Title", result.Title);
-			Assert.AreEqual("Summary of set", result.Summary);
+			Assert.That(result.Id, Is.EqualTo("SampleSetId"));
+			Assert.That(result.Title, Is.EqualTo("Set Title"));
+			Assert.That(result.Summary, Is.EqualTo("Summary of set"));
 		}
 
 		[Test]
@@ -87,9 +84,9 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 
 			var result = FlatFileExerciseStore.ParseFile(data);
 
-			Assert.AreEqual("SampleSetId", result.Id);
-			Assert.AreEqual("Set Title", result.Title);
-			Assert.AreEqual("Summary of set", result.Summary);
+			Assert.That(result.Id, Is.EqualTo("SampleSetId"));
+			Assert.That(result.Title, Is.EqualTo("Set Title"));
+			Assert.That(result.Summary, Is.EqualTo("Summary of set"));
 		}
 
 		[Test]
@@ -99,7 +96,7 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 
 			var result = FlatFileExerciseStore.ParseFile(data);
 
-			Assert.AreEqual("Summary of set\n rest of summary", result.Summary);
+			Assert.That(result.Summary, Is.EqualTo("Summary of set\n rest of summary"));
 		}
 
 		[Test]
@@ -109,8 +106,8 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 
 			var result = FlatFileExerciseStore.ParseFile(data);
 
-			Assert.AreEqual("Finale Title", result.Finale.Title);
-			Assert.AreEqual("finale detail", result.Finale.Details);
+			Assert.That(result.Finale.Title, Is.EqualTo("Finale Title"));
+			Assert.That(result.Finale.Details, Is.EqualTo("finale detail"));
 		}
 
 		[Test]
@@ -121,62 +118,47 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 
 			var result = FlatFileExerciseStore.ParseFile(data);
 
-			Assert.AreEqual(details.Replace("\t"," "), result.Finale.Details);
+			Assert.That(result.Finale.Details, Is.EqualTo(details.Replace("\t"," ")));
 		}
 
 		[Test]
-		[ExpectedException(typeof(DefinedExerciseFileFormatException))]
 		public void ParseFile_FileWithEmptyId_ThrowsFileFormatException()
 		{
 			var data = GenerateSampleData(setId: "");
 
-			var result = FlatFileExerciseStore.ParseFile(data);
-
-			//expects exception
+			Assert.Throws<DefinedExerciseFileFormatException>(() => FlatFileExerciseStore.ParseFile(data));
 		}
 
 		[Test]
-		[ExpectedException(typeof(DefinedExerciseFileFormatException))]
 		public void ParseFile_FileWithEmptySetTitle_ThrowsFileFormatException()
 		{
 			var data = GenerateSampleData(setTitle: "");
 
-			var result = FlatFileExerciseStore.ParseFile(data);
-
-			//expects exception
+			Assert.Throws<DefinedExerciseFileFormatException>(() => FlatFileExerciseStore.ParseFile(data));
 		}
 		
 		[Test]
-		[ExpectedException(typeof(DefinedExerciseFileFormatException))]
 		public void ParseFile_FileWithEmptySetSummary_ThrowsFileFormatException()
 		{
 			var data = GenerateSampleData(setSummary: "");
 
-			var result = FlatFileExerciseStore.ParseFile(data);
-
-			//expects exception
+			Assert.Throws<DefinedExerciseFileFormatException>(() => FlatFileExerciseStore.ParseFile(data));
 		}
 
 		[Test]
-		[ExpectedException(typeof(DefinedExerciseFileFormatException))]
 		public void ParseFile_FileWithEmptyFinaleTitle_ThrowsFileFormatException()
 		{
 			var data = GenerateSampleData(finaleTitle: "");
 
-			var result = FlatFileExerciseStore.ParseFile(data);
-
-			//expects exception
+			Assert.Throws<DefinedExerciseFileFormatException>(() => FlatFileExerciseStore.ParseFile(data));
 		}
 
 		[Test]
-		[ExpectedException(typeof(DefinedExerciseFileFormatException))]
 		public void ParseFile_FileWithEmptyFinaleDetails_ThrowsFileFormatException()
 		{
 			var data = GenerateSampleData(finaleDetails: "");
 
-			var result = FlatFileExerciseStore.ParseFile(data);
-
-			//expects exception
+			Assert.Throws<DefinedExerciseFileFormatException>(() => FlatFileExerciseStore.ParseFile(data));
 		}
 
 		[Test]
@@ -186,7 +168,7 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 
 			var result = FlatFileExerciseStore.ParseFile(data);
 
-			Assert.AreEqual(1, result.Exercises.Count);
+			Assert.That(result.Exercises.Count, Is.EqualTo(1));
 		}
 
 		[Test]
@@ -198,12 +180,12 @@ namespace SQLisHard.Domain.Tests.Exercises.ExerciseStore
 
 			// these are comparisons to the hard-coded values below
 			var ex = result.Exercises.First();
-			Assert.AreEqual("0", ex.Id);
-			Assert.AreEqual("Exercise #0", ex.Title);
-			Assert.AreEqual("SELECT TOP 0 FROM SampleTable;", ex.Query);
-			Assert.AreEqual("This is the multi-line\n\tdescription".Replace("\t", " "), ex.Explanation);
-			Assert.AreEqual("<code>with some code</code>".Replace("\t", " "), ex.Example);
-			Assert.AreEqual("<p>Multi\n\tline exercise".Replace("\t", " ").TrimEnd(), ex.Exercise);
+			Assert.That(ex.Id, Is.EqualTo("0"));
+			Assert.That(ex.Title, Is.EqualTo("Exercise #0"));
+			Assert.That(ex.Query, Is.EqualTo("SELECT TOP 0 FROM SampleTable;"));
+			Assert.That(ex.Explanation, Is.EqualTo("This is the multi-line\n\tdescription".Replace("\t", " ")));
+			Assert.That(ex.Example, Is.EqualTo("<code>with some code</code>".Replace("\t", " ")));
+			Assert.That(ex.Exercise, Is.EqualTo("<p>Multi\n\tline exercise".Replace("\t", " ").TrimEnd()));
 		}
 
 		private string GenerateSampleData(string setId = "SampleId", string setTitle = "Sample Title", string setSummary = "Sample Summary",
