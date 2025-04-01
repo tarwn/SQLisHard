@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Moq;
 
 namespace SQLisHard.General.tests.ErrorLogging
 {
@@ -19,7 +20,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 
 			var result = provider.GetHeaderHtml(new Dictionary<string, IEnumerable<string>>());
 
-			Assert.AreEqual("", result);
+			Assert.That(result, Is.EqualTo(""));
 		}
 
 		[Test]
@@ -34,7 +35,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 			var result = provider.GetHeaderHtml(headers);
 
 			int rowCount = Regex.Matches(result, "<tr>").Count;
-			Assert.AreEqual(3, rowCount);
+			Assert.That(rowCount, Is.EqualTo(3));
 		}
 
 		[Test]
@@ -49,7 +50,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 			var result = provider.GetHeaderHtml(headers);
 
 			int rowCount = Regex.Matches(result, "<tr>").Count;
-			Assert.AreEqual(3, rowCount);
+			Assert.That(rowCount, Is.EqualTo(3));
 		}
 
 		[Test]
@@ -63,7 +64,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 
 			var result = provider.GetHeaderHtml(headers);
 
-			Assert.IsTrue(Regex.IsMatch(result, @"a.*1.*2.*3.*\n?.*b.*1.*2.*\n?.*c.*1", RegexOptions.Multiline));
+			Assert.That(Regex.IsMatch(result, @"a.*1.*2.*3.*\n?.*b.*1.*2.*\n?.*c.*1", RegexOptions.Multiline), Is.True);
 		}
 
 		[Test]
@@ -73,7 +74,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 
 			var result = provider.GetServerVariablesHtml(new Dictionary<string, string>());
 
-			Assert.AreEqual("", result);
+			Assert.That(result, Is.EqualTo(""));
 		}
 
 		[Test]
@@ -88,7 +89,39 @@ namespace SQLisHard.General.tests.ErrorLogging
 			});
 
 			int rowCount = Regex.Matches(result, "<tr>").Count;
-			Assert.AreEqual(3, rowCount);
+			Assert.That(rowCount, Is.EqualTo(3));
+		}
+
+		[Test]
+		public void GetServerVariablesHtml_WithValue_FormatsCorrectly()
+		{
+			var provider = new EmailLogProvider("test", "from", "to");
+			var result = provider.GetServerVariablesHtml(new Dictionary<string, string>() { { "KEY", "VALUE" } });
+			Assert.That(result, Is.EqualTo("<tr><th align='right' valign='top'>KEY:</th><td>VALUE</td></tr>"));
+		}
+
+		[Test]
+		public void GetHeaderHtml_WithOneValue_FormatsCorrectly()
+		{
+			var provider = new EmailLogProvider("test", "from", "to");
+			var result = provider.GetHeaderHtml(new Dictionary<string, IEnumerable<string>>() { { "KEY", new string[] { "VALUE" } } });
+			Assert.That(result, Is.EqualTo("<tr><th align='right' valign='top'>KEY:</th><td>VALUE</td></tr>"));
+		}
+
+		[Test]
+		public void GetHeaderHtml_WithTwoValues_FormatsCorrectly()
+		{
+			var provider = new EmailLogProvider("test", "from", "to");
+			var result = provider.GetHeaderHtml(new Dictionary<string, IEnumerable<string>>() { { "KEY", new string[] { "VALUE", "VALUE2" } } });
+			Assert.That(result, Is.EqualTo("<tr><th align='right' valign='top'>KEY:</th><td>VALUE<br/>VALUE2</td></tr>"));
+		}
+
+		[Test]
+		public void GetHeaderHtml_WithHtmlValue_EncodesCorrectly()
+		{
+			var provider = new EmailLogProvider("test", "from", "to");
+			var result = provider.GetHeaderHtml(new Dictionary<string, IEnumerable<string>>() { { "KEY", new string[] { "<VALUE>" } } });
+			Assert.That(result.Contains("&lt;VALUE&gt;"), Is.True);
 		}
 
 		[Test]
@@ -100,7 +133,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 
 			var result = provider.GetExceptionHtml(exc);
 
-			Assert.IsTrue(result.Contains(outerExceptionText));
+			Assert.That(result.Contains(outerExceptionText), Is.True);
 		}
 
 		[Test]
@@ -113,7 +146,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 
 			var result = provider.GetExceptionHtml(exc);
 
-			Assert.IsTrue(result.Contains(innerExceptionText));
+			Assert.That(result.Contains(innerExceptionText), Is.True);
 		}
 
 		[Test]
@@ -126,7 +159,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 
 			var result = provider.GetExceptionHtml(exc);
 
-			Assert.IsTrue(result.Contains(innerExceptionText));
+			Assert.That(result.Contains(innerExceptionText), Is.True);
 		}
 
 		[Test]
@@ -141,7 +174,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 			var result = provider.GetExceptionHtml(exc);
 
 			foreach (string s in aggregateTexts)
-				Assert.IsTrue(result.Contains(s), String.Format("Result did not contain '{0}'", s));
+				Assert.That(result.Contains(s), Is.True, $"Result did not contain '{s}'");
 		}
 
 		[Test]
@@ -152,7 +185,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 
 			var result = provider.BuildMessage(new Exception("unittest-exc-1"), logArgs);
 
-			Assert.IsTrue(result.Contains(logArgs.RequestURI));
+			Assert.That(result.Contains(logArgs.RequestURI), Is.True);
 		}
 
 		[Test]
@@ -163,7 +196,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 
 			var result = provider.BuildMessage(new Exception("unittest-exc-1"), logArgs);
 
-			Assert.IsTrue(result.Contains(logArgs.UserId.ToString()));
+			Assert.That(result.Contains(logArgs.UserId.ToString()), Is.True);
 		}
 
 		[Test]
@@ -174,7 +207,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 
 			var result = provider.BuildMessage(new Exception("unittest-exc-1"), logArgs);
 
-			Assert.IsTrue(result.Contains(logArgs.Username));
+			Assert.That(result.Contains(logArgs.Username), Is.True);
 		}
 
 		[Test]
@@ -185,7 +218,7 @@ namespace SQLisHard.General.tests.ErrorLogging
 
 			var result = provider.BuildMessage(new Exception("unittest-exc-1"), logArgs);
 
-			Assert.IsTrue(result.Contains("unittest-exc-1"));
+			Assert.That(result.Contains("unittest-exc-1"), Is.True);
 		}
 
 		[Test]
@@ -200,9 +233,96 @@ namespace SQLisHard.General.tests.ErrorLogging
 
 			var result = provider.BuildMessage(new Exception("unittest-exc-1"), logArgs);
 
-			Assert.IsTrue(result.Contains("HEADERKEY"));
+			Assert.That(result.Contains("HEADERKEY"), Is.True);
 		}
 
+		[Test]
+		public void BuildMessage_BasicException_IncludesType()
+		{
+			var provider = new EmailLogProvider("test", "from", "to");
+			var args = new LogArguments();
+			args.RequestURI = "http://example.com";
+			args.UserId = 123;
+			args.Username = "TestUser";
+			var exc = new Exception("Test Message");
+
+			string message = provider.BuildMessage(exc, args);
+			Assert.That(message.Contains("System.Exception"), Is.True);
+		}
+
+		[Test]
+		public void BuildMessage_BasicException_IncludesMessage()
+		{
+			var provider = new EmailLogProvider("test", "from", "to");
+			var args = new LogArguments();
+			args.RequestURI = "http://example.com";
+			args.UserId = 123;
+			args.Username = "TestUser";
+			var exc = new Exception("Test Message");
+
+			string message = provider.BuildMessage(exc, args);
+			Assert.That(message.Contains("Test Message"), Is.True);
+		}
+
+		[Test]
+		public void BuildMessage_BasicException_IncludesStackTrace()
+		{
+			var provider = new EmailLogProvider("test", "from", "to");
+			var args = new LogArguments();
+			args.RequestURI = "http://example.com";
+			args.UserId = 123;
+			args.Username = "TestUser";
+			var exc = new Exception("Test Message");
+
+			string message = "";
+			try { throw exc; } catch(Exception caughtExc) { message = provider.BuildMessage(caughtExc, args); }
+
+			Assert.That(message.Contains("EmailLogProviderTests.cs"), Is.True);
+		}
+
+		[Test]
+		public void BuildMessage_AggregateException_IncludesAggregatedDetails()
+		{
+			var provider = new EmailLogProvider("test", "from", "to");
+			var args = new LogArguments();
+			args.RequestURI = "http://example.com";
+			args.UserId = 123;
+			args.Username = "TestUser";
+			var innerExc1 = new InvalidOperationException("Inner 1");
+			var innerExc2 = new ArgumentException("Inner 2");
+			var exc = new AggregateException("Aggregate Message", innerExc1, innerExc2);
+
+			string message = provider.BuildMessage(exc, args);
+
+			Assert.That(message.Contains("System.AggregateException"), Is.True);
+			Assert.That(message.Contains("Aggregate Message"), Is.True);
+			Assert.That(message.Contains("Aggregated Exception:"), Is.True);
+			Assert.That(message.Contains("System.InvalidOperationException"), Is.True);
+			Assert.That(message.Contains("Inner 1"), Is.True);
+			Assert.That(message.Contains("System.ArgumentException"), Is.True);
+			Assert.That(message.Contains("Inner 2"), Is.True);
+		}
+
+		[Test]
+		public void BuildMessage_ExceptionWithInner_IncludesInnerDetails()
+		{
+			var provider = new EmailLogProvider("test", "from", "to");
+			var args = new LogArguments();
+			args.RequestURI = "http://example.com";
+			args.UserId = 123;
+			args.Username = "TestUser";
+			var innerExc = new ArgumentException("Inner Message");
+			var exc = new Exception("Outer Message", innerExc);
+
+			string message = provider.BuildMessage(exc, args);
+
+			Assert.That(message.Contains("System.Exception"), Is.True);
+			Assert.That(message.Contains("Outer Message"), Is.True);
+			Assert.That(message.Contains("Inner Exception(s):"), Is.True);
+			Assert.That(message.Contains("System.ArgumentException"), Is.True);
+			Assert.That(message.Contains("Inner Message"), Is.True);
+		}
+
+		// TODO: Add tests for SendEmail if possible (might require mocking SmtpClient or abstracting email sending)
 	}
 }
-;

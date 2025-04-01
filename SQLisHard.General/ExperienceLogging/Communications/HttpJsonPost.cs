@@ -4,28 +4,42 @@ using System.Linq;
 using System.Text;
 using System.Net;
 using System.IO;
-using ServiceStack.Text;
 using System.Diagnostics;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace SQLisHard.General.ExperienceLogging.Communications
 {
 	public class HttpJsonPost
 	{
+		private static readonly HttpClient _httpClient = CreateHttpClient();
 
-		string _message;
-		NetworkCredential _credentials;
-		bool _useJson;
+		private string _messageContent;
+		private NetworkCredential? _credentials;
+		private bool _useJson;
 
-		public HttpJsonPost(string message, NetworkCredential credentials = null, bool useJson = true)
+		private static HttpClient CreateHttpClient()
 		{
-			_message = message;
+			var handler = new HttpClientHandler();
+			var client = new HttpClient(handler)
+			{
+				Timeout = TimeSpan.FromSeconds(15)
+			};
+			return client;
+		}
+
+		public HttpJsonPost(string message, NetworkCredential? credentials = null, bool useJson = true)
+		{
+			_messageContent = message;
 			_credentials = credentials;
 			_useJson = useJson;
 		}
 
-		public HttpJsonPost(Dictionary<string, object> message, NetworkCredential credentials = null, bool useJson = true)
+		public HttpJsonPost(Dictionary<string, object> message, NetworkCredential? credentials = null, bool useJson = true)
 		{
-			_message = ConvertToMessage(message, useJson);
+			_messageContent = ConvertToMessage(message, useJson);
 			_credentials = credentials;
 			_useJson = useJson;
 		}
@@ -33,158 +47,84 @@ namespace SQLisHard.General.ExperienceLogging.Communications
 		private string ConvertToMessage(Dictionary<string, object> message, bool useJson)
 		{
 			if (useJson)
-				return JsonSerializer.SerializeToString(message);
+				return JsonSerializer.Serialize(message);
 			else
-				return string.Join(" ", message.Select(m => String.Format("{0}={1}", m.Key, m.Value.ToString())));
+				return string.Join(" ", message.Select(m => String.Format("{0}={1}", m.Key, m.Value?.ToString() ?? "")));
 		}
 
-		private HttpWebRequest InitializeRequest(string url, string method)
+		public async Task SendAsync(string url, HttpMethod method, Action<Result>? callback = null, bool processResponse = true)
 		{
-			var request = (HttpWebRequest)HttpWebRequest.Create(url);
-			request.Method = method;
-			request.Timeout = 15000;
-			request.ReadWriteTimeout = 15000;
-			request.KeepAlive = false;
-			if (_credentials != null)
-			{
-				request.Credentials = _credentials;
-				request.PreAuthenticate = true;
-			}
-
-			if (_useJson)
-				request.ContentType = "application/json";
-
-			return request;
-		}
-
-		public void Send(string url, string method, Action<Result> callback, bool processResponse = true)
-		{
-			var request = InitializeRequest(url, method);
-
-			using (var stream = request.GetRequestStream())
-			{
-				WriteMessage(stream);
-			}
-
-			var state = new RequestState()
-			{ 
-				Callback = callback,
-				RequestRetryCount = 0,	/* won't retry dead conns in .Net http pool */
-				Request = request,
-				ProcessResponse = processResponse
-			};
-
-			if (processResponse)
-				ProcessResponse(() => request.GetResponse(), state);
-			else if (callback != null)
-				callback(new Result() { Success = true });
-		}
-
-		public void SendAsync(string url, string method, Action<Result> callback, bool processResponse = true)
-		{
-			var request = InitializeRequest(url, method);
-
-			var state = new RequestState() {
-				Request = request,
-				Callback = callback,
-				ProcessResponse = processResponse,
-				RequestRetryCount = 1
-			};
-			request.BeginGetRequestStream(new AsyncCallback(GetRequestStream), state);
-		}
-
-		private void GetRequestStream(IAsyncResult result)
-		{
-			var state = (RequestState)result.AsyncState;
+			Result result;
 			try
 			{
-				using (var postStream = state.Request.EndGetRequestStream(result))
+				using var requestMessage = new HttpRequestMessage(method, url);
+
+				HttpContent content = new StringContent(_messageContent, Encoding.UTF8, _useJson ? "application/json" : "text/plain");
+				requestMessage.Content = content;
+
+				if (_credentials != null)
 				{
-					WriteMessage(postStream);
+					var byteArray = Encoding.ASCII.GetBytes($"{_credentials.UserName}:{_credentials.Password}");
+					requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
 				}
 
-				if (state.ProcessResponse)
-					state.Request.BeginGetResponse(GetResponseStream, state);
-				else
+				using var response = await _httpClient.SendAsync(requestMessage);
+
+				if (processResponse)
 				{
-					state.Request.Abort();
-					if (state.Callback != null)
-						state.Callback(new Result() { Success = true });
-				}
-			}
-			catch (WebException wexc)
-			{
-				WriteTrace(wexc, "HttpJsonPost.GetRequestStream");
-				if (state.Callback != null)
-					state.Callback(new ErrorResult(wexc));
-			}
-		}
-
-		private void WriteTrace(WebException wexc, string methodName)
-		{
-			var httpWebResp = wexc.Response as HttpWebResponse;
-			string responseCode = "N/A";
-			if (httpWebResp != null)
-				responseCode = String.Format("{0}: {1}", (int)httpWebResp.StatusCode, httpWebResp.StatusDescription);
-			Trace.WriteLine(String.Format("{0} Exception\nException: {1} - {2}\nWebResponse: {3}\nHttpWebResponse: {4}", methodName, wexc.GetType().Name, wexc.Message, wexc.Status, responseCode));
-		}
-
-		private void GetResponseStream(IAsyncResult result)
-		{
-			var state = (RequestState)result.AsyncState;
-			ProcessResponse(() => state.Request.EndGetResponse(result), state);
-		}
-
-		private void ProcessResponse(Func<WebResponse> getResponse, RequestState state)
-		{
-			try
-			{
-				using (var response = getResponse())
-				{
-					if (state.Callback != null)
+					string rawContent = await response.Content.ReadAsStringAsync();
+					result = new Result()
 					{
-						var responseResult = new Result() { Success = true };
-						using (var reader = new StreamReader(response.GetResponseStream()))
-						{
-							responseResult.RawContent = reader.ReadToEnd();
-						}
-						state.Callback(responseResult);
-					}
-				}
-			}
-			catch (WebException wexc)
-			{
-				if(state.RequestRetryCount > 0 && wexc.Status == WebExceptionStatus.ConnectionClosed)
-				{
-					WriteTrace(wexc, "HttpJsonPost.GetRequestStream (will retry)");
-					state.RequestRetryCount--;
-					state.Request.BeginGetResponse(GetResponseStream, state);
+						Success = response.IsSuccessStatusCode,
+						RawContent = rawContent
+					};
 				}
 				else
 				{
-					WriteTrace(wexc, "HttpJsonPost.GetRequestStream");
-					if (state.Callback != null)
-						state.Callback(new ErrorResult(wexc));
+					result = new Result() { Success = response.IsSuccessStatusCode };
 				}
+
+				if (!processResponse)
+				{
+					response.EnsureSuccessStatusCode();
+				}
+
+			}
+			catch (HttpRequestException httpExc)
+			{
+				WriteTrace(httpExc, "HttpJsonPost.SendAsync");
+				result = new ErrorResult(httpExc);
+			}
+			catch (TaskCanceledException timeoutExc)
+			{
+				WriteTrace(timeoutExc, "HttpJsonPost.SendAsync (Timeout)");
+				result = new ErrorResult(timeoutExc);
 			}
 			catch (Exception exc)
 			{
-				if (state.Callback != null)
-					state.Callback(new ErrorResult(exc));
+				Trace.WriteLine($"HttpJsonPost.SendAsync Exception: {exc.GetType().Name} - {exc.Message}");
+				result = new ErrorResult(exc);
 			}
+
+			callback?.Invoke(result);
 		}
 
-		private void WriteMessage(Stream stream)
+		private void WriteTrace(Exception exc, string methodName)
 		{
-			//if (_useJson) {
-			//    JsonSerializer.SerializeToStream(_message, stream);
-			//}
-			//else {
-			byte[] data = new System.Text.UTF8Encoding().GetBytes(_message + "\r\n");
-			stream.Write(data, 0, data.Length);
-			stream.Flush();
-			//}
+			string details = $"Exception: {exc.GetType().Name} - {exc.Message}";
+			if (exc is HttpRequestException httpExc && httpExc.StatusCode.HasValue)
+			{
+				details += $", StatusCode: {httpExc.StatusCode.Value}";
+			}
+			else if (exc is WebException webExc)
+			{
+				var httpWebResp = webExc.Response as HttpWebResponse;
+				string responseCode = "N/A";
+				if (httpWebResp != null)
+					responseCode = String.Format("{0}: {1}", (int)httpWebResp.StatusCode, httpWebResp.StatusDescription);
+				details += $", WebExceptionStatus: {webExc.Status}, WebResponse: {responseCode}";
+			}
+			Trace.WriteLine($"{methodName} Failure\n{details}");
 		}
 	}
-
 }

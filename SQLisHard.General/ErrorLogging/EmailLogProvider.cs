@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Security.Principal;
 using System.Text;
-using System.Web;
+using System.Net;
 
 namespace SQLisHard.General.ErrorLogging
 {
@@ -121,7 +121,7 @@ namespace SQLisHard.General.ErrorLogging
 
 		public string GetHeaderHtml(Dictionary<string, IEnumerable<string>> headers)
 		{
-			return String.Join("\n", headers.Select(kvp => String.Format("<tr><th align='right' valign='top'>{0}:</th><td>{1}</td></tr>", kvp.Key, String.Join("<br/>", kvp.Value.Select(v => HttpUtility.HtmlEncode(v))))));
+			return String.Join("\n", headers.Select(kvp => String.Format("<tr><th align='right' valign='top'>{0}:</th><td>{1}</td></tr>", kvp.Key, String.Join("<br/>", kvp.Value.Select(v => WebUtility.HtmlEncode(v))))));
 		}
 
 		public string GetServerVariablesHtml(Dictionary<string, string> values)

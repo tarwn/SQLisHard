@@ -1,20 +1,20 @@
-﻿using ServiceStack.Text;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 
 namespace SQLisHard.General.ExperienceLogging.Log
 {
 	public class NullLogProvider : ILogProvider
 	{
-		public void Log(Dictionary<string, object> message, Action<Communications.Result> callback)
+		public void Log(Dictionary<string, object> message, Action<Communications.Result>? callback)
 		{
-			Debug.WriteLine(String.Format("ExperienceLogging: {0}", JsonSerializer.SerializeToString(message)));
+			Debug.WriteLine(String.Format("ExperienceLogging: {0}", JsonSerializer.Serialize(message)));
 
 			if (callback != null)
-				callback(new Communications.Result { Success = true, RawContent = "{ success: true; }" });
+				callback(new Communications.Result { Success = true, RawContent = "{\"success\": true}" });
 		}
 	}
 }
