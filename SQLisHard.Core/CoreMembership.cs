@@ -4,7 +4,7 @@ using SQLisHard.Core.Interfaces;
 using SQLisHard.Core.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
@@ -15,6 +15,10 @@ namespace SQLisHard.Core
 	{
 		private IUserStore _userStore;
 		private ISessionStore _sessionStore;
+
+		public CoreMembership(IConfiguration configuration) : this(
+			new UserStore(configuration.GetConnectionString("DefaultConnection")),
+			new SessionStore(configuration.GetConnectionString("DefaultConnection"))) { }
 
 		public CoreMembership(string connectionString) : this(
 			new UserStore(connectionString),
@@ -43,7 +47,7 @@ namespace SQLisHard.Core
 		public void CaptureSession(UserId userId, string userAgent, string hostAddress)
 		{
 			_sessionStore.CaptureSession(new Session(userId, userAgent, hostAddress));
-}
+		}
 	}
 
 	public class UserPrincipal : IPrincipal

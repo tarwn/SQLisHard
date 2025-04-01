@@ -14,7 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Configuration;
+using Microsoft.Extensions.Configuration;
 using System.Data.Common;
 using System.Data;
 using System.Text.RegularExpressions;
@@ -155,18 +155,19 @@ namespace PetaPoco
 			CommonConstruct();
 		}
 
-		public Database(string connectionStringName)
+		public Database(string connectionStringName, IConfiguration configuration)
 		{
 			// Use first?
 			if (connectionStringName == "")
-				connectionStringName = ConfigurationManager.ConnectionStrings[0].Name;
+				connectionStringName = configuration.GetConnectionString("DefaultConnection");
 
 			// Work out connection string and provider name
 			var providerName = "System.Data.SqlClient";
-			if (ConfigurationManager.ConnectionStrings[connectionStringName] != null)
+			var connectionString = configuration.GetConnectionString(connectionStringName);
+			if (connectionString != null)
 			{
-				if (!string.IsNullOrEmpty(ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName))
-					providerName = ConfigurationManager.ConnectionStrings[connectionStringName].ProviderName;
+				if (!string.IsNullOrEmpty(configuration[$"ConnectionStrings:{connectionStringName}:ProviderName"]))
+					providerName = configuration[$"ConnectionStrings:{connectionStringName}:ProviderName"];
 			}
 			else
 			{
@@ -174,7 +175,7 @@ namespace PetaPoco
 			}
 
 			// Store factory and connection string
-			_connectionString = ConfigurationManager.ConnectionStrings[connectionStringName].ConnectionString;
+			_connectionString = connectionString;
 			_providerName = providerName;
 			CommonConstruct();
 		}

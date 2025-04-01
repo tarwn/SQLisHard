@@ -2,11 +2,6 @@
 using NUnit.Framework;
 using SQLisHard.Core.Data;
 using SQLisHard.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SQLisHard.Core.Tests
 {
@@ -26,7 +21,7 @@ namespace SQLisHard.Core.Tests
 
 			var newGuest = membership.CreateGuest();
 
-			Assert.AreEqual(dbId, newGuest.UserIdentity.Id.Value);
+			Assert.That(newGuest.UserIdentity.Id.Value, Is.EqualTo(dbId));
 		}
 
 		[Test]
@@ -41,7 +36,7 @@ namespace SQLisHard.Core.Tests
 
 			var newGuest = membership.GetUser(expectedId);
 
-			Assert.AreEqual(expectedId, newGuest.UserIdentity.Id);
+			Assert.That(newGuest.UserIdentity.Id, Is.EqualTo(expectedId));
 		}
 
 		[Test]
