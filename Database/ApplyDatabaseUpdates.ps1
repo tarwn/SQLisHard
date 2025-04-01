@@ -22,21 +22,15 @@ function ApplyDatabaseUpdates
 
     $path = (Get-Location).Path
 
-    # For SQL 2008 - load the modules
-    try{    
-        if ( (Get-PSSnapin -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -eq $null -and (Get-PSSnapin -Registered -Name SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue) -ne $null){
-            Add-PSSnapin SqlServerCmdletSnapin100 -ErrorAction SilentlyContinue
-            Add-PSSnapin SqlServerProviderSnapin100 -ErrorAction SilentlyContinue
-        }
-    }
-    catch{
-        Write-Error "Powershell Script error: $_" -EA Stop
-    }
+# Ensure SqlServer is loaded
+if (!(Get-Module -Name SqlServer)) {
+    Import-Module SqlServer
+}
 
     #updates tracking
     try{
         Write-Host "Creating Update Tracking Table If Not Exists"
-        Invoke-Sqlcmd -Query "IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'UpdateTracking') CREATE TABLE UpdateTracking (UpdateTrackingKey int IDENTITY(1,1) PRIMARY KEY, Name varchar(255) NOT NULL, Applied DateTime NOT NULL);" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -ErrorAction Stop
+        Invoke-Sqlcmd -Query "IF NOT EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'UpdateTracking') CREATE TABLE UpdateTracking (UpdateTrackingKey int IDENTITY(1,1) PRIMARY KEY, Name varchar(255) NOT NULL, Applied DateTime NOT NULL);" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -TrustServerCertificate  -ErrorAction Stop
         Write-Host "Done"
     }
     catch{
@@ -77,7 +71,7 @@ function ApplyDatabaseUpdates
 
     Write-Host "Running updates..."
 
-    Invoke-SqlCmd -InputFile "$outputPath" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -Verbose -ErrorAction Stop
+    Invoke-SqlCmd -InputFile "$outputPath" -ServerInstance "$Server" -Username "$AdminUserName" -Password "$AdminPassword" -Database "$Database" -TrustServerCertificate -Verbose -ErrorAction Stop
 
     Remove-Item "$outputPath"
 
