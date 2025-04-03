@@ -10,5 +10,6 @@ namespace SQLisHard.Core.Data
 	public interface IHistoryStore
 	{
 		void AddToHistory(UserId userId, string sqlStatement, int evaluationResult, bool completesExercise, string exerciseId);
+		List<string> GetCompletedExercises(UserId id);
 	}
 }

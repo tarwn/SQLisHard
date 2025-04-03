@@ -13,3 +13,12 @@ This is observations as I perform the modernization using Cursor.
 6. When approving change-by-change, the editor does not scroll to the next change to review
 
 7. Editor went completely off the rails, adding new tests, modifying behavior, then failing because I rejected edits and telling me I had to manually make the changes. So trying fresh.
+
+8. Multiple cases where it just commented things out and moved on, we'll see if it goes back to them (all the CSS, all the JS, the guts of several endpoints). It continued to comment logic out with "TODO" and add unnecessary comments. Going to reset and start again.
+
+9. Once again it started making unnecessary changes and commented out a lot of actually necessary things just to get the compiler to pass. Reset again.
+
+10. Ctrl+K is overridden by Cursor so I keep accidentally running Cursor commands instead of formatting
+
+
+

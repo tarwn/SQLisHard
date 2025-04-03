@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
-namespace SQLisHard.Controllers
+namespace SQLisHard.Controllers;
+
+[Route("[controller]/[action]")]
+public class ExerciseController : Controller
 {
-    public class ExerciseController : Controller
+
+    [Route("~/[controller]")]
+    [Authorize(AuthenticationSchemes = "sih-cookie,sih-guest")]
+    public IActionResult Index()
     {
-
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-		public ActionResult Old()
-		{
-			return View();
-		}
-
+        return View();
     }
+
+    public IActionResult Old()
+    {
+        return View();
+    }
+
 }

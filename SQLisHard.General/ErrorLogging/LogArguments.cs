@@ -9,17 +9,15 @@ namespace SQLisHard.General.ErrorLogging
 	public class LogArguments
 	{
 		public string RequestURI { get; set; }
-		public Dictionary<string, IEnumerable<string>> Headers { get; set; }
-		public Dictionary<string, string> ServerVariables { get; set; }
+		public Dictionary<string, string> Headers { get; set; }
 		public string Username { get; set; }
 		public int UserId { get; set; }
 
 		// Updated Constructor: Caller must provide all necessary data.
-		public LogArguments(string requestUri, Dictionary<string, IEnumerable<string>> headers, Dictionary<string, string> serverVariables, int userId, string username)
+		public LogArguments(string requestUri, Dictionary<string, string> headers, int userId, string username)
 		{
 			RequestURI = requestUri ?? string.Empty;
-			Headers = headers ?? new Dictionary<string, IEnumerable<string>>();
-			ServerVariables = serverVariables ?? new Dictionary<string, string>();
+			Headers = headers ?? new Dictionary<string, string>();
 			UserId = userId;
 			Username = username ?? string.Empty;
 		}
@@ -27,8 +25,7 @@ namespace SQLisHard.General.ErrorLogging
 		// tests
 		public LogArguments()
 		{
-			Headers = new Dictionary<string, IEnumerable<string>>();
-			ServerVariables = new Dictionary<string, string>();
+			Headers = new Dictionary<string, string>();
 		}
 	}
 }

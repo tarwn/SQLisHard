@@ -6,7 +6,7 @@ using System.Text;
 
 namespace SQLisHard.Core.Models
 {
-	public class User : IUserIdentity
+	public class User 
 	{
 		public User() { }
 
@@ -18,7 +18,6 @@ namespace SQLisHard.Core.Models
 		public int Id { get; set;}
 		public string Name { get; set; }
 
-		UserId IUserIdentity.Id { get { return new UserId(Id); } }
 	}
 
 	public class UserId

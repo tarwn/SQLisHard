@@ -7,7 +7,7 @@ using System.Text.Json;
 
 namespace SQLisHard.General.ExperienceLogging.Log
 {
-	public class NullLogProvider : ILogProvider
+	public class NullLogProvider : IExperienceLogProvider
 	{
 		public void Log(Dictionary<string, object> message, Action<Communications.Result>? callback)
 		{

@@ -6,16 +6,16 @@ using System.Text;
 
 namespace SQLisHard.General.ExperienceLogging.Log
 {
-	public class MultiProvider : ILogProvider
+	public class MultiProvider : IExperienceLogProvider
 	{
-		private List<ILogProvider> _providers;
+		private List<IExperienceLogProvider> _providers;
 
 		public MultiProvider()
 		{
-			_providers = new List<ILogProvider>();
+			_providers = new List<IExperienceLogProvider>();
 		}
 
-		public void AddProvider(ILogProvider additionalProvider) 
+		public void AddProvider(IExperienceLogProvider additionalProvider) 
 		{
 			_providers.Add(additionalProvider);
 		}

@@ -1,42 +1,48 @@
-﻿using SQLisHard.Attributes.WebAPI;
-using SQLisHard.Core;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SQLisHard.Core.Data;
+using SQLisHard.Core.Models;
 using SQLisHard.Models;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
+using System.Security.Claims;
 
 namespace SQLisHard.Controllers
 {
-	public class UserController : ApiController
+    [Route("api/[controller]/[action]")]
+    [Authorize]
+	public class UserController : Controller
 	{
-        private HistoryStore _historyStore;
+        private readonly IHistoryStore _historyStore;
+        private readonly IUserStore _userStore;
 
-        public UserController() :
-            this(new HistoryStore(ConfigurationManager.ConnectionStrings["CoreDatabase"].ConnectionString))
-        { }
-
-        public UserController(HistoryStore historyStore)
+        public UserController(IHistoryStore historyStore, IUserStore userStore)
         {
             _historyStore = historyStore;
+            _userStore = userStore;
         }
 
-        [RequiresUserOrGuest]
-		public User GetLoggedInUser()
+        [HttpGet]
+        [UpperCaseJSONOutput]
+		public IActionResult GetLoggedInUser()
 		{
-			var httpUser = (UserPrincipal)HttpContext.Current.User;
-			var user = new User(httpUser.UserIdentity);
+            var id = int.Parse(User.FindFirstValue("id")!);
+			// TODO - make async
+            var user = _userStore.GetUser(new UserId(id));
+            // TODO - fix the mess around UserModel using identities/principals instead of one clear domain model to/from DB
+            var completedExercises = _historyStore.GetCompletedExercises(new UserId(user.Id));
+            var result = new LoggedInUser(){
+                id = user.Id,
+                Name = user.Name,
+                CompletedExercises = completedExercises
+            };
 
-            var completedExercises = _historyStore.GetCompletedExercises(user.Id);
-            user.CompletedExercises = completedExercises;
-
-            return user;
+            return Ok(user);
 		}
 
 	}
+
+    record LoggedInUser {
+        required public int id;
+        required public string Name;
+        required public List<string> CompletedExercises;
+    };
 }
