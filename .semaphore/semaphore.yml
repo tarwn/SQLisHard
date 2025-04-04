@@ -16,4 +16,9 @@ blocks:
             - dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~SQLisHard.IntegrationTests" --logger "trx;LogFileName=test-results.trx"
       prologue:
         commands:
+          - 'sudo add-apt-repository ppa:dotnet/backports'
           - sudo apt-get update && sudo apt-get install -y dotnet-sdk-9.0
+      agent:
+        machine:
+          type: e2-standard-2
+          os_image: ubuntu2204
