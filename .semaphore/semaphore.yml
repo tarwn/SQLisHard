@@ -1,0 +1,24 @@
+version: v1.0
+name: Initial Pipeline
+agent:
+  machine:
+    type: f1-standard-2
+    os_image: ubuntu2204
+blocks:
+  - name: Build & Unit Test
+    task:
+      jobs:
+        - name: 'Job #1'
+          commands:
+            - checkout
+            - dotnet restore
+            - dotnet build --no-restore
+            - dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~SQLisHard.IntegrationTests" --logger "trx;LogFileName=test-results.trx"
+      prologue:
+        commands:
+          - 'sudo add-apt-repository -y ppa:dotnet/backports'
+          - sudo apt-get update && sudo apt-get install -y dotnet-sdk-9.0
+      agent:
+        machine:
+          type: e2-standard-2
+          os_image: ubuntu2204
