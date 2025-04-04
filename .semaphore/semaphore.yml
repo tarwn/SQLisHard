@@ -22,9 +22,9 @@ blocks:
         always:
           commands:
             - '[[ -f SQLisHard.Tests/TestResults/unit-test-results.xml ]] && test-results publish SQLisHard.Tests/TestResults/unit-test-results.xml'
-            - '[[ -f SQLisHard.Core.Tests/TestResults/unit-test-results.xml ]] && test-results publish SQLisHard.Core.Tests/TestResults/unit-test-results.xml'
-            - '[[ -f SQLisHard.Domain.Tests/TestResults/unit-test-results.xml ]] && test-results publish SQLisHard.Domain.Tests/TestResults/unit-test-results.xml'
-            - '[[ -f SQLisHard.General.tests/TestResults/unit-test-results.xml ]] && test-results publish SQLisHard.General.tests/TestResults/unit-test-results.xml'
+            - '[[ -f SQLisHard.Core.Tests/TestResults/unit-test-results.xml ]] && test-results publish --force SQLisHard.Core.Tests/TestResults/unit-test-results.xml'
+            - '[[ -f SQLisHard.Domain.Tests/TestResults/unit-test-results.xml ]] && test-results publish --force SQLisHard.Domain.Tests/TestResults/unit-test-results.xml'
+            - '[[ -f SQLisHard.General.tests/TestResults/unit-test-results.xml ]] && test-results publish --force SQLisHard.General.tests/TestResults/unit-test-results.xml'
 after_pipeline:
   task:
     jobs:
