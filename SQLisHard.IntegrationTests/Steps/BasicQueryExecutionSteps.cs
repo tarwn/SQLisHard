@@ -9,6 +9,10 @@ namespace SQLisHard.IntegrationTests.Steps
     [Binding]
     public class BasicQueryExecutionSteps : StepsBase
     {
+        public BasicQueryExecutionSteps(ScenarioContext scenarioContext) : base(scenarioContext)
+        {
+        }
+
         [Given(@"I am on the Exercise Page")]
         public void GivenIAmOnTheExercisePage()
         {

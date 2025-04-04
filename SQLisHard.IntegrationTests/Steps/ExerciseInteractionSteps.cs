@@ -12,13 +12,16 @@ namespace SQLisHard.IntegrationTests.Steps
 	[Binding]
 	public class ExerciseInteractionSteps : StepsBase
 	{
+		public ExerciseInteractionSteps(ScenarioContext scenarioContext) : base(scenarioContext)
+		{
+		}
+
 		[Then(@"the (\d+)(?:st|nd|rd|th) entry on the Exercise list is selected")]
 		public void ThenTheStEntryOnTheExerciseListIsSelected(int indexOfSelectedEntry)
 		{
 			CurrentPage.As<ExercisePage>().WaitUpTo(1000,
 				() => CurrentPage.As<ExercisePage>().IsNthExerciseIsSelected(indexOfSelectedEntry),
 				"Expected exercise to be selected");
-
 		}
 
 		[When(@"I complete the first exercise")]
@@ -38,6 +41,5 @@ namespace SQLisHard.IntegrationTests.Steps
 		{
 			CurrentPage.As<ExercisePage>().ContinueButton.Click();
 		}
-
 	}
 }

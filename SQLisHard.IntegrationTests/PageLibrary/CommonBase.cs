@@ -11,7 +11,7 @@ namespace SQLisHard.IntegrationTests.PageLibrary
 {
 	public abstract class CommonBase
 	{
-		public RemoteWebDriver Driver { get; set; }
+		public IWebDriver Driver { get; set; }
 
 		public void WaitUpTo(int milliseconds, Func<bool> Condition, string description)
 		{
@@ -32,7 +32,7 @@ namespace SQLisHard.IntegrationTests.PageLibrary
 		{
 			if (expectedValue != actualValue)
 			{
-				throw new AssertionException(String.Format("AssertIsEqual Failed: '{0}' didn't match expectations. Expected [{1}], Actual [{2}]", elementDescription, expectedValue, actualValue));
+				throw new AssertionException($"AssertIsEqual Failed: '{elementDescription}' didn't match expectations. Expected [{expectedValue}], Actual [{actualValue}]");
 			}
 		}
 
@@ -40,23 +40,22 @@ namespace SQLisHard.IntegrationTests.PageLibrary
 		{
 			if (methodToEvaluate() == false)
 			{
-				throw new AssertionException(String.Format("Assert Failed: {0}", description));
+				throw new AssertionException($"Assert Failed: {description}");
 			}
 		}
-
 
 		public static void AssertIsEqual(int expectedValue, int actualValue, string elementDescription)
 		{
 			if (expectedValue != actualValue)
 			{
-				throw new AssertionException(String.Format("AssertIsEqual Failed: '{0}' didn't match expectations. Expected [{1}], Actual [{2}]", elementDescription, expectedValue, actualValue));
+				throw new AssertionException($"AssertIsEqual Failed: '{elementDescription}' didn't match expectations. Expected [{expectedValue}], Actual [{actualValue}]");
 			}
 		}
 
 		public static void AssertElementPresent(IWebElement element, string elementDescription)
 		{
 			if (!element.IsPresent())
-				throw new AssertionException(String.Format("AssertElementPresent Failed: Could not find '{0}'", elementDescription));
+				throw new AssertionException($"AssertElementPresent Failed: Could not find '{elementDescription}'");
 		}
 
 		public static bool IsElementPresent(ISearchContext context, By searchBy)
@@ -75,13 +74,13 @@ namespace SQLisHard.IntegrationTests.PageLibrary
 		public static void AssertElementPresent(ISearchContext context, By searchBy, string elementDescription)
 		{
 			if (!IsElementPresent(context, searchBy))
-				throw new AssertionException(String.Format("AssertElementPresent Failed: Could not find '{0}'", elementDescription));
+				throw new AssertionException($"AssertElementPresent Failed: Could not find '{elementDescription}'");
 		}
 
 		public static void AssertElementsPresent(IWebElement[] elements, string elementDescription)
 		{
 			if (elements.Length == 0)
-				throw new AssertionException(String.Format("AssertElementsPresent Failed: Could not find '{0}'", elementDescription));
+				throw new AssertionException($"AssertElementsPresent Failed: Could not find '{elementDescription}'");
 		}
 
 		public static void AssertElementText(IWebElement element, string expectedValue, string elementDescription)
@@ -90,9 +89,8 @@ namespace SQLisHard.IntegrationTests.PageLibrary
 			string actualtext = element.Text;
 			if (actualtext != expectedValue)
 			{
-				throw new AssertionException(String.Format("AssertElementText Failed: Value for '{0}' did not match expectations. Expected: [{1}], Actual: [{2}]", elementDescription, expectedValue, actualtext));
+				throw new AssertionException($"AssertElementText Failed: Value for '{elementDescription}' did not match expectations. Expected: [{expectedValue}], Actual: [{actualtext}]");
 			}
 		}
-
 	}
 }

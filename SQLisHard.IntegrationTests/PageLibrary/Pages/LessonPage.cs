@@ -1,96 +1,36 @@
-﻿
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.PageObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using OpenQA.Selenium;
 
 namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 {
 	public class ExercisePage : PageBase
 	{
-		public override string DefaultTitle { get { return "SQL Is Hard - Exercise"; } }
+		public override string DefaultTitle => "SQL Is Hard - Exercise";
+		public override string PageUrl => "/Exercise";
 
-		public override string PageUrl { get { return "/Exercise"; } }
+		public IWebElement ContinueButton => Driver.FindElement(By.Id("continueButton"));
+		public IWebElement QueryInput => Driver.FindElement(By.Id("queryInput"));
+		public IWebElement QueryExecutionButton => Driver.FindElement(By.Id("queryExecutionButton"));
+		public IWebElement QueryError => Driver.FindElement(By.Id("queryError"));
+		public IWebElement TipDescription => Driver.FindElement(By.Id("tipDescription"));
+		public IWebElement QueryResults => Driver.FindElement(By.Id("queryResults"));
+		public IWebElement QueryStatus => Driver.FindElement(By.CssSelector("#queryStatus"));
+		public IWebElement DataTable => Driver.FindElement(By.Id("dataTable"));
+		public IWebElement MoreResultsLink => Driver.FindElement(By.Id("moreResultsLink"));
+		public IWebElement MoreResultsLinkTotalCount => Driver.FindElement(By.Id("moreResultsLinkTotalCount"));
+		public IWebElement ExerciseTitle => Driver.FindElement(By.Id("exerciseTitle"));
 
-		[FindsBy(How = How.Id, Using = "continueButton")]
-		public IWebElement ContinueButton { get; set; }
+		private By ByResultRows => By.CssSelector("#queryResults tbody tr");
+		private By ByExerciseListItems => By.CssSelector("#exerciseList ul li");
 
-		[FindsBy(How = How.Id, Using = "queryInput")]
-		public IWebElement QueryInput { get; set; }
+		public bool IsNotExecuting => QueryExecutionButton.Enabled;
 
-		[FindsBy(How = How.Id, Using = "queryExecutionButton")]
-		public IWebElement QueryExecutionButton { get; set; }
+		public bool ResultsAreAvailableAndSuccessful => QueryResults.IsPresent() && DataTable.IsPresent();
 
-		[FindsBy(How = How.Id, Using = "queryError")]
-		public IWebElement QueryError { get; set; }
+		public bool QueryErrorIsDisplayed => QueryError.IsPresent();
 
-		[FindsBy(How = How.Id, Using = "tipDescription")]
-		public IWebElement TipDescription { get; set; }
+		public bool TipTabIsVisible => TipDescription.IsPresent();
 
-		[FindsBy(How = How.Id, Using = "queryResults")]
-		public IWebElement QueryResults { get; set; }
-
-		[FindsBy(How = How.CssSelector, Using = "#queryStatus")]
-		public IWebElement QueryStatus { get; set; }
-
-		[FindsBy(How = How.Id, Using = "dataTable")]
-		public IWebElement DataTable { get; set; }
-
-		[FindsBy(How = How.Id, Using = "moreResultsLink")]
-		public IWebElement MoreResultsLink { get; set; }
-
-		[FindsBy(How = How.Id, Using = "moreResultsLinkTotalCount")]
-		public IWebElement MoreResultsLinkTotalCount { get; set; }
-
-		[FindsBy(How = How.Id, Using = "exerciseTitle")]
-		public IWebElement ExerciseTitle { get; set; }
-
-		public By ByResultRows { get { return By.CssSelector("#queryResults tbody tr"); } }
-
-		public By ByExerciseListItems { get { return By.CssSelector("#exerciseList ul li"); } }
-
-		public bool IsNotExecuting
-		{
-			get
-			{
-				return QueryExecutionButton.Enabled;
-			}
-		}
-
-		public bool ResultsAreAvailableAndSuccessful
-		{
-			get
-			{
-				return QueryResults.IsPresent() && DataTable.IsPresent();
-			}
-		}
-
-		public bool QueryErrorIsDisplayed
-		{
-			get
-			{
-				return QueryError.IsPresent();
-			}
-		}
-
-		public bool TipTabIsVisible
-		{
-			get
-			{
-				return TipDescription.IsPresent();
-			}
-		}
-
-		public bool MoreResultsLinkIsPresent
-		{
-			get
-			{
-				return MoreResultsLink.IsPresent();
-			}
-		}
+		public bool MoreResultsLinkIsPresent => MoreResultsLink.IsPresent();
 
 		public void EnterQuery(string queryText)
 		{
@@ -114,16 +54,17 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 
 		public void AssertStatusDisplays(string expectedStatus)
 		{
-			Assert(() => QueryStatus.Text.Trim().Equals(expectedStatus, StringComparison.InvariantCultureIgnoreCase), String.Format("Query status did not match expected value. Expected: '{0}', Actual: '{1}'", expectedStatus, QueryStatus.Text.Trim()));
+			Assert(() => QueryStatus.Text.Trim().Equals(expectedStatus, StringComparison.InvariantCultureIgnoreCase), 
+				$"Query status did not match expected value. Expected: '{expectedStatus}', Actual: '{QueryStatus.Text.Trim()}'");
 		}
 
 		internal void AssertNthExerciseIsSelected(int indexOfSelectedEntry)
 		{
 			var i = indexOfSelectedEntry - 1;
 			var exerciseList = Driver.FindElements(ByExerciseListItems);
-			Assert(() => exerciseList.Count > i, String.Format("List is too short ({1} items) to contain the #{0}", indexOfSelectedEntry, exerciseList.Count));
+			Assert(() => exerciseList.Count > i, $"List is too short ({exerciseList.Count} items) to contain the #{indexOfSelectedEntry}");
 			Assert(() => exerciseList[i].GetAttribute("class") == "selected",
-				String.Format("The indexed item ({0}) is not selected (class: {1})", exerciseList[i].Text, exerciseList[i].GetAttribute("class")));
+				$"The indexed item ({exerciseList[i].Text}) is not selected (class: {exerciseList[i].GetAttribute("class")})");
 		}
 
 		internal void ExecuteQueryAndWaitForResults(string queryText)
@@ -142,7 +83,7 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 		{
 			var i = indexOfSelectedEntry - 1;
 			var exerciseList = Driver.FindElements(ByExerciseListItems);
-			return exerciseList.Count > i &&  exerciseList[i].GetAttribute("class") == "selected";
+			return exerciseList.Count > i && exerciseList[i].GetAttribute("class") == "selected";
 		}
 
 		public bool ExercisesHaveLoaded()
@@ -151,11 +92,10 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 			return exerciseList.Count > 1;	// starts with a 'Loading...' item
 		}
 
-
 		public void SelectExercise(string exerciseId)
 		{
-			var exerciseLink = Driver.FindElement(By.CssSelector("li[data-exerciseid='" + exerciseId + "']"));
-			AssertElementPresent(exerciseLink, "Exercise Link for '" + exerciseId + "'");
+			var exerciseLink = Driver.FindElement(By.CssSelector($"li[data-exerciseid='{exerciseId}']"));
+			AssertElementPresent(exerciseLink, $"Exercise Link for '{exerciseId}'");
 			exerciseLink.Click();
 		}
 
@@ -164,6 +104,5 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 			AssertElementPresent(ExerciseTitle, "Exercise Title");
 			return ExerciseTitle.GetAttribute("data-exerciseid") == exerciseId;
 		}
-
 	}
 }

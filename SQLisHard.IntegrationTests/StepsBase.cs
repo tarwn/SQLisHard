@@ -1,45 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using TechTalk.SpecFlow;
-using OpenQA.Selenium.Remote;
+﻿using OpenQA.Selenium;
 using SQLisHard.IntegrationTests.PageLibrary;
+using TechTalk.SpecFlow;
 
 namespace SQLisHard.IntegrationTests
 {
 	public class StepsBase : TestFixtureBase {
+
+		private readonly ScenarioContext _scenarioContext;
+
+		public StepsBase(ScenarioContext scenarioContext) {
+			_scenarioContext = scenarioContext;
+		}
 
 		#region Properties for Readability
 
 		/// <summary>
 		/// Sets the Current page to the specified value - provided to help readability
 		/// </summary>
-		protected PageBase NextPage { set { CurrentPage = value; } }
+		protected PageBase NextPage { set => CurrentPage = value; }
 
 		#endregion
 
 		protected PageBase CurrentPage {
-			get { return (PageBase)ScenarioContext.Current["CurrentPage"]; }
-			set { ScenarioContext.Current["CurrentPage"] = value; }
+			get => (PageBase)_scenarioContext["CurrentPage"];
+			set => _scenarioContext["CurrentPage"] = value;
 		}
 
 		[BeforeScenario("UI")]
 		public void BeforeScenario() {
-			if (!ScenarioContext.Current.ContainsKey("CurrentDriver")) {
+			if (!_scenarioContext.ContainsKey("CurrentDriver")) {
 				Test_Setup();
-				ScenarioContext.Current.Add("CurrentDriver", CurrentDriver);
+				_scenarioContext.Add("CurrentDriver", CurrentDriver);
 			}
 			else {
-				CurrentDriver = (RemoteWebDriver)ScenarioContext.Current["CurrentDriver"];
+				CurrentDriver = (IWebDriver)_scenarioContext["CurrentDriver"];
 			}
 		}
 
 		[AfterScenario("UI")]
 		public void AfterScenario() {
-			if (ScenarioContext.Current.ContainsKey("CurrentDriver")) {
+			if (_scenarioContext.ContainsKey("CurrentDriver")) {
 				Test_Teardown();
-				ScenarioContext.Current.Remove("CurrentDriver");
+				_scenarioContext.Remove("CurrentDriver");
 			}
 		}
 	}
