@@ -12,11 +12,16 @@ namespace SQLisHard.Tests
 	[TestFixture]
 	public class ExerciseFileVerification
 	{
+		private static string GetExercisesPath()
+		{
+			var testDir = Path.GetDirectoryName(typeof(ExerciseFileVerification).Assembly.Location)!;
+			return Path.GetFullPath(Path.Combine(testDir, "../../../../SQLisHard/Exercises"));
+		}
 
 		[Test]
 		public void EnsureExerciseFilesAreValid()
 		{
-			var filelist = Directory.EnumerateFiles("../../../SQLisHard/Exercises");
+			var filelist = Directory.EnumerateFiles(GetExercisesPath());
 			var errors = new List<string>();
 			foreach (var file in filelist)
 			{
@@ -38,7 +43,7 @@ namespace SQLisHard.Tests
 		[Test]
 		public void EnsurePatternsAreValidForSampleQueries()
 		{
-			var filelist = Directory.EnumerateFiles("../../../SQLisHard/Exercises");
+			var filelist = Directory.EnumerateFiles(GetExercisesPath());
 			var errors = new List<string>();
 			var sets = new List<DefinedExerciseSet>();
 			foreach (var file in filelist)
@@ -67,6 +72,5 @@ namespace SQLisHard.Tests
 			if (errors.Count > 0)
 				Assert.Fail("Errors validating exercise patterns:\n" + String.Join("\n", errors));
 		}
-
 	}
 }
