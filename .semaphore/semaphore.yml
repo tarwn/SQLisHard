@@ -13,16 +13,11 @@ blocks:
             - checkout
             - dotnet restore
             - dotnet build --no-restore
+            - dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~SQLisHard.IntegrationTests" --logger "junit;LogFileName=unit-test-results.xml"
       prologue:
         commands:
           - 'sudo add-apt-repository -y ppa:dotnet/backports'
           - sudo apt-get update && sudo apt-get install -y dotnet-sdk-9.0
-      agent:
-        machine:
-          type: e2-standard-2
-          os_image: ubuntu2204
-  - name: Backend Tests
-    task:
       epilogue:
         always:
           commands:
@@ -30,10 +25,6 @@ blocks:
             - '[[ -f SQLisHard.Core.Tests/TestResults/unit-test-results.xml ]] && test-results publish SQLisHard.Core.Tests/TestResults/unit-test-results.xml'
             - '[[ -f SQLisHard.Domain.Tests/TestResults/unit-test-results.xml ]] && test-results publish SQLisHard.Domain.Tests/TestResults/unit-test-results.xml'
             - '[[ -f SQLisHard.General.tests/TestResults/unit-test-results.xml ]] && test-results publish SQLisHard.General.tests/TestResults/unit-test-results.xml'
-      jobs:
-        - name: Backend Unit Tests
-          commands:
-            - dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~SQLisHard.IntegrationTests" --logger "trx;LogFileName=test-results.trx"
 after_pipeline:
   task:
     jobs:
