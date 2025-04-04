@@ -10,32 +10,24 @@ using OpenQA.Selenium;
 using System.Drawing.Imaging;
 using SQLisHard.IntegrationTests.Configs;
 using OpenQA.Selenium.Chrome;
+using NUnit.Framework.Interfaces;
+using OpenQA.Selenium.Support.Extensions;
 
 namespace SQLisHard.IntegrationTests
 {
+    [TestFixture]
     public class TestFixtureBase
     {
-        protected RemoteWebDriver CurrentDriver { get; set; }
+        protected IWebDriver CurrentDriver { get; set; } = null!;
 
         [SetUp]
         public void Test_Setup()
         {
-            //FirefoxBinary fb;
-            //if (!String.IsNullOrWhiteSpace(Settings.CurrentSettings.FirefoxBinaryPath))
-            //{
-            //	fb = new FirefoxBinary(Settings.CurrentSettings.FirefoxBinaryPath);
-            //}
-            //else
-            //{
-            //	fb = new FirefoxBinary();
-            //}
-            //CurrentDriver = new FirefoxDriver(fb, new FirefoxProfile());
-
             var options = new ChromeOptions();
             options.AddArgument("headless");
             options.AddArgument("disable-gpu");
             options.AddArguments("window-size=1280,1024");
-            CurrentDriver = new ChromeDriver(Environment.CurrentDirectory, options);
+            CurrentDriver = new ChromeDriver(options);
             CurrentDriver.Manage().Window.Size = new System.Drawing.Size(1280, 1024);
         }
 
@@ -44,15 +36,15 @@ namespace SQLisHard.IntegrationTests
         {
             try
             {
-                if (CurrentDriver is ITakesScreenshot && TestContext.CurrentContext.Result.Status == TestStatus.Failed)
+                if (CurrentDriver is ITakesScreenshot && TestContext.CurrentContext.Result.Outcome.Status == TestStatus.Failed)
                 {
-                    ((ITakesScreenshot)CurrentDriver).GetScreenshot().SaveAsFile(TestContext.CurrentContext.Test.FullName + ".jpg", ScreenshotImageFormat.Jpeg);
+                    ((ITakesScreenshot)CurrentDriver).GetScreenshot().SaveAsFile(TestContext.CurrentContext.Test.FullName + ".png");
                 }
             }
             catch (Exception exc)
             {
                 Console.WriteLine("Exception capturing screenshot: " + exc.Message);
-            }   // null ref exception occurs from accessing TestContext.CurrentContext.Result.Status property
+            }
 
             try
             {
@@ -60,7 +52,6 @@ namespace SQLisHard.IntegrationTests
             }
             catch { }
         }
-
     }
-
 }
+

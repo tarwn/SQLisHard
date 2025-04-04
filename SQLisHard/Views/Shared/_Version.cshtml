@@ -1,1 +1,2 @@
-﻿@System.Configuration.ConfigurationManager.AppSettings["Application.Version"]
+﻿@inject IConfiguration _config
+@_config["Application:Version"]

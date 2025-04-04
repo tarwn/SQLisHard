@@ -1,9 +1,5 @@
-﻿using PetaPoco;
-using SQLisHard.Core.Models;
+﻿using SQLisHard.Core.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SQLisHard.Core.Data
 {
@@ -18,7 +14,7 @@ namespace SQLisHard.Core.Data
 
 		public Models.User GetNewGuestUser()
 		{
-			using (var db = new Database(_connectionString, "System.Data.SqlClient"))
+			using (var db = new PetaPoco.Database(_connectionString, "System.Data.SqlClient"))
 			{
 				var result = db.Insert("User", "Id", true, new { Name = String.Empty });
 				return new User(new UserId(Convert.ToInt32(result)));
@@ -27,7 +23,7 @@ namespace SQLisHard.Core.Data
 
 		public Models.User GetUser(Models.UserId userId)
 		{
-			using (var db = new Database(_connectionString, "System.Data.SqlClient")) {
+			using (var db = new PetaPoco.Database(_connectionString, "System.Data.SqlClient")) {
 				var rawUser = db.Single<User>("where Id = @0", userId.Value);
 				if (rawUser == null)
 					throw new UserNotFoundException();

@@ -1,61 +1,45 @@
-﻿using SQLisHard.Attributes;
-using SQLisHard.Attributes.WebAPI;
-using SQLisHard.Core;
-using SQLisHard.Core.Data;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SQLisHard.Core.Models;
-using SQLisHard.Domain;
 using SQLisHard.Domain.ExerciseEvaluator;
-using SQLisHard.Domain.QueryEngine.DatabaseExecution;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web;
-using System.Web.Http;
-using System.Web.Http.Controllers;
 
-namespace SQLisHard.Controllers
-{
-    public class StatementController : ApiController
+namespace SQLisHard.Controllers;
+
+	[Route("api/[controller]")]
+    public class StatementController : Controller
     {
-        private IExerciseResultEvaluator _exerciseEvaluator;
+        private readonly IExerciseResultEvaluator _exerciseEvaluator;
 
 		public const string ERROR_EMPTY_STATEMENT = "Error, you have not entered a query to execute. Please type one in before using the Execute button to run it.";
-
-        public StatementController() : this(
-			new ExerciseResultEvaluator(
-				new QueryEngine(ConfigurationManager.ConnectionStrings["SampleDatabase"].ConnectionString), 
-				MvcApplication.ExerciseStore,
-				new HistoryStore(ConfigurationManager.ConnectionStrings["CoreDatabase"].ConnectionString))) { }
 
         public StatementController(IExerciseResultEvaluator evaluator)
         {
 			_exerciseEvaluator = evaluator;
         }
 
-		[RequiresUserOrGuest]
-        public StatementResult Post([FromBody]Statement value)
+		[HttpPost]
+		[Authorize]
+		[UpperCaseJSONOutput]
+        public IActionResult Post([FromBody]Statement value)
         {
-			var user = (UserPrincipal)HttpContext.Current.User;
-			value.RequestorId = user.UserIdentity.Id;
+			var id = int.Parse(User.FindFirstValue("id")!);
+			value.RequestorId = new UserId(id);
 
-			var result = ValidateAndExecute(value, (v) => {
-				return _exerciseEvaluator.Evaluate(v);
-			});
+			var result = ValidateAndExecute(value, _exerciseEvaluator.Evaluate);
 			
-			// hacky: fix later
-			this.Request.Properties["AdditionalInteractionValues"] = new Dictionary<string, string>() { 
+			// TODO - I think this was powering some of the experience tracking and should be redone differently now
+			this.HttpContext.Items.Add("AdditionalInteractionValues", new Dictionary<string, string>() { 
 				{"ExerciseId", value.ExerciseId},
 				{"ResultStatus", result.ExecutionStatus.ToString() },
 				{"CompletesExercise", result.CompletesExercise.ToString() }
-			};
+			});
 
-			return result;
+			return Ok(result);
         }
 
-		public string GetException()
+		[HttpGet("exception")]
+		public IActionResult GetException()
 		{
 			throw new Exception("WebAPI Exception message");
 		}
@@ -86,4 +70,3 @@ namespace SQLisHard.Controllers
 			public const string Help = "SELECT 'Sorry, there is no command-line help command.' as [help]";
 		}
     }
-}

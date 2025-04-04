@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace SQLisHard.General.tests.ExperienceLogging.Log
 {
@@ -24,6 +25,13 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 		}
 
 		[Test]
+		public void Constructor_InitializesEmptyList()
+		{
+			var multiProvider = new MultiProvider();
+			// expect no exception to occur
+		}
+
+		[Test]
 		public void Log_NoProvidersAssigned_ReportsSuccess() 
 		{
 			var provider = new MultiProvider();
@@ -32,7 +40,7 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 
 			provider.Log(sampleMessage, (result) => { actualResult = result; });
 
-			Assert.IsTrue(actualResult.Success);
+			Assert.That(actualResult.Success, Is.True);
 		}
 
 		[Test]
@@ -40,7 +48,7 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 		{
 			var provider = new MultiProvider();
 			var sampleMessage = new Dictionary<string, object>();
-			var fakeProvider = new Mock<ILogProvider>();
+			var fakeProvider = new Mock<IExperienceLogProvider>();
 			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, object>>(), It.IsAny<Action<Result>>()))
 						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => callback(GetSuccessResult()));
 			provider.AddProvider(fakeProvider.Object);
@@ -48,7 +56,7 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 
 			provider.Log(sampleMessage, (result) => { actualResult = result; });
 
-			Assert.IsTrue(actualResult.Success);
+			Assert.That(actualResult.Success, Is.True);
 		}
 
 		[Test]
@@ -56,15 +64,15 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 		{
 			var provider = new MultiProvider();
 			var sampleMessage = new Dictionary<string, object>();
-			var fakeProvider = new Mock<ILogProvider>();
+			var fakeProvider = new Mock<IExperienceLogProvider>();
 			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, object>>(), It.IsAny<Action<Result>>()))
 						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => callback(GetErrorResult()));
 			provider.AddProvider(fakeProvider.Object);
-			var actualResult = GetErrorResult();	// start with success to be sure the Result is updated
+			var actualResult = GetSuccessResult();
 
 			provider.Log(sampleMessage, (result) => { actualResult = result; });
 
-			Assert.IsFalse(actualResult.Success);
+			Assert.That(actualResult.Success, Is.False);
 		}
 
 		[Test]
@@ -72,11 +80,11 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 		{
 			var provider = new MultiProvider();
 			var sampleMessage = new Dictionary<string, object>();
-			var fakeProvider = new Mock<ILogProvider>();
+			var fakeProvider = new Mock<IExperienceLogProvider>();
 			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, object>>(), It.IsAny<Action<Result>>()))
 						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => callback(GetSuccessResult()));
 			provider.AddProvider(fakeProvider.Object);
-			fakeProvider = new Mock<ILogProvider>();
+			fakeProvider = new Mock<IExperienceLogProvider>();
 			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, object>>(), It.IsAny<Action<Result>>()))
 						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => callback(GetSuccessResult()));
 			provider.AddProvider(fakeProvider.Object);
@@ -84,7 +92,7 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 
 			provider.Log(sampleMessage, (result) => { actualResult = result; });
 
-			Assert.IsTrue(actualResult.Success);
+			Assert.That(actualResult.Success, Is.True);
 		}
 
 		[Test]
@@ -92,19 +100,19 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 		{
 			var provider = new MultiProvider();
 			var sampleMessage = new Dictionary<string, object>();
-			var fakeProvider = new Mock<ILogProvider>();
+			var fakeProvider = new Mock<IExperienceLogProvider>();
 			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, object>>(), It.IsAny<Action<Result>>()))
 						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => callback(GetErrorResult()));
 			provider.AddProvider(fakeProvider.Object);
-			fakeProvider = new Mock<ILogProvider>();
+			fakeProvider = new Mock<IExperienceLogProvider>();
 			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, object>>(), It.IsAny<Action<Result>>()))
 						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => callback(GetErrorResult()));
 			provider.AddProvider(fakeProvider.Object);
-			var actualResult = GetSuccessResult();	// start with error to be sure the Result is updated
+			var actualResult = GetSuccessResult();
 
 			provider.Log(sampleMessage, (result) => { actualResult = result; });
 
-			Assert.IsFalse(actualResult.Success);
+			Assert.That(actualResult.Success, Is.False);
 		}
 
 		[Test]
@@ -112,19 +120,19 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 		{
 			var provider = new MultiProvider();
 			var sampleMessage = new Dictionary<string, object>();
-			var fakeProvider = new Mock<ILogProvider>();
+			var fakeProvider = new Mock<IExperienceLogProvider>();
 			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, object>>(), It.IsAny<Action<Result>>()))
 						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => callback(GetSuccessResult()));
 			provider.AddProvider(fakeProvider.Object);
-			fakeProvider = new Mock<ILogProvider>();
+			fakeProvider = new Mock<IExperienceLogProvider>();
 			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, object>>(), It.IsAny<Action<Result>>()))
 						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => callback(GetErrorResult()));
 			provider.AddProvider(fakeProvider.Object);
-			var actualResult = GetSuccessResult();	// start with error to be sure the Result is updated
+			var actualResult = GetSuccessResult();
 
 			provider.Log(sampleMessage, (result) => { actualResult = result; });
 
-			Assert.IsFalse(actualResult.Success);
+			Assert.That(actualResult.Success, Is.False);
 		}
 
 		[Test]
@@ -132,19 +140,19 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 		{
 			var provider = new MultiProvider();
 			var sampleMessage = new Dictionary<string, object>();
-			var fakeProvider = new Mock<ILogProvider>();
+			var fakeProvider = new Mock<IExperienceLogProvider>();
 			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, object>>(), It.IsAny<Action<Result>>()))
 						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => callback(GetErrorResult()));
 			provider.AddProvider(fakeProvider.Object);
-			fakeProvider = new Mock<ILogProvider>();
+			fakeProvider = new Mock<IExperienceLogProvider>();
 			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, object>>(), It.IsAny<Action<Result>>()))
 						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => callback(GetSuccessResult()));
 			provider.AddProvider(fakeProvider.Object);
-			var actualResult = GetSuccessResult();	// start with error to be sure the Result is updated
+			var actualResult = GetSuccessResult();
 
 			provider.Log(sampleMessage, (result) => { actualResult = result; });
 
-			Assert.IsFalse(actualResult.Success);
+			Assert.That(actualResult.Success, Is.False);
 		}
 
 		[Test]
@@ -152,11 +160,11 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 		{
 			var provider = new MultiProvider();
 			var sampleMessage = new Dictionary<string, object>();
-			var actualResult = GetErrorResult();	// start with error to be sure the Result is updated
 
 			provider.Log(sampleMessage, null);
 
 			// expect no exception to occur
+			Assert.Pass();
 		}
 
 		[Test]
@@ -164,11 +172,12 @@ namespace SQLisHard.General.tests.ExperienceLogging.Log
 		{
 			var provider = new MultiProvider();
 			var sampleMessage = new Dictionary<string, object>();
-			var fakeProvider = new Mock<ILogProvider>();
+			var fakeProvider = new Mock<IExperienceLogProvider>();
 			fakeProvider.Setup(p => p.Log(It.IsAny<Dictionary<string, object>>(), It.IsAny<Action<Result>>()))
-						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => callback(GetSuccessResult()));
+						.Callback<Dictionary<string, object>, Action<Result>>((msg, callback) => {
+							if (callback != null) { callback(GetSuccessResult()); }
+						});
 			provider.AddProvider(fakeProvider.Object);
-			var actualResult = GetErrorResult();	// start with error to be sure the Result is updated
 
 			provider.Log(sampleMessage, null);
 

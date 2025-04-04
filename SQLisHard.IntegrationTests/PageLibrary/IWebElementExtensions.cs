@@ -9,18 +9,18 @@ namespace SQLisHard.IntegrationTests.PageLibrary
 {
 	public static class IWebElementExtensions
 	{
-		public static bool IsPresent(this IWebElement element)
-		{
-			try
-			{
-				bool b = element.Displayed;
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
-		}
+		//public static bool IsPresent(this IWebElement element)
+		//{
+		//	try
+		//	{
+		//		bool b = element.Displayed;
+		//		return true;
+		//	}
+		//	catch
+		//	{
+		//		return false;
+		//	}
+		//}
 
 		public static void ClearAndType(this IWebElement element, string value)
 		{

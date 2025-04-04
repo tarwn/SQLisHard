@@ -1,13 +1,7 @@
-﻿using SQLisHard.Core;
-using SQLisHard.Core.Data;
+﻿using SQLisHard.Core.Data;
 using SQLisHard.Core.Interfaces;
 using SQLisHard.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Security.Principal;
-using System.Web;
 
 namespace SQLisHard.Core
 {
@@ -15,10 +9,6 @@ namespace SQLisHard.Core
 	{
 		private IUserStore _userStore;
 		private ISessionStore _sessionStore;
-
-		public CoreMembership(string connectionString) : this(
-			new UserStore(connectionString),
-			new SessionStore(connectionString)) { }
 
 		public CoreMembership(IUserStore userStore, ISessionStore sessionStore)
 		{
@@ -43,7 +33,7 @@ namespace SQLisHard.Core
 		public void CaptureSession(UserId userId, string userAgent, string hostAddress)
 		{
 			_sessionStore.CaptureSession(new Session(userId, userAgent, hostAddress));
-}
+		}
 	}
 
 	public class UserPrincipal : IPrincipal
@@ -67,9 +57,9 @@ namespace SQLisHard.Core
 
 	public class GuestUser : IIdentity, IUserIdentity
 	{
-		public GuestUser(IUserIdentity user)
+		public GuestUser(User user)
 		{
-			Id = user.Id;
+			Id = new UserId(user.Id);
 			Name = "Guest " + user.Id.ToString();
 		}
 

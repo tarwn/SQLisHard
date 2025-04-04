@@ -5,13 +5,11 @@ using SQLisHard.Core;
 using SQLisHard.Core.Models;
 using SQLisHard.Domain.ExerciseEvaluator;
 using SQLisHard.Domain.QueryEngine;
-using System;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 
 namespace SQLisHard.Tests.Controllers
 {
@@ -30,21 +28,27 @@ namespace SQLisHard.Tests.Controllers
 						 });
 			var controller = GetAStatementController(mockEvaluator.Object);
 
-			var result = controller.Post(statement);
+			var actionResult = controller.Post(statement);
+			var result = actionResult as OkObjectResult;
+			var statementResult = result?.Value as StatementResult;
 
 			mockEvaluator.Verify(e => e.Evaluate(statement));
+			Assert.That(statementResult, Is.Not.Null);
 		}
 
 		[Test]
 		public void Post_EmptyStatement_ReturnsReasonableError()
 		{
-			var controller = GetAStatementController();
+			var controller = GetAStatementController(Mock.Of<IExerciseResultEvaluator>());
 			var statement = new Statement(){ Content = "" };
 
-			var result = controller.Post(statement);
+			var actionResult = controller.Post(statement);
+			var result = actionResult as OkObjectResult;
+			var statementResult = result?.Value as StatementResult;
 
-			Assert.AreEqual(QueryExecutionStatus.Error, result.ExecutionStatus);
-			Assert.AreEqual(StatementController.ERROR_EMPTY_STATEMENT, result.ErrorMessage);
+			Assert.That(statementResult, Is.Not.Null);
+			Assert.That(statementResult!.ExecutionStatus, Is.EqualTo(QueryExecutionStatus.Error));
+			Assert.That(statementResult.ErrorMessage, Is.EqualTo(StatementController.ERROR_EMPTY_STATEMENT));
 		}
 
 		[Test]
@@ -59,10 +63,13 @@ namespace SQLisHard.Tests.Controllers
 						 });
 			var controller = GetAStatementController(mockEvaluator.Object);
 
-			var result = controller.Post(statement);
+			var actionResult = controller.Post(statement);
+			var result = actionResult as OkObjectResult;
+			var statementResult = result?.Value as StatementResult;
 
-			Assert.AreEqual(QueryExecutionStatus.Success, result.ExecutionStatus);
-			Assert.AreEqual(StatementController.ReplacementQueries.ShowTables, result.Content);
+			Assert.That(statementResult, Is.Not.Null);
+			Assert.That(statementResult!.ExecutionStatus, Is.EqualTo(QueryExecutionStatus.Success));
+			Assert.That(statementResult.Content, Is.EqualTo(StatementController.ReplacementQueries.ShowTables));
 		}
 
 		[Test]
@@ -77,44 +84,36 @@ namespace SQLisHard.Tests.Controllers
 						 });
 			var controller = GetAStatementController(mockEvaluator.Object);
 
-			var result = controller.Post(statement);
+			var actionResult = controller.Post(statement);
+			var result = actionResult as OkObjectResult;
+			var statementResult = result?.Value as StatementResult;
 
-			Assert.AreEqual(QueryExecutionStatus.Success, result.ExecutionStatus);
-			Assert.AreEqual(StatementController.ReplacementQueries.Help, result.Content);
+			Assert.That(statementResult, Is.Not.Null);
+			Assert.That(statementResult!.ExecutionStatus, Is.EqualTo(QueryExecutionStatus.Success));
+			Assert.That(statementResult.Content, Is.EqualTo(StatementController.ReplacementQueries.Help));
 		}
 
-		private static StatementController GetAStatementController(IExerciseResultEvaluator evaluator = null)
+		private static StatementController GetAStatementController(IExerciseResultEvaluator evaluator)
 		{
-			evaluator = evaluator ?? new Mock<IExerciseResultEvaluator>().Object;
 			var controller = new StatementController(evaluator);
-			controller.Request = new System.Net.Http.HttpRequestMessage();
-			HttpContext.Current = GetFakeHttpContext();
-			HttpContext.Current.User = new UserPrincipal(new GuestUser(new User()));
+			
+			// Setup HttpContext with claims
+			var claims = new List<Claim>
+			{
+				new Claim("id", "123")
+			};
+			var identity = new ClaimsIdentity(claims);
+			var principal = new ClaimsPrincipal(identity);
+			var httpContext = new DefaultHttpContext
+			{
+				User = principal
+			};
+			controller.ControllerContext = new ControllerContext
+			{
+				HttpContext = httpContext
+			};
+			
 			return controller;
-		}
-
-		public static HttpContext GetFakeHttpContext()
-		{
-			// adapted from: http://stackoverflow.com/questions/9624242/setting-the-httpcontext-current-session-in-unit-test
-
-			var httpRequest = new HttpRequest("", "http://kindermusik/", "");
-			var stringWriter = new StringWriter();
-			var httpResponce = new HttpResponse(stringWriter);
-			var httpContext = new HttpContext(httpRequest, httpResponce);
-
-			//var sessionContainer = new HttpSessionStateContainer("id", new SessionStateItemCollection(),
-			//										new HttpStaticObjectsCollection(), 10, true,
-			//										HttpCookieMode.AutoDetect,
-			//										SessionStateMode.InProc, false);
-
-			//httpContext.Items["AspSession"] = typeof(HttpSessionState).GetConstructor(
-			//							BindingFlags.NonPublic | BindingFlags.Instance,
-			//							null, CallingConventions.Standard,
-			//							new[] { typeof(HttpSessionStateContainer) },
-			//							null)
-			//					.Invoke(new object[] { sessionContainer });
-
-			return httpContext;
 		}
 	}
 }

@@ -1,32 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SQLisHard.Controllers
+namespace SQLisHard.Controllers;
+
+[Route("/")]
+public class HomeController : Controller
 {
-    public class HomeController : Controller
+
+    [HttpGet]
+    public ActionResult Index()
     {
-        //
-        // GET: /Home/
+        return View();
+    }
 
-        public ActionResult Index()
-        {
-            return View();
-        }
+    [HttpGet("/signout")]
+    public ActionResult Signout()
+    {
+        SignOut();
+        return View("Index");
+    }
 
-		public ActionResult Signout()
-		{
-			FormsAuthentication.SignOut();
-
-			return View("Index");
-		}
-
-		public ActionResult Exception()
-		{
-			throw new Exception("MVC Exception Message");
-		}
+    [HttpGet("/exception")]
+    public ActionResult Exception()
+    {
+        throw new Exception("MVC Exception Message");
     }
 }
+

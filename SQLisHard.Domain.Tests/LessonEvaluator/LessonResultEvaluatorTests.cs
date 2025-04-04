@@ -28,9 +28,9 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 
 			var result = lre.InstanceUnderTest.Evaluate(initialStatement);
 
-			Assert.AreEqual(initialStatement.Content, result.Content);
-			Assert.AreEqual(initialStatement.ExerciseId, result.ExerciseId);
-			Assert.AreEqual(initialStatement.LimitResults, result.LimitResults);
+			Assert.That(result.Content, Is.EqualTo(initialStatement.Content));
+			Assert.That(result.ExerciseId, Is.EqualTo(initialStatement.ExerciseId));
+			Assert.That(result.LimitResults, Is.EqualTo(initialStatement.LimitResults));
 		}
 
 		[Test]
@@ -55,7 +55,7 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 
 			var result = lre.InstanceUnderTest.EvaluateResultSet(statement, queryResult);
 
-			Assert.IsTrue(result);
+			Assert.That(result, Is.True);
 		}
 
 		[Test]
@@ -67,7 +67,7 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 
 			var result = lre.InstanceUnderTest.EvaluateResultSet(statement, queryResult);
 
-			Assert.IsFalse(result);
+			Assert.That(result, Is.False);
 		}
 
 		[Test]
@@ -85,7 +85,7 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 
 			var queryResult = lre.InstanceUnderTest.Evaluate(initialStatement);
 
-			Assert.IsTrue(queryResult.CompletesExercise);
+			Assert.That(queryResult.CompletesExercise, Is.True);
 		}
 
 		[Test]
@@ -122,7 +122,7 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 
 			var queryResult = lre.InstanceUnderTest.Evaluate(initialStatement);
 
-			Assert.IsFalse(queryResult.CompletesExercise);
+			Assert.That(queryResult.CompletesExercise, Is.False);
 		}
 
 		[Test]
@@ -142,7 +142,7 @@ namespace SQLisHard.Domain.Tests.ExerciseEvaluator
 
 			var queryResult = lre.InstanceUnderTest.Evaluate(initialStatement);
 
-			Assert.AreEqual(patternTip, queryResult.Tip);
+			Assert.That(queryResult.Tip, Is.EqualTo(patternTip));
 		}
 
 		[Test]

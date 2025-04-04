@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace SQLisHard.Controllers
+namespace SQLisHard.Controllers;
+
+
+[Route("[controller]/[action]")]
+public class AboutController : Controller
 {
-    public class AboutController : Controller
-    {
 
-        public ActionResult Index()
-        {
-            return View();
-        }
+	[Route("~/[controller]")]
+	public IActionResult Index()
+	{
+		return View();
+	}
 
-		public ActionResult Exercises()
-		{
-			return View();
-		}
+	public IActionResult Exercises()
+	{
+		return View();
+	}
 
-		public ActionResult Tech()
-		{
-			return View();
-		}
+	public IActionResult Tech()
+	{
+		return View();
+	}
 
-    }
 }
+

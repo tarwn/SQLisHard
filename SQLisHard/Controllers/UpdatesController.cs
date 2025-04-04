@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 
-namespace SQLisHard.Controllers
+[Route("[controller]/[action]")]
+public class UpdatesController : Controller
 {
-    public class UpdatesController : Controller
+
+    public ActionResult Index()
     {
-
-        public ActionResult Index()
-        {
-            return View();
-        }
-
+        return View();
     }
+
 }

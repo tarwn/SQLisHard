@@ -12,9 +12,9 @@ namespace SQLisHard.Domain.QueryEngine.DatabaseExecution
 
 		private string _connectionString;
 
-		public QueryEngine(string connectionString)
+		public QueryEngine(string sampleConnectionString)
 		{
-			_connectionString = connectionString;
+			_connectionString = sampleConnectionString;
 		}
 
 		public QueryResult ExecuteQuery(Query query, bool includeStatistics)
