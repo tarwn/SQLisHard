@@ -54,7 +54,6 @@ namespace SQLisHard.IntegrationTests.PageLibrary
 		public TPage As<TPage>() where TPage : PageBase, new() {
 			return (TPage)this;
 		}
-
 	}
 
 }

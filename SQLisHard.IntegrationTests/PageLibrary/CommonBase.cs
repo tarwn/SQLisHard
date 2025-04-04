@@ -54,7 +54,7 @@ namespace SQLisHard.IntegrationTests.PageLibrary
 
 		public static void AssertElementPresent(IWebElement element, string elementDescription)
 		{
-			if (!element.IsPresent())
+			if (!element.Displayed)
 				throw new AssertionException($"AssertElementPresent Failed: Could not find '{elementDescription}'");
 		}
 
@@ -71,7 +71,19 @@ namespace SQLisHard.IntegrationTests.PageLibrary
 			}
 		}
 
-		public static void AssertElementPresent(ISearchContext context, By searchBy, string elementDescription)
+        public static bool IsElementPresent(Func<IWebElement> locater)
+        {
+            try
+            {
+                return  locater()?.Displayed == true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static void AssertElementPresent(ISearchContext context, By searchBy, string elementDescription)
 		{
 			if (!IsElementPresent(context, searchBy))
 				throw new AssertionException($"AssertElementPresent Failed: Could not find '{elementDescription}'");

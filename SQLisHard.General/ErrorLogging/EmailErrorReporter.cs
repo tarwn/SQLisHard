@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using System.Web;
 
 namespace SQLisHard.General.ErrorLogging
 {
@@ -49,7 +50,7 @@ namespace SQLisHard.General.ErrorLogging
 			string headers = GetHeaderHtml(logArguments.Headers);
 			string exceptionDetails = GetExceptionHtml(exception);
 
-			var message = (string.Format(@"
+			var message = string.Format(@"
 			<style>
 				th{{ background-color: #dddddd; min-width: 125px; padding: 0px 3px;}}
 				td{{ padding: 0px 3px; border-bottom: 1px solid #eeeeee; }}
@@ -73,19 +74,13 @@ namespace SQLisHard.General.ErrorLogging
 			<table class='headers' cellpadding='0' cellspacing='0'>
 				<tr><td colspan='2' class='faketh'>HTTP Headers</td></tr>
 				{5}
-			</table>
-			<br />
-
-			<table class='headers' cellpadding='0' cellspacing='0'>
-				<tr><td colspan='2' class='faketh'>ServerVariables</td></tr>
-				{6}
 			</table>",
 					 DateTime.UtcNow,
-					 logArguments.RequestURI,
+					 HttpUtility.HtmlEncode(logArguments.RequestURI),
 					 logArguments.UserId,
-					 logArguments.Username,
+					 HttpUtility.HtmlEncode(logArguments.Username),
 					 exceptionDetails,
-					 headers));
+					 headers);
 
 			return message;
 		}
@@ -115,16 +110,18 @@ namespace SQLisHard.General.ErrorLogging
 										<tr><th valign='top' align='right'>Stack Trace</th><td><pre>{3}</pre></td></tr>
 										{4}
 									</table>",
-											 exception.GetType().FullName,
-											 exception.Message,
-											 exception.ToString(),
-											 exception.StackTrace,
+											 HttpUtility.HtmlEncode(exception.GetType().FullName),
+											 HttpUtility.HtmlEncode(exception.Message),
+											 HttpUtility.HtmlEncode(exception.ToString()),
+											 HttpUtility.HtmlEncode(exception.StackTrace),
 											 innerExceptions);
 		}
 
 		public string GetHeaderHtml(Dictionary<string, string> headers)
 		{
-			return String.Join("\n", headers.Select(kvp => String.Format("<tr><th align='right' valign='top'>{0}:</th><td>{1}</td></tr>", kvp.Key, kvp.Value)));
+			return String.Join("\n", headers.Select(kvp => String.Format("<tr><th align='right' valign='top'>{0}:</th><td>{1}</td></tr>", 
+				HttpUtility.HtmlEncode(kvp.Key), 
+				HttpUtility.HtmlEncode(kvp.Value))));
 		}
 
 	}

@@ -24,13 +24,13 @@ namespace SQLisHard.IntegrationTests.PageLibrary.Pages
 
 		public bool IsNotExecuting => QueryExecutionButton.Enabled;
 
-		public bool ResultsAreAvailableAndSuccessful => QueryResults.IsPresent() && DataTable.IsPresent();
+		public bool ResultsAreAvailableAndSuccessful => IsElementPresent(() => QueryResults) && IsElementPresent(() => DataTable);
 
-		public bool QueryErrorIsDisplayed => QueryError.IsPresent();
+		public bool QueryErrorIsDisplayed => IsElementPresent(() => QueryError);
 
-		public bool TipTabIsVisible => TipDescription.IsPresent();
+		public bool TipTabIsVisible => IsElementPresent(() => TipDescription);
 
-		public bool MoreResultsLinkIsPresent => MoreResultsLink.IsPresent();
+		public bool MoreResultsLinkIsPresent => IsElementPresent(() => MoreResultsLink);
 
 		public void EnterQuery(string queryText)
 		{
