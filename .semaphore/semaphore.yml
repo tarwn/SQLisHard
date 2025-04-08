@@ -11,9 +11,10 @@ blocks:
         - name: Build
           commands:
             - checkout
+            - cd ./src/backend
             - dotnet restore
             - dotnet build --no-restore
-            - dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~SQLisHard.IntegrationTests" --logger "junit;LogFileName=unit-test-results.xml"
+            - dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~SQLisHard.IntegrationTests" --logger "junit;LogFileName={assembly}.results.xml"
       prologue:
         commands:
           - 'sudo add-apt-repository -y ppa:dotnet/backports'
@@ -21,10 +22,10 @@ blocks:
       epilogue:
         always:
           commands:
-            - '[[ -f SQLisHard.Tests/TestResults/unit-test-results.xml ]] && test-results publish SQLisHard.Tests/TestResults/unit-test-results.xml'
-            - '[[ -f SQLisHard.Core.Tests/TestResults/unit-test-results.xml ]] && test-results publish --force SQLisHard.Core.Tests/TestResults/unit-test-results.xml'
-            - '[[ -f SQLisHard.Domain.Tests/TestResults/unit-test-results.xml ]] && test-results publish --force SQLisHard.Domain.Tests/TestResults/unit-test-results.xml'
-            - '[[ -f SQLisHard.General.tests/TestResults/unit-test-results.xml ]] && test-results publish --force SQLisHard.General.tests/TestResults/unit-test-results.xml'
+            - '[[ -f TestResults/SQLisHard.Tests.results.xml ]] && test-results publish TestResults/SQLisHard.Tests.results.xml'
+            - '[[ -f TestResults.SQLisHard.Core.Tests.results.xml ]] && test-results publish TestResults.SQLisHard.Core.Tests.results.xml'
+            - '[[ -f TestResults/SQLisHard.Domain.Tests.results.xml ]] && test-results publish TestResults/SQLisHard.Domain.Tests.results.xml'
+            - '[[ -f TestResults/SQLisHard.General.tests.results.xml ]] && test-results publish TestResults/SQLisHard.General.tests.results.xml'
 after_pipeline:
   task:
     jobs:
