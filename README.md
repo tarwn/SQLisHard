@@ -12,9 +12,13 @@ As always, the system will work, but the code and choices behind it may be exper
 
 ## Running the app
 
-_This is the version before we start the modernization, lightly updated to run w/ `dotnet` CLI`_
+* backend: `dotnet watch --project ./src/backend/SQLisHard/SQLisHard.csproj`
 
-* Use Visual Studio for now, run `SQLisHard.csproj` project w/ IISExpress
+## Running Tests
+
+* backend + UI integration tests: `dotnet test ./src/backend/SQLisHard.sln`
+
+_Note: run the app first if running the full set of tests, the integration/UI tests do not start it on their own (yet)._
 
 ## Setting up the app
 
@@ -23,18 +27,41 @@ _This is the version before we start the modernization, lightly updated to run w
 To run this locally, you will need:
 
 - SQL Server 2019 or newer
-- .Net 4.something
+- .Net 9
 - Powershell 7.4.x or newer
+- node 20?
 
-**Setup**
+**Windows Setup**
 
-1. Create a database user as your "admin" user, with rights to create databaes, users, etc.
-2. Run the setup script to create databases, users, + apply initial DB migrations:
-    * `cd Database`
-    * Copy `Runlocally.sample.ps1` to `RunLocally.ps1` and enter real values
-    * Run `./RunLocally.ps1` to setup the databases, which will also create the app DB users w/ limited rights
-3. Open `SQLisHard.sln` in Visual Studio and let it install what it needs
-4. Set SQLisHard project as the startup project, using IISExpress
+1. Database
+    - Create an admin user with rights to create databases, users, etc. (`./Database/setup/AdminAccountSetup.sql`)
+    - Run `./Database/setup/InstallModules.ps1` (possibly as administrator?)
+    - Run `./Database/setup/CreateCoreDatabase.ps1 -s <server> -d <db name> -nu <new app user name> -np <new app user pwd> -au <admin username> -ap <admin password>`
+        - Creates the new core db with the given name
+        - Creates the SQL user for the app w/ appropriate rights
+    - Run `./Database/setup/CreateExerciseDatabase.ps1 -s <server> -d <db name> -nu <new app user #2 name> -np <new app user #2 pwd> -au <admin username> -ap <admin pwd>`
+        - Creates the new exercise (or sample) db
+        - Creates the SQL user with very limited rights for the app to run user queries against
+2. Configure DB Connection Strings
+    1. Init user secrets
+        - `cd ./src/backend/SQLisHard/`
+        - `dotnet user-secrets init`
+    2. Add Admin settings used for migrating each database automatically when running locally:
+        - `dotnet user-secrets set "Migrations:Core:ConnectionString" "Server=localhost;Database=<core db name>;User Id=<admin username>;Password=<admin pw>;Encrypt=false"`
+        - `dotnet user-secrets set "Migrations:Exercises:ConnectionString" "Server=localhost;Database=<exercises db name>;User Id=<admin username>;Password=<admin pw>;Encrypt=false"`
+    3. Add Application settings for the backend to access DB's with limited users created above
+        - `dotnet user-secrets set "ConnectionStrings:Core" "Server=localhost;Database=<core db name>;User Id=<app username>;Password=<app user pw>;Encrypt=false"`
+        - `dotnet user-secrets set "ConnectionStrings:Exercises" "Server=localhost;Database=<exercises db name>;User Id=<app username>;Password=<app user pw>;Encrypt=false"`
+3. Backend
+    - TBD: dotenv?
+    - TBD: dotnet restore ...
+4. Frontend
+    - TBD: npm install ...
+5. GOTO [Running the app](#running-the-app)
+
+**Other Setup**
+
+TBD
 
 Licensing
 ==========

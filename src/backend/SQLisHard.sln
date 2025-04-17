@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35919.96
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard", "SQLisHard\SQLisHard.csproj", "{E4518228-5FD8-43FA-BA3D-492244414BCA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard.Domain", "SQLisHard.Domain\SQLisHard.Domain.csproj", "{A535C1A1-A9D1-4C57-9148-BF75E8BD5DCF}"
@@ -18,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard.General.Tests", "SQLisHard.General.tests\SQLisHard.General.Tests.csproj", "{C853DB65-6412-4351-9088-FCD245B4DD62}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard.Tests", "SQLisHard.Tests\SQLisHard.Tests.csproj", "{376DC429-9B92-4931-A27A-960580C8768E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLisHard.DBMigrations", "SQLisHard.DBMigrations\SQLisHard.DBMigrations.csproj", "{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -119,8 +123,23 @@ Global
 		{376DC429-9B92-4931-A27A-960580C8768E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{376DC429-9B92-4931-A27A-960580C8768E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{376DC429-9B92-4931-A27A-960580C8768E}.Release|x86.ActiveCfg = Release|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Debug|x86.Build.0 = Debug|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Release|x86.ActiveCfg = Release|Any CPU
+		{4DC3F0BC-7E3B-4A45-BE20-C795904A2633}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8DEFEEDB-27DB-4FF3-8207-4CB593DDB0C1}
 	EndGlobalSection
 EndGlobal

@@ -3,7 +3,6 @@ Instructions:
  Replace ADMINUSERNAME with new name
  Replace ADMINPASSWORD with new password
  Run
- Update build to use credentials 
 */
 
 CREATE LOGIN ADMINUSERNAME WITH PASSWORD=N'ADMINPASSWORD', 

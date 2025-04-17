@@ -1,8 +1,10 @@
 using System.Net;
 using System.Net.Mail;
+using CommandLine;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SQLisHard.Attributes;
+using SQLisHard.Configuration;
 using SQLisHard.Core;
 using SQLisHard.Core.Data;
 using SQLisHard.Domain.ExerciseEvaluator;
@@ -15,11 +17,11 @@ using SQLisHard.General.ExperienceLogging.Log;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var coreConnectionString = builder.Configuration.GetConnectionString("CoreDatabase")!;
-var sampleConnectionString = builder.Configuration.GetConnectionString("SampleDatabase")!;
+var coreConnectionString = builder.Configuration.GetConnectionString("Core")!;
+var exercisesConnectionString = builder.Configuration.GetConnectionString("Exercises")!;
 builder.Services.Configure<EmailErrorSettings>(builder.Configuration.GetSection("EmailErrorSettings"));
 
-builder.Services.AddScoped<IQueryEngine>(s => new QueryEngine(sampleConnectionString));
+builder.Services.AddScoped<IQueryEngine>(s => new QueryEngine(exercisesConnectionString));
 // TODO: singleton instead of scoped so we're not adding unnecessary overhead to every request
 builder.Services.AddScoped<IExerciseStore>(s =>
 {
@@ -46,11 +48,13 @@ builder.Services.AddScoped<CoreMembership>();
 builder.Services.AddScoped<IExerciseResultEvaluator, ExerciseResultEvaluator>();
 builder.Services.AddScoped<IExperienceLogProvider, NullLogProvider>();
 
-builder.Services.AddAuthentication(options => {
+builder.Services.AddAuthentication(options =>
+{
     options.DefaultScheme = "sih-cookie";
 })
     .AddCookie("sih-cookie")
-    .AddScheme<AutomatedGuestOptions, AutomatedGuestHandler>("sih-guest", options => {
+    .AddScheme<AutomatedGuestOptions, AutomatedGuestHandler>("sih-guest", options =>
+    {
         options.SignInScheme = "sih-cookie";
     });
 builder.Services.AddAuthorization();
@@ -71,7 +75,8 @@ if (builder.Configuration["Email:Method"] == "File")
 else
 {
     builder.Services.AddFluentEmail(builder.Configuration["Email:FromAddress"], builder.Configuration["Email:FromName"])
-        .AddSmtpSender(new SmtpClient(builder.Configuration["Email:Host"], int.Parse(builder.Configuration["Email:Port"]!)) {
+        .AddSmtpSender(new SmtpClient(builder.Configuration["Email:Host"], int.Parse(builder.Configuration["Email:Port"]!))
+        {
             EnableSsl = true,
             Credentials = new NetworkCredential(builder.Configuration["Email:Username"], builder.Configuration["Email:Password"])
         });
@@ -83,6 +88,18 @@ builder.Services.AddControllersWithViews(options =>
 });
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    var core = app.Configuration["Migrations:Core:ConnectionString"];
+    var exercises = app.Configuration["Migrations:Exercises:ConnectionString"];
+    if (core == null || exercises == null)
+    {
+        throw new Exception("Connection Strings must be set for sql migrations to run during development using admin-level rights");
+    }
+    LocalDevelopmentTasks.MigrateDatabase(core, Path.Combine(app.Environment.ContentRootPath, "../../../database/coredb/migrations"));
+    LocalDevelopmentTasks.MigrateDatabase(exercises, Path.Combine(app.Environment.ContentRootPath, "../../../database/exercisedb/migrations"));
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -1,0 +1,8 @@
+
+-- ONLY RUN IF NOT APPLIED BY OLD MIGRATION SYSTEM
+IF NOT EXISTS(SELECT 1 FROM sys.tables WHERE name = 'UpdateTracking') 
+BEGIN
+
+ALTER TABLE dbo.[History] ADD ExerciseId varchar(20) NULL;
+
+END
