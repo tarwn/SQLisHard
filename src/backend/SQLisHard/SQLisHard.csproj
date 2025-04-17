@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<AssemblyName>SQLisHard</AssemblyName>
+		<RootNamespace>SQLisHard</RootNamespace>
+		<!-- Ensure Razor views are compiled -->
+		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+		<!-- Treat controller actions with non-nullable reference type parameters as implicitly required -->
+		<SuppressImplicitRequiredAttributeForNonNullableReferenceTypes>true</SuppressImplicitRequiredAttributeForNonNullableReferenceTypes>
+		<!-- Don't include wwwroot Content block-->
+		<EnableDefaultContentItems>false</EnableDefaultContentItems>
+	  <UserSecretsId>8ec0ed56-9d56-4561-b892-d331a23adb48</UserSecretsId>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="FluentEmail.Smtp" Version="3.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\SQLisHard.Core\SQLisHard.Core.csproj" />
+		<ProjectReference Include="..\SQLisHard.DBMigrations\SQLisHard.DBMigrations.csproj" />
+		<ProjectReference Include="..\SQLisHard.Domain\SQLisHard.Domain.csproj" />
+		<ProjectReference Include="..\SQLisHard.General\SQLisHard.General.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<!-- Ensure Exercise files are included -->
+		<Content Include="Exercises\**\*.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<!-- Explicitly include cshtml views for now, although the SDK might handle it -->
+		<Content Include="Views\**\*.cshtml">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+
+</Project>

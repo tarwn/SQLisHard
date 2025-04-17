@@ -1,0 +1,34 @@
+version: v1.0
+name: Initial Pipeline
+agent:
+  machine:
+    type: f1-standard-2
+    os_image: ubuntu2204
+blocks:
+  - name: Build Backend
+    task:
+      jobs:
+        - name: Build
+          commands:
+            - checkout
+            - cd ./src/backend
+            - dotnet restore
+            - dotnet build --no-restore
+            - dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~SQLisHard.IntegrationTests" --logger "junit;LogFileName={assembly}.results.xml"
+      prologue:
+        commands:
+          - 'sudo add-apt-repository -y ppa:dotnet/backports'
+          - sudo apt-get update && sudo apt-get install -y dotnet-sdk-9.0
+      epilogue:
+        always:
+          commands:
+            - '[[ -f TestResults/SQLisHard.Tests.results.xml ]] && test-results publish TestResults/SQLisHard.Tests.results.xml'
+            - '[[ -f TestResults.SQLisHard.Core.Tests.results.xml ]] && test-results publish TestResults.SQLisHard.Core.Tests.results.xml'
+            - '[[ -f TestResults/SQLisHard.Domain.Tests.results.xml ]] && test-results publish TestResults/SQLisHard.Domain.Tests.results.xml'
+            - '[[ -f TestResults/SQLisHard.General.tests.results.xml ]] && test-results publish TestResults/SQLisHard.General.tests.results.xml'
+after_pipeline:
+  task:
+    jobs:
+      - name: Test Results
+        commands:
+          - test-results gen-pipeline-report

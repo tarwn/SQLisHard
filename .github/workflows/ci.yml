@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [ "*" ]
+
+jobs:
+  ci-stage:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Restore dependencies
+      working-directory: ./src/backend
+      run: dotnet restore
+
+    - name: Build
+      working-directory: ./src/backend
+      run: dotnet build --no-restore
+
+    - name: Test
+      working-directory: ./src/backend
+      run: dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~SQLisHard.IntegrationTests" --logger "trx;LogFileName=test-results.trx"
+      
+    - name: Publish Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: Test Results
+        path: "**/test-results.trx" 
