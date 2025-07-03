@@ -1,0 +1,4 @@
+TRUNCATE TABLE dbo.History;
+TRUNCATE TABLE dbo.Session;
+TRUNCATE TABLE dbo.User;
+

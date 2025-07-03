@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    @if (!string.IsNullOrWhiteSpace(ViewBag.PageDescription))
+    {
+        <meta name="description" content="@ViewBag.PageDescription" />
+    }
+    else
+    {
+        <meta name="description"
+            content="Learning SQL can be tough. SQLisHard.com is an interactive set of exercises that provide a hands-on set of exercises to help learn SQL." />
+    }
+
+    <meta name="viewport" content="width=device-width" />
+    <title>SQL Is Hard - @ViewBag.Title</title>
+    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <!--  previously bundled CSS files -->
+    <link rel="stylesheet" href="~/styles/fonts.css" />
+    <link rel="stylesheet" href="~/styles/normalize.css" />
+    <link rel="stylesheet" href="~/styles/main.css" />
+    <link rel="stylesheet" href="~/styles/display.css" />
+    <link rel="stylesheet" href="~/styles/fontawesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/styles/responsive.css" />
+
+    <!-- previously bundled JS files -->
+    <script src="~/scripts/jquery-1.9.1.js"></script>
+    <script src="~/scripts/knockout-2.2.1.js"></script>
+    <script src="~/scripts/koExternalTemplateEngine_all.js"></script>
+    <script src="~/scripts/finch-0.5.13.min.js"></script>
+    <script src="~/scripts/modernizr-2.6.2.min.js"></script>
+    <script src="~/scripts/plugins.js"></script>
+    <script src="~/scripts/lib/constants.js"></script>
+    <script src="~/scripts/lib/main.js"></script>
+    <script src="~/scripts/lib/model/exercises.js"></script>
+    <script src="~/scripts/lib/model/user.js"></script>
+    <script src="~/scripts/lib/services/routes.js"></script>
+    <script src="~/scripts/lib/services/services.js"></script>
+    <script src="~/scripts/lib/viewmodel.js"></script>
+</head>
+
+<body>
+    <div id="topBar" class="clearfix">
+        <h1><a href="/" title="="home">SQL is Hard</a></h1>
+        @if (IsSectionDefined("ExtraNavLinks"))
+        {
+            @RenderSection("ExtraNavLinks")
+        }
+        <span><a href="/about">About</a></span>
+        <span><a href="/updates">Updates</a></span>
+    </div>
+    <div style="margin-bottom: 38px;">
+        @RenderBody()
+    </div>
+    <footer>
+        <span class="version">Version: @Html.Partial("_Version.cshtml")</span>
+        <div class="text">A random side-project by <a href="http://tiernok.com" title="Eli's website">Eli Weinstock-Herman</a> (<a href="http://twitter.com/tarwn" title="Tarwn on twitter">@@tarwn</a>)</div>
+    </footer>
+    <!-- Google tag -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K25ZZSL2CX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-K25ZZSL2CX');
+    </script>
+</body>
+
+</html>

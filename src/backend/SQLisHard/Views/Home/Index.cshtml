@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Let's Get Started";
+    ViewBag.PageDescription = "Learning SQL can be tough. SQLisHard.com is an interactive set of exercises to help you learn SQL online using hands-on exercises with Microsoft TSQL on SQL Server.";
+    ViewBag.Keywords = "Learn SQL Online";
+}
+
+<div class="banner">
+<h1>SQL is Hard</h1>
+<div class="about">
+    <p>Learning SQL can be daunting, despite the incredible availability of reference materials. Sometimes the best way to learn is to get your hands dirty.</p>
+    <p>SQLisHard.com provides guided, interactive exercises to help you learn T-SQL against a live SQL Server database.</p>
+    <a href="@Url.Action("Index","Exercise")"><img src="@Url.Content("~/Screenshot.png")" title="Sample screenshot" style="border: 1px solid #DDDDDD;" /></a><br />
+    <a href="@Url.Action("Index","Exercise")" class="call-to-action">Let's get started <i class="icon-arrow-right"></i></a>
+</div>
+    <p style="width: 700px; margin: 20px auto;">
+        SQLisHard.com is a work in progress. The first set of exercises focuses on SELECTing data, from basic queries to JOINs and aggregation, and is a <a href="@Url.Action("Exercises","About")">work in progress</a>.
+        I will continue to expand these, adding more advanced sets of exercises as time allows.</p>
+</div>
