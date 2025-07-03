@@ -8,10 +8,10 @@ namespace SQLisHard.DBMigrations
     public class Options
     {
         [Option('c', "connectionString", Required = true, HelpText = "Database connection string to upgrade")]
-        public string ConnectionString { get; set; }
+        public string? ConnectionString { get; set; }
 
         [Option('m', "migrations", Required = true, HelpText = "Path to appropriate folder of migrations")]
-        public string MigrationsFolder { get; set; }
+        public string? MigrationsFolder { get; set; }
     }
 
     class Program
@@ -32,7 +32,7 @@ namespace SQLisHard.DBMigrations
                 {
                     try
                     {
-                        PerformDatabaseMigration(o.ConnectionString, o.MigrationsFolder);
+                        PerformDatabaseMigration(o.ConnectionString!, o.MigrationsFolder!);
                     }
                     catch (MigrationFailureException)
                     {

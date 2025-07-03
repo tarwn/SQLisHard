@@ -1,8 +1,3 @@
-using System.Net;
-using System.Net.Mail;
-using CommandLine;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using SQLisHard.Attributes;
 using SQLisHard.Configuration;
 using SQLisHard.Core;
@@ -12,7 +7,6 @@ using SQLisHard.Domain.Exercises;
 using SQLisHard.Domain.Exercises.ExerciseStore;
 using SQLisHard.Domain.QueryEngine;
 using SQLisHard.Domain.QueryEngine.DatabaseExecution;
-using SQLisHard.General.ErrorLogging;
 using SQLisHard.General.ExperienceLogging.Log;
 
 var builder = WebApplication.CreateBuilder(args);
