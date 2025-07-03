@@ -18,6 +18,7 @@
 	<ItemGroup>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="FluentEmail.Smtp" Version="3.0.0" />
+		<PackageReference Include="Sentry.AspNetCore" Version="5.11.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -28,6 +29,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<!-- Why yes, I do want the settings -->
+		<Content Include="appsettings*json">
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
 		<!-- Ensure Exercise files are included -->
 		<Content Include="Exercises\**\*.txt">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -35,6 +40,10 @@
 		<!-- Explicitly include cshtml views for now, although the SDK might handle it -->
 		<Content Include="Views\**\*.cshtml">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<!-- Explicitly include wwwroot -->
+	    <Content Include="wwwroot\**\*">
+			<CopyToPublishDirectory>Always</CopyToPublishDirectory>
 		</Content>
 	</ItemGroup>
 

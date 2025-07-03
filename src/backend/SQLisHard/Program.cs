@@ -17,6 +17,11 @@ using SQLisHard.General.ExperienceLogging.Log;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseSentry(options =>
+{
+    options.Dsn = builder.Configuration["Sentry:Dsn"];
+});
+
 var coreConnectionString = builder.Configuration.GetConnectionString("Core")!;
 var exercisesConnectionString = builder.Configuration.GetConnectionString("Exercises")!;
 builder.Services.Configure<EmailErrorSettings>(builder.Configuration.GetSection("EmailErrorSettings"));
@@ -59,7 +64,7 @@ builder.Services.AddAuthentication(options =>
     });
 builder.Services.AddAuthorization();
 
-// Note: Not crazy about thes services being singlestones below, I grabbed FluentEmail as a quick fix and not sure
+// Note: Not crazy about these services being singlestons below, I grabbed FluentEmail as a quick fix and not sure
 //  if it executes the builder once or on demand (SmtpClient is not threadsafe)
 builder.Services.AddExceptionHandler<EmailExceptionHandler>();
 builder.Services.AddSingleton<IErrorReporter, EmailErrorReporter>();

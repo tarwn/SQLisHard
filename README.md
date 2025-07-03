@@ -22,14 +22,16 @@ _Note: run the app first if running the full set of tests, the integration/UI te
 
 ## Setting up the app
 
-_This is the version before we start the modernization, lightly updated to run w/ PS 7.4.x._
-
-To run this locally, you will need:
+Dependencies:
 
 - SQL Server 2019 or newer
 - .Net 9
-- Powershell 7.4.x or newer
-- node 20?
+- TBD: node 20?
+
+Setup Dependencies:
+
+- Powershell 7.4.x or newer for setup scripts
+
 
 **Windows Setup**
 

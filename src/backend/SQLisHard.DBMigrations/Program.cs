@@ -21,10 +21,12 @@ namespace SQLisHard.DBMigrations
             int returnValue = 0;
 
             Parser.Default.ParseArguments<Options>(args)
-                .WithNotParsed(o =>
+                .WithNotParsed(options =>
                 {
-                    Console.WriteLine($"{o} is not a recognized option");
-                    returnValue = -1;
+                    foreach(var option in options.Where(o => o.Tag != ErrorType.HelpRequestedError)){
+                        Console.WriteLine($"{option} is not a recognized option");
+                        returnValue = -1;
+                    }
                 })
                 .WithParsed(o =>
                 {

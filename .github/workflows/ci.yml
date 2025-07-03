@@ -4,34 +4,105 @@ on:
   push:
     branches: [ "*" ]
 
+env:
+  AZURE_WEBAPP_NAME: sqlishard-test
+  DOTNET_VERSION: '9.0.x'
+
 jobs:
   ci-stage:
     name: Build and Test
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '9.0.x'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
 
-    - name: Restore dependencies
-      working-directory: ./src/backend
-      run: dotnet restore
+      - name: Restore dependencies
+        working-directory: ./src/backend
+        run: dotnet restore
 
-    - name: Build
-      working-directory: ./src/backend
-      run: dotnet build --no-restore
+      - name: Build
+        working-directory: ./src/backend
+        run: dotnet build --no-restore
 
-    - name: Test
-      working-directory: ./src/backend
-      run: dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~SQLisHard.IntegrationTests" --logger "trx;LogFileName=test-results.trx"
+      - name: Test
+        working-directory: ./src/backend
+        run: dotnet test --no-build --verbosity normal --filter "FullyQualifiedName!~SQLisHard.IntegrationTests" --logger "trx;LogFileName=test-results.trx"
+        
+      - name: Publish Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Test Results
+          path: "**/test-results.trx"
+
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    needs: [ci-stage]
+    # if: contains('refs/head/master')
+    env:
+      VERSION_NUMBER: 1.0.${{ github.run_number }}-${{ github.run_attempt }}
+      AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION }}
+      AZURE_SQL_SERVER_NAME: ${{ secrets.AZURE_SQL_SERVER_NAME }}
+      AZURE_SQL_RESOURCE_GROUP: ${{ secrets.AZURE_SQL_RESOURCE_GROUP }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore dependencies
+        working-directory: ./src/backend
+        run: dotnet restore
+
+      - name: Build for Release
+        working-directory: ./src/backend
+        run: |
+          echo "Version is ${{ env.VERSION_NUMBER }}"
+          sed -i 's/VERSION_NUMBER/${{ env.VERSION_NUMBER }}/' ./SQLisHard/appsettings.Production.json
+          dotnet publish ./SQLisHard/SQLisHard.csproj -c Release --property:PublishDir='../../../app-web' --runtime win-x86 --no-self-contained /p:EnvironmentName=Production /property:Version=${{ env.VERSION_NUMBER }}
+          dotnet publish ./SQLisHard.DBMigrations/SQLisHard.DBMigrations.csproj -c Release --property:PublishDir='../../../app-migration' --no-self-contained -r linux-x64
+
+        # TBD if this is still necessary, it used to be for CircleCI
+        # cd ../app-migration
+        # chmod 755 GDB.Tools.DatabaseMigration
+        
+      # SKIPPED: This is where our slot deploy to staging would go if we had blue/green deploys (higher cost webapp)
+
+      # TODO: database migrations
+      - name: Database Migration
+        run: |
+          ip=$(curl -s https://api.ipify.org)
+          echo "Adding firewall rule for: $ip"
+          az sql server firewall-rule create --subscription $AZURE_SUBSCRIPTION -s $AZURE_SQL_SERVER_NAME -g $AZURE_SQL_RESOURCE_GROUP -n GithubAction-${{ github.run_number }}-${{ github.run_attempt }} --start-ip-address $ip --end-ip-address $ip
+          echo "Running migrations"
+          ./app-migration/SQLisHard.DBMigrations --help
+
+      - name: Database Firewall Cleanup
+        if: always()
+        run: |
+          ip=$(curl -s https://api.ipify.org)
+          echo "Removing firewall rule for: $ip"
+          az sql server firewall-rule delete --subscription $AZURE_SUBSCRIPTION -s $AZURE_SQL_SERVER_NAME -g $AZURE_SQL_RESOURCE_GROUP -n GithubAction-${{ github.run_number }}-${{ github.run_attempt }}
+
+      # actual deploy, this would be a slot swap if we had blue/green
+      #   we'll accept the micro outages during deploy as the trade-off
+      - name: Deploy Azure Webapp
+        uses: azure/webapps-deploy@v3
+        with: 
+          app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
+          package: './app-web'
       
-    - name: Publish Test Results
-      uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: Test Results
-        path: "**/test-results.trx" 
+      - name: Azure Logout
+        run: |
+          az logout
