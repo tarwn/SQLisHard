@@ -23,9 +23,7 @@ namespace SQLisHard.General.ErrorLogging
 		}
 
 		// tests
-		public LogArguments()
-		{
-			Headers = new Dictionary<string, string>();
-		}
+		public LogArguments() : this("", new Dictionary<string, string>(), -900, "")
+		{ }
 	}
 }
