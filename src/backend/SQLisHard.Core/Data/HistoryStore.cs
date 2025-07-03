@@ -1,10 +1,6 @@
 ﻿using PetaPoco;
 using SQLisHard.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
+
 
 namespace SQLisHard.Core.Data
 {
@@ -19,7 +15,7 @@ namespace SQLisHard.Core.Data
 
 		public void AddToHistory(UserId userId, string sqlStatement, int evaluationResult, bool completesExercise, string exerciseId)
 		{
-			using (var db = new Database(_connectionString, "System.Data.SqlClient"))
+			using (var db = new Database(_connectionString, "Microsoft.Data.SqlClient"))
 			{
 				db.Insert("History", "Id", true, new {
 					UserId = userId.Value,
@@ -33,7 +29,7 @@ namespace SQLisHard.Core.Data
 
         public List<string> GetCompletedExercises(UserId id)
         {
-            using (var db = new Database(_connectionString, "System.Data.SqlClient"))
+            using (var db = new Database(_connectionString, "Microsoft.Data.SqlClient"))
             {
                 return db.Fetch<string>("SELECT ExerciseId FROM History WHERE UserId = @0 AND CompletesExercise = 1;", id.Value).ToList();
             }

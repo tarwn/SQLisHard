@@ -17,7 +17,7 @@ namespace SQLisHard.Core.Data
 
 		public void CaptureSession(Models.Session session)
 		{
-			using (var db = new Database(_connectionString, "System.Data.SqlClient"))
+			using (var db = new Database(_connectionString, "Microsoft.Data.SqlClient"))
 			{
 				db.Insert("Session", "Id", true, session);
 			}

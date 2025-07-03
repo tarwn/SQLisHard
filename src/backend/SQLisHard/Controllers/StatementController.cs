@@ -6,7 +6,7 @@ using SQLisHard.Domain.ExerciseEvaluator;
 
 namespace SQLisHard.Controllers;
 
-	[Route("api/[controller]")]
+	[Route("api/statement")]
     public class StatementController : Controller
     {
         private readonly IExerciseResultEvaluator _exerciseEvaluator;

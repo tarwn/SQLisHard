@@ -1,7 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
 
-[Route("[controller]/[action]")]
+[Route("updates")]
 public class UpdatesController : Controller
 {
 

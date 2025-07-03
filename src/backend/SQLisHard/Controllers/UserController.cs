@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace SQLisHard.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/user")]
     [Authorize]
 	public class UserController : Controller
 	{
@@ -20,7 +20,7 @@ namespace SQLisHard.Controllers
             _userStore = userStore;
         }
 
-        [HttpGet]
+        [HttpGet("GetLoggedInUser")]
         [UpperCaseJSONOutput]
 		public IActionResult GetLoggedInUser()
 		{
