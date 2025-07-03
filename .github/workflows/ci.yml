@@ -50,6 +50,10 @@ jobs:
       AZURE_SUBSCRIPTION: ${{ secrets.AZURE_SUBSCRIPTION }}
       AZURE_SQL_SERVER_NAME: ${{ secrets.AZURE_SQL_SERVER_NAME }}
       AZURE_SQL_RESOURCE_GROUP: ${{ secrets.AZURE_SQL_RESOURCE_GROUP }}
+      AZURE_SQL_DB_NAME_CORE: ${{ vars.AZURE_SQL_DB_NAME_CORE }}
+      AZURE_SQL_DB_NAME_EXERCISES: ${{ vars.AZURE_SQL_DB_NAME_EXERCISES }}
+      AZURE_SQL_DB_USER: ${{ secrets.AZURE_SQL_DB_USER }}
+      AZURE_SQL_DB_PASSWORD: ${{ secrets.AZURE_SQL_DB_PASSWORD }}
     steps:
       - uses: actions/checkout@v3
       - uses: azure/login@v2
@@ -78,15 +82,19 @@ jobs:
         # chmod 755 GDB.Tools.DatabaseMigration
         
       # SKIPPED: This is where our slot deploy to staging would go if we had blue/green deploys (higher cost webapp)
+      # :(
 
-      # TODO: database migrations
       - name: Database Migration
         run: |
           ip=$(curl -s https://api.ipify.org)
           echo "Adding firewall rule for: $ip"
           az sql server firewall-rule create --subscription $AZURE_SUBSCRIPTION -s $AZURE_SQL_SERVER_NAME -g $AZURE_SQL_RESOURCE_GROUP -n GithubAction-${{ github.run_number }}-${{ github.run_attempt }} --start-ip-address $ip --end-ip-address $ip
-          echo "Running migrations"
-          ./app-migration/SQLisHard.DBMigrations --help
+          echo "Running migrations..."
+          echo "Migration 1: Core Database (db=$AZURE_SQL_DB_NAME_CORE)"
+          ./app-migration/SQLisHard.DBMigrations -m ./database/coredb/migrations --connectionString "Server=$AZURE_SQL_SERVER_NAME.database.windows.net;Database=$AZURE_SQL_DB_NAME_CORE;User ID=$AZURE_SQL_DB_USER;Password=$AZURE_SQL_DB_PASSWORD;Trusted_Connection=False;Encrypt=True"
+          echo "Migration 2: Exercises Database (db=$AZURE_SQL_DB_NAME_EXERCISES)"
+          ./app-migration/SQLisHard.DBMigrations -m ./database/exercisedb/migrations --connectionString "Server=$AZURE_SQL_SERVER_NAME.database.windows.net;Database=$AZURE_SQL_DB_NAME_EXERCISES;User ID=$AZURE_SQL_DB_USER;Password=$AZURE_SQL_DB_PASSWORD;Trusted_Connection=False;Encrypt=True"
+          echo "Migrations Complete."
 
       - name: Database Firewall Cleanup
         if: always()

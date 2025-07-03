@@ -7,7 +7,7 @@ The deployment works via a github action from the `master` branch (tbd: will ren
     * example with test app when building first pass on action:
     ```
     az ad sp create-for-rbac --name "sqlishard-test" --role contributor \
-                            --scopes /subscriptions/<subscription-id>/resourceGroups/<group-name>/providers/Microsoft.Web/sites/<app-name> \
+                            --scopes /subscriptions/<subscription-id>/resourceGroups/<group-name>/providers/Microsoft.Web/sites/<app-name> /subscriptions/<subscription-id>/resourceGroups/<group-name>/providers/Microsoft.Sql/servers/<server name>>\
                             --json-auth
     ```
 * Add `AZURE_CREDENTIALS` as a github secret with the JSON output from the prior step
