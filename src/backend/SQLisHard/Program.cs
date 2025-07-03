@@ -64,28 +64,25 @@ builder.Services.AddAuthentication(options =>
     });
 builder.Services.AddAuthorization();
 
-// Note: Not crazy about these services being singlestons below, I grabbed FluentEmail as a quick fix and not sure
-//  if it executes the builder once or on demand (SmtpClient is not threadsafe)
-builder.Services.AddExceptionHandler<EmailExceptionHandler>();
-builder.Services.AddSingleton<IErrorReporter, EmailErrorReporter>();
-if (builder.Configuration["Email:Method"] == "File")
-{
-    builder.Services.AddFluentEmail(builder.Configuration["Email:FromAddress"], builder.Configuration["Email:FromName"])
-        .AddSmtpSender(new SmtpClient
-        {
-            DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
-            PickupDirectoryLocation = Path.Combine(builder.Environment.ContentRootPath, builder.Configuration["Email:FilePath"]!)
-        });
-}
-else
-{
-    builder.Services.AddFluentEmail(builder.Configuration["Email:FromAddress"], builder.Configuration["Email:FromName"])
-        .AddSmtpSender(new SmtpClient(builder.Configuration["Email:Host"], int.Parse(builder.Configuration["Email:Port"]!))
-        {
-            EnableSsl = true,
-            Credentials = new NetworkCredential(builder.Configuration["Email:Username"], builder.Configuration["Email:Password"])
-        });
-}
+// removed exception handling (switched to Sentry), preserving these lines for the moment if I get to account registration
+//if (builder.Configuration["Email:Method"] == "File")
+//{
+//    builder.Services.AddFluentEmail(builder.Configuration["Email:FromAddress"], builder.Configuration["Email:FromName"])
+//        .AddSmtpSender(new SmtpClient
+//        {
+//            DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory,
+//            PickupDirectoryLocation = Path.Combine(builder.Environment.ContentRootPath, builder.Configuration["Email:FilePath"]!)
+//        });
+//}
+//else
+//{
+//    builder.Services.AddFluentEmail(builder.Configuration["Email:FromAddress"], builder.Configuration["Email:FromName"])
+//        .AddSmtpSender(new SmtpClient(builder.Configuration["Email:Host"], int.Parse(builder.Configuration["Email:Port"]!))
+//        {
+//            EnableSsl = true,
+//            Credentials = new NetworkCredential(builder.Configuration["Email:Username"], builder.Configuration["Email:Password"])
+//        });
+//}
 
 builder.Services.AddControllersWithViews(options =>
 {
