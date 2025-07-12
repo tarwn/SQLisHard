@@ -72,10 +72,10 @@ This document outlines the plan to migrate the existing E2E tests from the curre
   ```
 
 #### 1.3 Initial Test Infrastructure
-- [ ] Create base page object class (`base-page.ts`)
-- [ ] Create `exercise-page.ts` page object (migrate from C# `LessonPage.cs`)
-- [ ] Create test utilities for common operations
-- [ ] Set up test configuration management
+- [x] Create base page object class (`base-page.ts`)
+- [x] Create `exercise-page.ts` page object (migrate from C# `LessonPage.cs`)
+- [x] Create test utilities for common operations
+- [x] Set up test configuration management
 
 ### Phase 2: Basic Test Migration
 
