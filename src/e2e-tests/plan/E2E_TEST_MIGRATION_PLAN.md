@@ -43,18 +43,18 @@ This document outlines the plan to migrate the existing E2E tests from the curre
 - [x] Document the test start command in the top level README.md
 
 #### 1.2 Playwright Project Setup
-- [ ] Create `/src/e2e-tests/` directory
-- [ ] Initialize npm project with TypeScript
-- [ ] Install Playwright dependencies:
+- [x] Create `/src/e2e-tests/` directory
+- [x] Initialize npm project with TypeScript
+- [x] Install Playwright dependencies:
   ```bash
   npm init -y
   npm install -D @playwright/test typescript
   npx playwright install chrome
   ```
-- [ ] Configure `playwright.config.ts` for Chrome-only testing
-- [ ] Set up TypeScript configuration (`tsconfig.json`)
-- [ ] Set up eslint 9 with recommended typescript settings
-- [ ] Create basic project structure:
+- [x] Configure `playwright.config.ts` for Chrome-only testing
+- [x] Set up TypeScript configuration (`tsconfig.json`)
+- [x] Set up eslint 9 with recommended typescript settings
+- [x] Create basic project structure:
   ```
   /src/e2e-tests/
   ├── package.json
