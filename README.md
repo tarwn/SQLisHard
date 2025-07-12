@@ -20,6 +20,15 @@ As always, the system will work, but the code and choices behind it may be exper
 
 _Note: run the app first if running the full set of tests, the integration/UI tests do not start it on their own (yet)._
 
+### Starting the Test Server
+
+```bash
+cd src/backend/SQLisHard
+dotnet run --urls=http://localhost:8012 --environment=Test
+```
+
+The test server will start on port 8012 with test-specific configuration including separate test databases.
+
 ## Setting up the app
 
 Dependencies:

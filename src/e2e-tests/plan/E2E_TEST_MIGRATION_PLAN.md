@@ -38,9 +38,9 @@ This document outlines the plan to migrate the existing E2E tests from the curre
 ### Phase 1: Infrastructure Setup
 
 #### 1.1 Backend Server Configuration
-- [ ] Create test-specific `appsettings.Test.json` configuration
-- [ ] Ensure server can start/stop cleanly for test isolation using `dotnet run` with `--urls=http://localhost:8012` and `environment=Test`
-- [ ] Document the test start command in the top level README.md
+- [x] Create test-specific `appsettings.Test.json` configuration
+- [x] Ensure server can start/stop cleanly for test isolation using `dotnet run` with `--urls=http://localhost:8012` and `environment=Test`
+- [x] Document the test start command in the top level README.md
 
 #### 1.2 Playwright Project Setup
 - [ ] Create `/src/e2e-tests/` directory
