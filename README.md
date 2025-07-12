@@ -30,7 +30,7 @@ Dependencies:
 
 Setup Dependencies:
 
-- Powershell 7.4.x or newer for setup scripts
+- Powershell 7.4.x or newer for easy Windows setup scripts
 
 
 **Windows Setup**
