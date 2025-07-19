@@ -139,10 +139,10 @@ This document outlines the plan to migrate the existing E2E tests from the curre
 - [x] Update documentation
 
 #### 5.2 Documentation Updates
-- [ ] Update README.md with new test instructions
-- [ ] Document test writing guidelines
-- [ ] Create troubleshooting guide
-- [ ] Update development setup instructions
+- [x] Update README.md with new test instructions
+- [x] Document test writing guidelines
+- [x] Create troubleshooting guide
+- [x] Update development setup instructions
 
 ## Implementation Details
 

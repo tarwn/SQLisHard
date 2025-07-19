@@ -14,6 +14,69 @@ As always, the system will work, but the code and choices behind it may be exper
 
 * backend: `dotnet watch --project ./src/backend/SQLisHard/SQLisHard.csproj`
 
+## Testing
+
+This project uses Playwright with TypeScript for end-to-end testing.
+
+### Quick Start
+
+```bash
+# Install test dependencies
+cd src/e2e-tests
+npm install
+npx playwright install chrome
+
+# Start the test server
+cd ../backend/SQLisHard
+dotnet run --urls=http://localhost:8012 --environment=Test
+
+# Run tests (in another terminal)
+cd ../../e2e-tests
+npm run test
+```
+
+### Test Commands
+
+```bash
+# Run all tests
+npm run test
+
+# Run tests with browser visible
+npm run test:headed
+
+# Run tests in debug mode
+npm run test:debug
+
+# Run connectivity test only
+npm run test:connectivity
+
+# Lint test code
+npm run lint
+```
+
+### Test Configuration
+
+The base URL for tests can be configured using the `BASE_URL` environment variable:
+
+```bash
+# Use default localhost:8012
+npm run test
+
+# Use custom base URL (Unix/Linux/macOS)
+BASE_URL=http://localhost:3000 npm run test
+
+# Use production URL (Unix/Linux/macOS)
+BASE_URL=https://your-app.com npm run test
+```
+
+```powershell
+# Use custom base URL (Windows PowerShell)
+$env:BASE_URL="http://localhost:3000"; npm run test
+
+# Use production URL (Windows PowerShell)
+$env:BASE_URL="https://your-app.com"; npm run test
+```
+
 ## Running Tests
 
 * backend unit tests: `dotnet test ./src/backend/SQLisHard.sln`
@@ -36,12 +99,12 @@ Dependencies:
 
 - SQL Server 2019 or newer
 - .Net 9
-- TBD: node 20?
+- Node.js 18+ (for e2e tests)
+- Chrome browser (for e2e tests)
 
 Setup Dependencies:
 
 - Powershell 7.4.x or newer for easy Windows setup scripts
-
 
 **Windows Setup**
 
@@ -69,7 +132,11 @@ Setup Dependencies:
     - TBD: dotnet restore ...
 4. Frontend
     - TBD: npm install ...
-5. GOTO [Running the app](#running-the-app)
+5. E2E Tests
+    - `cd src/e2e-tests`
+    - `npm install`
+    - `npx playwright install chrome`
+6. GOTO [Running the app](#running-the-app)
 
 **Other Setup**
 
