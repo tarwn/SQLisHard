@@ -16,9 +16,10 @@ As always, the system will work, but the code and choices behind it may be exper
 
 ## Running Tests
 
-* backend + UI integration tests: `dotnet test ./src/backend/SQLisHard.sln`
+* backend unit tests: `dotnet test ./src/backend/SQLisHard.sln`
+* e2e tests: `cd src/e2e-tests && npm run test`
 
-_Note: run the app first if running the full set of tests, the integration/UI tests do not start it on their own (yet)._
+_Note: run the app first if running the e2e tests, they do not start it on their own._
 
 ### Starting the Test Server
 
