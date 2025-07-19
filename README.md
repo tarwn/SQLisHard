@@ -14,28 +14,26 @@ As always, the system will work, but the code and choices behind it may be exper
 
 * backend: `dotnet watch --project ./src/backend/SQLisHard/SQLisHard.csproj`
 
-## Testing
+## Running Tests
 
-This project uses Playwright with TypeScript for end-to-end testing.
+This project includes both backend unit tests and end-to-end tests using Playwright.
 
 ### Quick Start
 
 ```bash
-# Install test dependencies
-cd src/e2e-tests
-npm install
-npx playwright install chrome
+# Backend unit tests
+dotnet test ./src/backend/SQLisHard.sln
 
-# Start the test server
-cd ../backend/SQLisHard
+# Running the app for E2e Tests
+cd src/backend/SQLisHard
 dotnet run --urls=http://localhost:8012 --environment=Test
 
-# Run tests (in another terminal)
-cd ../../e2e-tests
+# E2E tests (requires app to be running)
+cd src/e2e-tests
 npm run test
 ```
 
-### Test Commands
+### E2E Test Commands
 
 ```bash
 # Run all tests
@@ -49,49 +47,9 @@ npm run test:debug
 
 # Run connectivity test only
 npm run test:connectivity
-
-# Lint test code
-npm run lint
 ```
 
-### Test Configuration
-
-The base URL for tests can be configured using the `BASE_URL` environment variable:
-
-```bash
-# Use default localhost:8012
-npm run test
-
-# Use custom base URL (Unix/Linux/macOS)
-BASE_URL=http://localhost:3000 npm run test
-
-# Use production URL (Unix/Linux/macOS)
-BASE_URL=https://your-app.com npm run test
-```
-
-```powershell
-# Use custom base URL (Windows PowerShell)
-$env:BASE_URL="http://localhost:3000"; npm run test
-
-# Use production URL (Windows PowerShell)
-$env:BASE_URL="https://your-app.com"; npm run test
-```
-
-## Running Tests
-
-* backend unit tests: `dotnet test ./src/backend/SQLisHard.sln`
-* e2e tests: `cd src/e2e-tests && npm run test`
-
-_Note: run the app first if running the e2e tests, they do not start it on their own._
-
-### Starting the Test Server
-
-```bash
-cd src/backend/SQLisHard
-dotnet run --urls=http://localhost:8012 --environment=Test
-```
-
-The test server will start on port 8012 with test-specific configuration including separate test databases.
+For more detailed test configuration and advanced usage, see the [E2E Test Documentation](./src/e2e-tests/README.md).
 
 ## Setting up the app
 
@@ -99,7 +57,7 @@ Dependencies:
 
 - SQL Server 2019 or newer
 - .Net 9
-- Node.js 18+ (for e2e tests)
+- Node.js 22+ (for e2e tests)
 - Chrome browser (for e2e tests)
 
 Setup Dependencies:
@@ -128,10 +86,11 @@ Setup Dependencies:
         - `dotnet user-secrets set "ConnectionStrings:Core" "Server=localhost;Database=<core db name>;User Id=<app username>;Password=<app user pw>;Encrypt=false"`
         - `dotnet user-secrets set "ConnectionStrings:Exercises" "Server=localhost;Database=<exercises db name>;User Id=<app username>;Password=<app user pw>;Encrypt=false"`
 3. Backend
-    - TBD: dotenv?
-    - TBD: dotnet restore ...
+    - `cd src/backend`
+    - `dotnet restore`
+    - `dotnet build`
 4. Frontend
-    - TBD: npm install ...
+    - _No steps currently_
 5. E2E Tests
     - `cd src/e2e-tests`
     - `npm install`
