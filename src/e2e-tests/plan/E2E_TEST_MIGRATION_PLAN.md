@@ -106,14 +106,14 @@ This document outlines the plan to migrate the existing E2E tests from the curre
 ### Phase 3: Core Test Migration
 
 #### 3.1 BasicQueryExecution Feature Migration
-- [ ] Migrate remaining BasicQueryExecution scenarios:
-  - [ ] Execute query with syntax error
-  - [ ] Status display verification
-  - [ ] Pagination with "read more" functionality
-  - [ ] Pattern-based exercise tips
-- [ ] Implement all required page object methods
-- [ ] Add proper error handling and timeouts
-- [ ] Ensure all tests pass before proceeding
+- [x] Migrate remaining BasicQueryExecution scenarios:
+  - [x] Execute query with syntax error
+  - [x] Status display verification
+  - [x] Pagination with "read more" functionality
+  - [x] Pattern-based exercise tips
+- [x] Implement all required page object methods
+- [x] Add proper error handling and timeouts
+- [x] Ensure all tests pass before proceeding
 
 #### 3.2 ExerciseInteraction Feature Migration
 - [ ] Migrate ExerciseInteraction scenarios:

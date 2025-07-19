@@ -282,4 +282,83 @@ export class ExercisePage extends BasePage {
     const text = await this.moreResultsLinkTotalCount.textContent();
     return parseInt(text || '0', 10);
   }
+
+  // Additional methods required for Task 3.1
+
+  /**
+   * Expect syntax error to be displayed
+   */
+  async expectSyntaxError(): Promise<void> {
+    await expect(this.queryError).toBeVisible();
+  }
+
+  /**
+   * Expect status to show running
+   */
+  async expectStatusRunning(): Promise<void> {
+    await expect(this.queryStatus).toContainText('Running');
+  }
+
+  /**
+   * Expect status to show complete
+   */
+  async expectStatusComplete(): Promise<void> {
+    await expect(this.queryStatus).toContainText('Ready');
+  }
+
+  /**
+   * Click read more button
+   */
+  async clickReadMore(): Promise<void> {
+    await this.moreResultsLink.click();
+  }
+
+  /**
+   * Expect pagination elements to be present
+   */
+  async expectPagination(): Promise<void> {
+    await expect(this.moreResultsLink).toBeVisible();
+  }
+
+  /**
+   * Expect exercise tips to be displayed
+   */
+  async expectExerciseTips(): Promise<void> {
+    await expect(this.tipDescription).toBeVisible();
+  }
+
+  /**
+   * Get error container element
+   */
+  getErrorContainer() {
+    return this.queryError;
+  }
+
+  /**
+   * Get status indicator element
+   */
+  getStatusIndicator() {
+    return this.queryStatus;
+  }
+
+  /**
+   * Get pagination container element
+   */
+  getPaginationContainer() {
+    return this.moreResultsLink;
+  }
+
+  /**
+   * Select a pattern-based exercise
+   */
+  async selectPatternExercise(): Promise<void> {
+    await this.selectExercise('S4.0');
+  }
+
+  /**
+   * Expect more results after clicking read more
+   */
+  async expectMoreResults(): Promise<void> {
+    await expect(this.moreResultsLink).not.toBeVisible();
+  }
 } 
