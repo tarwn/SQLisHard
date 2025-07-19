@@ -80,10 +80,10 @@ This document outlines the plan to migrate the existing E2E tests from the curre
 ### Phase 2: Basic Test Migration
 
 #### 2.1 Simple Connectivity Test
-- [ ] Create initial test that verifies server is accessible
-- [ ] Test basic page load and title verification
-- [ ] Start the server in test mode
-- [ ] Verify npm scripts work:
+- [x] Create initial test that verifies server is accessible
+- [x] Test basic page load and title verification
+- [x] Start the server in test mode
+- [x] Verify npm scripts work:
   ```json
   {
     "scripts": {
@@ -95,13 +95,13 @@ This document outlines the plan to migrate the existing E2E tests from the curre
   ```
 
 #### 2.2 First Test Scenario Migration
-- [ ] Migrate "Execute basic successful query" scenario
-- [ ] Implement basic page object methods:
+- [x] Migrate "Execute basic successful query" scenario
+- [x] Implement basic page object methods:
   - Navigate to exercise page
   - Enter query text
   - Click execute button
   - Verify results display
-- [ ] Ensure test passes consistently
+- [x] Ensure test passes consistently
 
 ### Phase 3: Core Test Migration
 

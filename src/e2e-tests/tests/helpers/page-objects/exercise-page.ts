@@ -225,6 +225,14 @@ export class ExercisePage extends BasePage {
   }
 
   /**
+   * Expect results to be displayed (assertion method)
+   */
+  async expectResultsDisplayed(): Promise<void> {
+    await expect(this.queryResults).toBeVisible();
+    await expect(this.dataTable).toBeVisible();
+  }
+
+  /**
    * Wait for query execution to complete
    */
   async waitForQueryExecution(): Promise<void> {
