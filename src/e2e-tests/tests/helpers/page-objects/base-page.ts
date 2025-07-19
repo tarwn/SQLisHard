@@ -5,19 +5,16 @@ import { Page, Locator, expect } from '@playwright/test';
  */
 export class BasePage {
   protected page: Page;
-  protected baseUrl: string;
 
-  constructor(page: Page, baseUrl: string = '') {
+  constructor(page: Page) {
     this.page = page;
-    this.baseUrl = baseUrl;
   }
 
   /**
    * Navigate to a specific URL
    */
   async navigate(url: string): Promise<void> {
-    const fullUrl = url.startsWith('http') ? url : `${this.baseUrl}${url}`;
-    await this.page.goto(fullUrl);
+    await this.page.goto(url);
   }
 
   /**

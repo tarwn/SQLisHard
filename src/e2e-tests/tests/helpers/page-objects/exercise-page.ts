@@ -23,8 +23,8 @@ export class ExercisePage extends BasePage {
   private resultRowsSelector = '#queryResults tbody tr';
   private exerciseListItemsSelector = '#exerciseList ul li';
 
-  constructor(page: Page, baseUrl: string = '') {
-    super(page, baseUrl);
+  constructor(page: Page) {
+    super(page);
   }
 
   // Page properties

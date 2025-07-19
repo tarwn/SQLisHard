@@ -13,5 +13,6 @@ export default defineConfig({
     headless: true,
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
+    baseURL: process.env.BASE_URL || 'http://localhost:8012',
   },
 }); 
