@@ -206,6 +206,21 @@ export class ExercisePage extends BasePage {
     return dataExerciseId === exerciseId;
   }
 
+  
+  /**
+   * Check if current exercise matches the given ID
+   */
+  async waitForExerciseLoaded(exerciseId: string): Promise<void> {
+    await this.waitForCondition(
+      async () => {
+        const dataExerciseId = await this.exerciseTitle.getAttribute('data-exerciseid');
+        return dataExerciseId === exerciseId;
+      },
+      'Exercise to be loaded',
+      10000
+    );
+  }
+
   /**
    * Assert that continue button is visible
    */
@@ -348,12 +363,6 @@ export class ExercisePage extends BasePage {
     return this.moreResultsLink;
   }
 
-  /**
-   * Select a pattern-based exercise
-   */
-  async selectPatternExercise(): Promise<void> {
-    await this.selectExercise('S4.0');
-  }
 
   /**
    * Expect more results after clicking read more

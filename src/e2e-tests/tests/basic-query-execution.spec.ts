@@ -54,16 +54,12 @@ test.describe('Basic Query Execution', () => {
     const exercisePage = new ExercisePage(page);
     
     await exercisePage.navigateToExercisePage();
-    await exercisePage.selectPatternExercise();
+    await exercisePage.selectExercise("S4.0");
     // Execute a query that might trigger a tip
     await exercisePage.enterQuery('SELECT * FROM Customers');
     await exercisePage.executeQuery();
     await exercisePage.waitForQueryExecution();
-    // Note: Tips may not always be present, so we'll check if they exist
-    const hasTips = await exercisePage.tipTabIsVisible();
-    if (hasTips) {
-      await exercisePage.expectExerciseTips();
-    }
+    await exercisePage.expectExerciseTips();
   });
 
   test('should show initial status as ready', async ({ page }) => {
