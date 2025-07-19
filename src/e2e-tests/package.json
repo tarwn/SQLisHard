@@ -6,6 +6,7 @@
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
+    "test:connectivity": "playwright test connectivity.spec.ts",
     "lint": "eslint . --ext .ts,.js"
   },
   "keywords": [],
