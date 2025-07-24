@@ -7,10 +7,9 @@ This document provides comprehensive guidance for working with the SQLisHard E2E
 1. [Test Architecture](#test-architecture)
 2. [Writing Tests](#writing-tests)
 3. [Page Object Model](#page-object-model)
-4. [Test Utilities](#test-utilities)
-5. [Configuration Management](#configuration-management)
-6. [Best Practices](#best-practices)
-7. [Common Patterns](#common-patterns)
+4. [Configuration Management](#configuration-management)
+5. [Best Practices](#best-practices)
+6. [Common Patterns](#common-patterns)
 
 ## Test Architecture
 
@@ -24,8 +23,6 @@ The test suite follows a layered architecture:
 ├─────────────────────────────────────┤
 │         Page Objects                │  ← UI interaction layer
 ├─────────────────────────────────────┤
-│         Test Utilities              │  ← Common helper functions
-├─────────────────────────────────────┤
 │         Playwright API              │  ← Browser automation
 └─────────────────────────────────────┘
 ```
@@ -34,7 +31,6 @@ The test suite follows a layered architecture:
 
 - **Test Specs**: Business-focused test scenarios
 - **Page Objects**: Encapsulated UI interactions
-- **Test Utilities**: Reusable helper functions
 - **Configuration**: Environment-specific settings
 
 ## Writing Tests
@@ -174,65 +170,6 @@ export class ExercisePage extends BasePage {
 3. **Return Values**: Return meaningful data from page object methods
 4. **Error Handling**: Include error scenarios in page objects
 5. **Type Safety**: Use TypeScript interfaces for return types
-
-## Test Utilities
-
-### Common Utilities
-
-The `test-utils.ts` file provides common helper functions:
-
-```typescript
-import { Page } from '@playwright/test';
-
-export async function waitForPageLoad(page: Page): Promise<void> {
-  await page.waitForLoadState('networkidle');
-}
-
-export async function waitForElement(page: Page, selector: string): Promise<void> {
-  await page.waitForSelector(selector, { state: 'visible' });
-}
-
-export async function retryOperation<T>(
-  operation: () => Promise<T>,
-  maxAttempts: number = 3,
-  delay: number = 1000
-): Promise<T> {
-  let lastError: Error;
-  
-  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
-    try {
-      return await operation();
-    } catch (error) {
-      lastError = error as Error;
-      if (attempt < maxAttempts) {
-        await new Promise(resolve => setTimeout(resolve, delay));
-      }
-    }
-  }
-  
-  throw lastError!;
-}
-```
-
-### Custom Assertions
-
-Create custom assertions for common patterns:
-
-```typescript
-export async function expectQueryResults(page: Page, expectedRows: number): Promise<void> {
-  const actualRows = await page.locator('.results-table tbody tr').count();
-  expect(actualRows).toBe(expectedRows);
-}
-
-export async function expectErrorVisible(page: Page, expectedMessage?: string): Promise<void> {
-  const errorElement = page.locator('.error-message');
-  await expect(errorElement).toBeVisible();
-  
-  if (expectedMessage) {
-    await expect(errorElement).toContainText(expectedMessage);
-  }
-}
-```
 
 ## Configuration Management
 

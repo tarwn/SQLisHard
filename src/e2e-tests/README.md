@@ -59,7 +59,6 @@ src/e2e-tests/
 │   ├── connectivity.spec.ts           # Basic connectivity tests
 │   ├── basic-query-execution.spec.ts  # Query execution tests
 │   └── helpers/           # Test utilities and page objects
-│       ├── test-utils.ts              # Common test utilities
 │       └── page-objects/              # Page object models
 │           ├── base-page.ts           # Base page object
 │           └── exercise-page.ts       # Exercise page object
@@ -103,20 +102,6 @@ export class ExercisePage extends BasePage {
     await expect(this.page.locator('.results-table')).toBeVisible();
   }
 }
-```
-
-### Test Utilities
-
-Common test utilities are available in `tests/helpers/test-utils.ts`:
-
-```typescript
-import { waitForPageLoad } from './helpers/test-utils';
-
-test('should handle page load', async ({ page }) => {
-  await page.goto('/exercise');
-  await waitForPageLoad(page);
-  // ... test logic
-});
 ```
 
 ## Troubleshooting Guide
