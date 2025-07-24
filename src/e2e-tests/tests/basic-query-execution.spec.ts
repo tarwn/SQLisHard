@@ -1,5 +1,6 @@
 import { test } from '@playwright/test';
 import { ExercisePage } from './helpers/page-objects/exercise-page';
+import { testConfig } from './_config';
 
 test.describe('Basic Query Execution', () => {
   test('should execute basic successful query', async ({ page }) => {
@@ -9,7 +10,7 @@ test.describe('Basic Query Execution', () => {
     await exercisePage.navigateToExercisePage();
     
     // And I have entered a query of "SELECT TOP 10 * FROM dbo.Customers"
-    await exercisePage.enterQuery('SELECT TOP 10 * FROM dbo.Customers');
+    await exercisePage.enterQuery(testConfig.exercises.initial.solution);
     
     // When I Press Execute
     await exercisePage.executeQuery();
@@ -32,7 +33,7 @@ test.describe('Basic Query Execution', () => {
     const exercisePage = new ExercisePage(page);
     
     await exercisePage.navigateToExercisePage();
-    await exercisePage.enterQuery('SELECT TOP 1000 * FROM dbo.Customers');
+    await exercisePage.enterQuery(testConfig.queries.veryPaginated);
     await exercisePage.executeQuery();
     // Wait for query to complete and check final status
     await exercisePage.waitForQueryExecution();
@@ -43,7 +44,7 @@ test.describe('Basic Query Execution', () => {
     const exercisePage = new ExercisePage(page);
     
     await exercisePage.navigateToExercisePage();
-    await exercisePage.enterQuery('SELECT TOP 101 * FROM dbo.Customers');
+    await exercisePage.enterQuery(testConfig.queries.barelyPaginated);
     await exercisePage.executeQuery();
     await exercisePage.expectPagination();
     await exercisePage.clickReadMore();
@@ -54,7 +55,7 @@ test.describe('Basic Query Execution', () => {
     const exercisePage = new ExercisePage(page);
     
     await exercisePage.navigateToExercisePage();
-    await exercisePage.selectExercise("S4.0");
+    await exercisePage.selectExercise(testConfig.exercises.withTip.id);
     // Execute a query that might trigger a tip
     await exercisePage.enterQuery('SELECT * FROM Customers');
     await exercisePage.executeQuery();
@@ -84,7 +85,7 @@ test.describe('Basic Query Execution', () => {
     const exercisePage = new ExercisePage(page);
     
     await exercisePage.navigateToExercisePage();
-    await exercisePage.enterQuery('SELECT TOP 101 * FROM dbo.Customers');
+    await exercisePage.enterQuery(testConfig.queries.barelyPaginated);
     await exercisePage.executeQuery();
     await exercisePage.waitForResults();
     await exercisePage.assertNumberOfResultsRowsIs(100);

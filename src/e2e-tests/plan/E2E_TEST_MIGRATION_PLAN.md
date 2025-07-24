@@ -116,12 +116,12 @@ This document outlines the plan to migrate the existing E2E tests from the curre
 - [x] Ensure all tests pass before proceeding
 
 #### 3.2 ExerciseInteraction Feature Migration
-- [ ] Migrate ExerciseInteraction scenarios:
-  - [ ] Exercise selection state verification
-  - [ ] Complete button visibility
-  - [ ] Continue button navigation
-- [ ] Extend page object with exercise selection methods
-- [ ] Add exercise state verification utilities
+- [x] Migrate ExerciseInteraction scenarios:
+  - [x] Exercise selection state verification
+  - [x] Complete button visibility
+  - [x] Continue button navigation
+- [x] Extend page object with exercise selection methods
+- [x] Add exercise state verification utilities
 
 ### Phase 4: Advanced Features & Optimization
 

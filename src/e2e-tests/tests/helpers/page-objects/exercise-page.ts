@@ -222,13 +222,6 @@ export class ExercisePage extends BasePage {
   }
 
   /**
-   * Assert that continue button is visible
-   */
-  async assertCompleteButtonVisible(): Promise<void> {
-    await this.assertElementPresent('#continueButton', 'ContinueButton');
-  }
-
-  /**
    * Wait for results to be displayed
    */
   async waitForResults(): Promise<void> {
@@ -369,5 +362,70 @@ export class ExercisePage extends BasePage {
    */
   async expectMoreResults(): Promise<void> {
     await expect(this.moreResultsLink).not.toBeVisible();
+  }
+
+  /**
+   * Expect the given exercise to be selected
+   */
+  async expectExerciseSelected(exerciseId: string): Promise<void> {
+    const selector = this.getExerciseSelector(exerciseId);
+    await expect(selector).toHaveClass(/selected/);
+  }
+
+  /**
+   * Expect the continue button to be visible
+   */
+  async expectContinueButtonVisible(): Promise<void> {
+    await expect(this.getContinueButton()).toBeVisible();
+  }
+
+  async expectContinueButtonHidden(): Promise<void> {
+    await expect(this.getContinueButton()).toBeHidden();
+  }
+
+  /**
+   * Click the continue button
+   */
+  async clickContinueButton(): Promise<void> {
+    await this.getContinueButton().click();
+  }
+
+  /**
+   * Expect navigation to the next exercise (by checking exerciseId changes)
+   */
+  async expectNavigationToNextExercise(previousExerciseId?: string): Promise<void> {
+    await this.page.waitForTimeout(500); // allow navigation
+    const currentId = await this.getCurrentExerciseId();
+    if (previousExerciseId) {
+      expect(currentId).not.toBe(previousExerciseId);
+    } else {
+      expect(currentId).not.toBe('');
+    }
+  }
+
+  /**
+   * Get the selector for a specific exercise
+   */
+  getExerciseSelector(exerciseId: string) {
+    return this.page.locator(`li[data-exerciseid='${exerciseId}']`);
+  }
+
+  /**
+   * Get the continue button element
+   */
+  getContinueButton() {
+    return this.page.locator('#continueButton');
+  }
+
+  /**
+   * Complete the current exercise (simulate user completing it)
+   */
+  async completeExercise(query: string): Promise<void> {
+    // This assumes the test completes the exercise by running a valid query and clicking complete
+    await this.enterQuery(query);
+    await this.executeQuery();
+    await this.expectResultsDisplayed();
+    await this.expectContinueButtonVisible();
+    await this.clickContinueButton();
   }
 } 
