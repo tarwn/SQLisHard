@@ -85,13 +85,13 @@ builder.Services.AddControllersWithViews(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsEnvironment("Test"))
 {
     var core = app.Configuration["Migrations:Core:ConnectionString"];
     var exercises = app.Configuration["Migrations:Exercises:ConnectionString"];
     if (core == null || exercises == null)
     {
-        throw new Exception("Connection Strings must be set for sql migrations to run during development using admin-level rights");
+        throw new Exception("Connection Strings must be set for sql migrations to run during development or test using admin-level rights");
     }
     LocalDevelopmentTasks.MigrateDatabase(core, Path.Combine(app.Environment.ContentRootPath, "../../../database/coredb/migrations"));
     LocalDevelopmentTasks.MigrateDatabase(exercises, Path.Combine(app.Environment.ContentRootPath, "../../../database/exercisedb/migrations"));

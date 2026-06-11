@@ -16,9 +16,40 @@ As always, the system will work, but the code and choices behind it may be exper
 
 ## Running Tests
 
-* backend + UI integration tests: `dotnet test ./src/backend/SQLisHard.sln`
+This project includes both backend unit tests and end-to-end tests using Playwright.
 
-_Note: run the app first if running the full set of tests, the integration/UI tests do not start it on their own (yet)._
+### Quick Start
+
+```bash
+# Backend unit tests
+dotnet test ./src/backend/SQLisHard.sln
+
+# Running the app for E2e Tests
+cd src/backend/SQLisHard
+dotnet run --urls=http://localhost:8012 --environment=Test
+
+# E2E tests (requires app to be running)
+cd src/e2e-tests
+npm run test
+```
+
+### E2E Test Commands
+
+```bash
+# Run all tests
+npm run test
+
+# Run tests with browser visible
+npm run test:headed
+
+# Run tests in debug mode
+npm run test:debug
+
+# Run connectivity test only
+npm run test:connectivity
+```
+
+For more detailed test configuration and advanced usage, see the [E2E Test Documentation](./src/e2e-tests/README.md).
 
 ## Setting up the app
 
@@ -26,12 +57,12 @@ Dependencies:
 
 - SQL Server 2019 or newer
 - .Net 9
-- TBD: node 20?
+- Node.js 22+ (for e2e tests)
+- Chrome browser (for e2e tests)
 
 Setup Dependencies:
 
-- Powershell 7.4.x or newer for setup scripts
-
+- Powershell 7.4.x or newer for easy Windows setup scripts
 
 **Windows Setup**
 
@@ -55,11 +86,16 @@ Setup Dependencies:
         - `dotnet user-secrets set "ConnectionStrings:Core" "Server=localhost;Database=<core db name>;User Id=<app username>;Password=<app user pw>;Encrypt=false"`
         - `dotnet user-secrets set "ConnectionStrings:Exercises" "Server=localhost;Database=<exercises db name>;User Id=<app username>;Password=<app user pw>;Encrypt=false"`
 3. Backend
-    - TBD: dotenv?
-    - TBD: dotnet restore ...
+    - `cd src/backend`
+    - `dotnet restore`
+    - `dotnet build`
 4. Frontend
-    - TBD: npm install ...
-5. GOTO [Running the app](#running-the-app)
+    - _No steps currently_
+5. E2E Tests
+    - `cd src/e2e-tests`
+    - `npm install`
+    - `npx playwright install chrome`
+6. GOTO [Running the app](#running-the-app)
 
 **Other Setup**
 
